@@ -6,10 +6,14 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="tt_content.list_type_pi1">Simple Map</label>
+			<label index="tt_content.list_type_pi1">Single Address Map</label>
+			<label index="tt_content.list_type_pi2">Single Address Entry Map</label>
+			<label index="tt_content.list_type_pi3">Address Group Map</label>
 		</languageKey>
 		<languageKey index="de" type="array">
-			<label index="tt_content.list_type_pi1">Einfache Karte</label>
+			<label index="tt_content.list_type_pi1">Single Address Map</label>
+			<label index="tt_content.list_type_pi2">Single Address Entry Map</label>
+			<label index="tt_content.list_type_pi3">Address Group Map</label>
 		</languageKey>
 	</data>
 </T3locallang>

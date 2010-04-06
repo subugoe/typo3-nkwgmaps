@@ -64,6 +64,56 @@
 						</config>
 						</TCEforms>
 					</maptypecontrol>
+					<maptypeid>
+						<TCEforms>
+						<label>LLL:EXT:nkwgmaps/locallang.xml:maptypeid</label>
+						<config>
+							<type>select</type>
+							<items type="array">
+								<numIndex index="0" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:maptypeid.I.0</numIndex>
+									<numIndex index="1">ROADMAP</numIndex>
+								</numIndex>
+								<numIndex index="1" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:maptypeid.I.1</numIndex>
+									<numIndex index="1">HYBRID</numIndex>
+								</numIndex>
+								<numIndex index="2" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:maptypeid.I.2</numIndex>
+									<numIndex index="1">SATELLITE</numIndex>
+								</numIndex>
+								<numIndex index="3" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:maptypeid.I.3</numIndex>
+									<numIndex index="1">TERRAIN</numIndex>
+								</numIndex>
+							</items>
+							<minitems>0</minitems>
+							<maxitems>1</maxitems>
+							<size>1</size>
+						</config>
+						</TCEforms>
+					</maptypeid>
+					<scale>
+						<TCEforms>
+						<label>LLL:EXT:nkwgmaps/locallang.xml:scale</label>
+						<config>
+							<type>select</type>
+							<items type="array">
+								<numIndex index="0" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:scale.I.0</numIndex>
+									<numIndex index="1">true</numIndex>
+								</numIndex>
+								<numIndex index="1" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:scale.I.1</numIndex>
+									<numIndex index="1">false</numIndex>
+								</numIndex>
+							</items>
+							<minitems>0</minitems>
+							<maxitems>1</maxitems>
+							<size>1</size>
+						</config>
+						</TCEforms>
+					</scale>
 					<sensor>
 						<TCEforms>
 						<label>LLL:EXT:nkwgmaps/locallang.xml:sensor</label>
@@ -117,47 +167,27 @@
 				</el>
 			</ROOT>
 		</uioptions>
-		<addresses>
+		<addressdata>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:addressesoptions</sheetTitle>
+					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:addressdata</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
-					<display>
+					<address>
 						<TCEforms>
-						<label>LLL:EXT:nkwgmaps/locallang.xml:display</label>
-						<config>
-							<type>select</type>
-							<items type="array">
-								<numIndex index="0" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:display.I.0</numIndex>
-									<numIndex index="1">single</numIndex>
-								</numIndex>
-								<numIndex index="1" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:display.I.1</numIndex>
-									<numIndex index="1">directions</numIndex>
-								</numIndex>
-							</items>
-							<minitems>0</minitems>
-							<maxitems>1</maxitems>
-							<size>1</size>
-						</config>
+							<label>LLL:EXT:nkwgmaps/locallang.xml:address</label>
+							<config>
+								<type>input</type>
+								<size>40</size>
+								<max>255</max>
+								<eval>trim,required</eval>
+							</config>
 						</TCEforms>
-					</display>
-				</el>
-			</ROOT>
-		</addresses>
-		<singleaddressoptions>
-			<ROOT>
-				<TCEforms>
-					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:singleaddressoptions</sheetTitle>
-				</TCEforms>
-				<type>array</type>
-				<el>
-					<singleaddress>
+					</address>
+					<popupcontent>
 						<TCEforms>
-							<label>LLL:EXT:nkwgmaps/locallang.xml:singleaddress</label>
+							<label>LLL:EXT:nkwgmaps/locallang.xml:popupcontent</label>
 							<config>
 								<type>input</type>
 								<size>40</size>
@@ -165,30 +195,19 @@
 								<eval>trim</eval>
 							</config>
 						</TCEforms>
-					</singleaddress>
-					<singleaddresspopup>
+					</popupcontent>
+					<popupoptions>
 						<TCEforms>
-							<label>LLL:EXT:nkwgmaps/locallang.xml:singleaddresspopup</label>
-							<config>
-								<type>input</type>
-								<size>40</size>
-								<max>255</max>
-								<eval>trim</eval>
-							</config>
-						</TCEforms>
-					</singleaddresspopup>
-					<singleaddresspopupdisplay>
-						<TCEforms>
-							<label>LLL:EXT:nkwgmaps/locallang.xml:singleaddresspopupdisplay</label>
+							<label>LLL:EXT:nkwgmaps/locallang.xml:popupoptions</label>
 							<config>
 								<type>select</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:singleaddresspopupdisplay.I.0</numIndex>
+										<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:popupoptions.I.0</numIndex>
 										<numIndex index="1">instant</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:singleaddresspopupdisplay.I.1</numIndex>
+										<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:popupoptions.I.1</numIndex>
 										<numIndex index="1">onclick</numIndex>
 									</numIndex>
 								</items>
@@ -197,41 +216,9 @@
 								<size>1</size>
 							</config>
 						</TCEforms>
-					</singleaddresspopupdisplay>
+					</popupoptions>
 				</el>
 			</ROOT>
-		</singleaddressoptions>
-		<directionoptions>
-			<ROOT>
-				<TCEforms>
-					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:directionoptions</sheetTitle>
-				</TCEforms>
-				<type>array</type>
-				<el>
-					<fromaddress>
-						<TCEforms>
-							<label>LLL:EXT:nkwgmaps/locallang.xml:fromaddress</label>
-							<config>
-								<type>input</type>
-								<size>40</size>
-								<max>255</max>
-								<eval>trim</eval>
-							</config>
-						</TCEforms>
-					</fromaddress>
-					<toaddress>
-						<TCEforms>
-							<label>LLL:EXT:nkwgmaps/locallang.xml:toaddress</label>
-							<config>
-								<type>input</type>
-								<size>40</size>
-								<max>255</max>
-								<eval>trim</eval>
-							</config>
-						</TCEforms>
-					</toaddress>
-				</el>
-			</ROOT>
-		</directionoptions>
+		</addressdata>
 	</sheets>
 </T3DataStructure>

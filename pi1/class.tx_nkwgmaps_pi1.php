@@ -28,7 +28,7 @@
  */
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
-
+require_once(t3lib_extMgm::extPath('nkwlib')."class.tx_nkwlib.php");
 
 /**
  * Plugin 'Simple Map' for the 'nkwgmaps' extension.
@@ -37,24 +37,11 @@ require_once(PATH_tslib.'class.tslib_pibase.php');
  * @package	TYPO3
  * @subpackage	tx_nkwgmaps
  */
-class tx_nkwgmaps_pi1 extends tslib_pibase {
+class tx_nkwgmaps_pi1 extends tx_nkwlib {
 	var $prefixId      = 'tx_nkwgmaps_pi1';		// Same as class name
 	var $scriptRelPath = 'pi1/class.tx_nkwgmaps_pi1.php';	// Path to this script relative to the extension dir.
 	var $extKey        = 'nkwgmaps';	// The extension key.
 	var $pi_checkCHash = true;
-
-	function geocodeAddress($str)
-	{
-		$str = ereg_replace(" ", "+", $str);
-		$getThis = "http://maps.google.com/maps/api/geocode/json?address=".$str."&sensor=false";
-		$json = file_get_contents($getThis);
-		$tmp = json_decode($json, true);
-		if ($tmp["status"] = "OK")
-		{
-			$return = $tmp["results"][0]["geometry"]["location"]["lat"].",".$tmp["results"][0]["geometry"]["location"]["lng"];
-		}
-		return $return;
-	}
 
 	/**
 	 * The main method of the PlugIn
@@ -68,81 +55,94 @@ class tx_nkwgmaps_pi1 extends tslib_pibase {
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
 		$this->pi_initPIflexform();
+		$lang = $this->getLanguage();
 
 		$conf["ff"]["navicontrol"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'navicontrol', 'uioptions'); // get flexform values
+		$conf["ff"]["maptypeid"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypeid', 'uioptions'); // get flexform values
 		$conf["ff"]["maptypecontrol"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypecontrol', 'uioptions'); // get flexform values
 		$conf["ff"]["sensor"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'sensor', 'uioptions'); // get flexform values
 		$conf["ff"]["zoom"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'zoom', 'uioptions'); // get flexform values
 		if (!$conf["ff"]["sensor"]) $conf["ff"]["sensor"] = "false";
-		$conf["ff"]["display"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'display', 'addresses'); // get flexform values
-		$conf["ff"]["singleaddress"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singleaddress', 'singleaddressoptions'); // get flexform values
-		$conf["ff"]["singleaddresspopup"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singleaddresspopup', 'singleaddressoptions'); // get flexform values
-		$conf["ff"]["singleaddresspopupdisplay"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singleaddresspopupdisplay', 'singleaddressoptions'); // get flexform values
+		$conf["ff"]["scale"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'scale', 'uioptions'); // get flexform values
+		if (!$conf["ff"]["scale"]) $conf["ff"]["scale"] = "false";
+		$conf["ff"]["address"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'address', 'addressdata'); // get flexform values
+		$conf["ff"]["popupcontent"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupcontent', 'addressdata'); // get flexform values
+		$conf["ff"]["popupoptions"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupoptions', 'addressdata'); // get flexform values
 
-		#-34.397, 150.644
-		$test = $this->geocodeAddress($conf["ff"]["singleaddress"]);
+		// get latlon
+		$geo = $this->geocodeAddress($conf["ff"]["address"]);
+		if ($geo["status"] == "OK")
+			$conf["ff"]["latlon"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
+		else
+		{
+			$msg = "fail. could not resolve address";
+			$fail = TRUE;
+		}
 
-		echo "<pre>";
-		#print_r($this->geocodeAddress($conf["ff"]["singleaddress"]));
-		print_r($conf["ff"]);
-		echo "</pre>";
+		#echo "<pre>";
+		#print_r($conf["ff"]);
+		#echo "</pre>";
 
-
+		if (!$fail)
+		{
 
 		// the div in which the map is displayed
 		$tmp = "<div id='map_canvas' style='width:100%; height:500px'></div>";
 
 ##### JS START #####
 		// JS to cnstruct the map
-		$js = "
+$js = "
 <script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=".$conf["ff"]["sensor"]."\"></script>
 <script type=\"text/javascript\">
 	function initialize() {
-		var latlng = new google.maps.LatLng(".$test.");
+		var latlng = new google.maps.LatLng(".$conf["ff"]["latlon"].");
 		var myOptions = {
 			zoom: ".$conf["ff"]["zoom"].",
 			center: latlng,
+			scaleControl: ".$conf["ff"]["scale"].",
 			mapTypeControl: true,
 			mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.".$conf["ff"]["maptypecontrol"]."},
 			navigationControl: true,
 			navigationControlOptions: {style: google.maps.NavigationControlStyle.".$conf["ff"]["navicontrol"]."},
-			mapTypeId: google.maps.MapTypeId.ROADMAP
+			mapTypeId: google.maps.MapTypeId.".$conf["ff"]["maptypeid"]."
 		};
 		var map = new google.maps.Map(document.getElementById(\"map_canvas\"), myOptions);
 		var marker = new google.maps.Marker({
 			position: latlng, 
 			map: map, 
-			title:'Hello World!'
+			title:'".$conf["ff"]["address"]."'
 		});
-		";
-		if ($conf["ff"]["singleaddresspopup"])
-		{
-			$js .= "
-		var contentString = '<p>".$conf["ff"]["singleaddresspopup"]."</p>';
+";
+if ($conf["ff"]["popupcontent"])
+{
+	$js .= "
+		var contentString = '".$conf["ff"]["popupcontent"]."';
 		var infowindow = new google.maps.InfoWindow({
 			content: contentString
 		});
-		";
-		if ($conf["ff"]["singleaddresspopupdisplay"] == "instant")
-		{
-		$js .= "
-		infowindow.open(map,marker);
-		";
-		}
-		$js .= "
+	";
+	if ($conf["ff"]["popupoptions"] == "instant")
+		$js .= "infowindow.open(map,marker);";
+	$js .= "
 		google.maps.event.addListener(marker, 'click', function() {
 			infowindow.open(map,marker);
 		});
-		";
-		}
-		$js .= "
+	";
+}
+$js .= "
 	}
 	initialize();
 </script>
 		";
 ##### JS END #####
-
-		$content = $tmp.$js; // return stuff
+		}
+		else
+		{
+			$tmp = "<p>".$msg."</p>";
+		}
+		// return stuff
+		$content = $tmp;
+		if ($fail != TRUE) $content .= $js; 
 	
 		return $this->pi_wrapInBaseClass($content);
 	}
