@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'nkwgmaps'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="uioptions">UI Options</label>
+			<label index="navicontrol">Navigation Control</label>
+			<label index="navicontrol.I.0">Default</label>
+			<label index="navicontrol.I.1">Small</label>
+			<label index="navicontrol.I.2">Zoom Pan</label>
+			<label index="navicontrol.I.3">Android</label>
+			<label index="maptypecontrol">May Type Control</label>
+			<label index="maptypecontrol.I.0">Default</label>
+			<label index="maptypecontrol.I.1">Dropdown</label>
+			<label index="maptypecontrol.I.2">Horizontal Bar</label>
+			<label index="sensor">Sensor</label>
+			<label index="sensor.I.0">False</label>
+			<label index="sensor.I.1">True</label>
+			<label index="addressesoptions">Addresses</label>
+			<label index="display.I.0">Single Adress</label>
+			<label index="display.I.1">Directions</label>
+			<label index="singleaddressoptions">Single Address Options</label>
+			<label index="singleaddress">Address</label>
+			<label index="singleaddresspopup">Popup (optional)</label>
+			<label index="singleaddresspopupdisplay">singleaddresspopupdisplay</label>
+			<label index="singleaddresspopupdisplay.I.0">instant</label>
+			<label index="singleaddresspopupdisplay.I.1">on click</label>
+			<label index="directionoptions">Directions Options</label>
+			<label index="fromaddress">from</label>
+			<label index="toaddress">to</label>
+			<label index="zoom">zoom</label>
+			<label index="zoom.I.0">2</label>
+			<label index="zoom.I.1">8</label>
+			<label index="zoom.I.2">14</label>
+			<label index="zoom.I.3">20</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="uioptions">UI Options</label>
+			<label index="navicontrol">Navigation Control</label>
+			<label index="navicontrol.I.0">Default</label>
+			<label index="navicontrol.I.1">Small</label>
+			<label index="navicontrol.I.2">Zoom Pan</label>
+			<label index="navicontrol.I.3">Android</label>
+			<label index="maptypecontrol">May Type Control</label>
+			<label index="maptypecontrol.I.0">Default</label>
+			<label index="maptypecontrol.I.1">Dropdown</label>
+			<label index="maptypecontrol.I.2">Horizontal Bar</label>
+			<label index="sensor">Sensor</label>
+			<label index="sensor.I.0">False</label>
+			<label index="sensor.I.1">True</label>
+			<label index="addressesoptions">Adressen</label>
+			<label index="display.I.0">Single Adress</label>
+			<label index="display.I.1">Directions</label>
+			<label index="singleaddressoptions">Single Address Options</label>
+			<label index="singleaddress">singleaddress</label>
+			<label index="singleaddresspopup">singleaddresspopup</label>
+			<label index="singleaddresspopupdisplay">singleaddresspopupdisplay</label>
+			<label index="singleaddresspopupdisplay.I.0">instant</label>
+			<label index="singleaddresspopupdisplay.I.1">on click</label>
+			<label index="directionoptions">Directions Options</label>
+			<label index="fromaddress">from</label>
+			<label index="toaddress">to</label>
+			<label index="zoom">zoom</label>
+		</languageKey>
+	</data>
+</T3locallang>
