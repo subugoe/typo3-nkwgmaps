@@ -37,9 +37,9 @@ require_once(t3lib_extMgm::extPath('nkwlib')."class.tx_nkwlib.php");
  * @package	TYPO3
  * @subpackage	tx_nkwgmaps
  */
-class tx_nkwgmaps_pi1 extends tx_nkwlib {
-	var $prefixId      = 'tx_nkwgmaps_pi1';		// Same as class name
-	var $scriptRelPath = 'pi1/class.tx_nkwgmaps_pi1.php';	// Path to this script relative to the extension dir.
+class tx_nkwgmaps_pi2 extends tx_nkwlib {
+	var $prefixId      = 'tx_nkwgmaps_pi2';		// Same as class name
+	var $scriptRelPath = 'pi2/class.tx_nkwgmaps_pi2.php';	// Path to this script relative to the extension dir.
 	var $extKey        = 'nkwgmaps';	// The extension key.
 	var $pi_checkCHash = true;
 
@@ -67,10 +67,17 @@ class tx_nkwgmaps_pi1 extends tx_nkwlib {
 		$conf["ff"]["zoom"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'zoom', 'uioptions'); // get flexform values
 		$conf["ff"]["scale"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'scale', 'uioptions'); // get flexform values
 
-		// address data
-		$conf["ff"]["address"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'address', 'addressdata'); // get flexform values
-		$conf["ff"]["popupcontent"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupcontent', 'addressdata'); // get flexform values
+		$conf["ff"]["addressbooksource"]["uid"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'source', 'addressdata'); // get flexform values
 		$conf["ff"]["popupoptions"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupoptions', 'addressdata'); // get flexform values
+
+		// get data from DB
+		$res0 = $GLOBALS['TYPO3_DB']->exec_SELECTquery("*","tt_address","uid = '".$conf["ff"]["addressbooksource"]["uid"]."'","","","");
+		while($row0 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res0))
+		{
+			$conf["ff"]["address"] = $row0["address"].", ".$row0["zip"]." ".$row0["city"].", ".$row0["country"];
+			$conf["ff"]["popupcontent"] = $row0["last_name"];
+			if ($row0["first_name"]) $conf["ff"]["popupcontent"] = $row0["first_name"]." ".$row0["last_name"];
+		}
 
 		// get latlon
 		$geo = $this->geocodeAddress($conf["ff"]["address"]);
@@ -82,7 +89,7 @@ class tx_nkwgmaps_pi1 extends tx_nkwlib {
 			$fail = TRUE;
 		}
 
-		#$this->dprint($conf["ff"]);
+#$this->dprint($conf["ff"]);
 
 		if (!$fail)
 		{
@@ -141,7 +148,7 @@ $js .= "
 		var marker = new google.maps.Marker({
 			position: latlng, 
 			map: map, 
-			title:'".$conf["ff"]["address"]."'
+			title:'".$conf["ff"]["popupcontent"]." - ".$conf["ff"]["address"]."'
 		});
 ";
 if ($conf["ff"]["mapcenterbutton"] == "true")
@@ -186,7 +193,7 @@ $js .= "
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwgmaps/pi1/class.tx_nkwgmaps_pi1.php'])
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwgmaps/pi1/class.tx_nkwgmaps_pi1.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwgmaps/pi2/class.tx_nkwgmaps_pi2.php'])
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwgmaps/pi2/class.tx_nkwgmaps_pi2.php']);
 
 ?>

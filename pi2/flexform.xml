@@ -10,28 +10,19 @@
 				</TCEforms>
 				<type>array</type>
 				<el>
-					<address>
+					<source>
 						<TCEforms>
-							<label>LLL:EXT:nkwgmaps/locallang.xml:address</label>
+							<label>LLL:EXT:nkwlib/locallang_db.xml:flexform.source</label>
 							<config>
-								<type>input</type>
-								<size>40</size>
-								<max>255</max>
-								<eval>trim,required</eval>
+								<type>group</type>
+								<internal_type>db</internal_type>
+								<allowed>tt_address</allowed>
+								<size>1</size>
+								<maxitems>1</maxitems>
+								<minitems>0</minitems>
 							</config>
 						</TCEforms>
-					</address>
-					<popupcontent>
-						<TCEforms>
-							<label>LLL:EXT:nkwgmaps/locallang.xml:popupcontent</label>
-							<config>
-								<type>input</type>
-								<size>40</size>
-								<max>255</max>
-								<eval>trim</eval>
-							</config>
-						</TCEforms>
-					</popupcontent>
+					</source>
 					<popupoptions>
 						<TCEforms>
 							<label>LLL:EXT:nkwgmaps/locallang.xml:popupoptions</label>
