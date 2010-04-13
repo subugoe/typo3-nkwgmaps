@@ -13,7 +13,7 @@
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Google Maps',
 	'description' => '',
-	'category' => '',
+	'category' => 'plugin',
 	'author' => 'Nils K. Windisch',
 	'author_email' => 'windisch@sub.uni-goettingen.de',
 	'shy' => '',
@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
 	'author_company' => 'Goettingen State and University Library, Germany http://sub.uni-goettingen,de',
-	'version' => '0.0.2',
+	'version' => '0.0.3',
 	'constraints' => array(
 		'depends' => array(
 		),
