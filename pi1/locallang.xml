@@ -6,11 +6,10 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="list_mode_1">Mode 1</label>
-			<label index="list_mode_2">Mode 2</label>
-			<label index="list_mode_3">Mode 3</label>
-			<label index="back">Back</label>
-			<label index="submit_button_label">Click here to submit value</label>
+			<label index="nocontent">No Content</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="nocontent">keine Inhalte</label>
 		</languageKey>
 	</data>
 </T3locallang>
