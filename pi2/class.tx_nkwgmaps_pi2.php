@@ -71,23 +71,39 @@ class tx_nkwgmaps_pi2 extends tx_nkwlib {
 		$conf["ff"]["popupoptions"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupoptions', 'addressdata'); // get flexform values
 
 		// get data from DB
-		$res0 = $GLOBALS['TYPO3_DB']->exec_SELECTquery("*","tt_address","uid = '".$conf["ff"]["addressbooksource"]["uid"]."'","","","");
-		while($row0 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res0))
-		{
-			$conf["ff"]["address"] = $row0["address"].", ".$row0["zip"]." ".$row0["city"].", ".$row0["country"];
-			$conf["ff"]["popupcontent"] = $row0["last_name"];
-			if ($row0["first_name"]) $conf["ff"]["popupcontent"] = $row0["first_name"]." ".$row0["last_name"];
-		}
+		$count = 0;
+		$addressbooksource_uids = explode(",",$conf["ff"]["addressbooksource"]["uid"]);
+		foreach($addressbooksource_uids as $uid)	{
+			$res0 = $GLOBALS['TYPO3_DB']->exec_SELECTquery("*","tt_address","uid = '".$uid."'","","","");
+			while($row0 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res0))
+			{
+				$debug .= $row0["address"];
+				$conf[$count]["address"] = $row0["address"].", ".$row0["zip"]." ".$row0["city"].", ".$row0["country"];
+				$conf[$count]["popupcontent"] = $row0["last_name"];
+				if ($row0["first_name"]) $conf[$count]["popupcontent"] = $row0["first_name"]." ".$row0["last_name"];
+			}
 
-		// get latlon
-		$geo = $this->geocodeAddress($conf["ff"]["address"]);
-		if ($geo["status"] == "OK")
-			$conf["ff"]["latlon"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
-		else
-		{
-			$msg = "fail. could not resolve address";
-			$fail = TRUE;
+			// get latlng
+			$geo = $this->geocodeAddress($conf[$count]["address"]);
+			if ($geo["status"] == "OK")	{
+				$conf[$count]["latlng"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
+				$lat[$count] = $geo["results"][0]["geometry"]["location"]["lat"];
+				$lng[$count] = $geo["results"][0]["geometry"]["location"]["lng"];
+			}	else	{
+				
+				$msg = "fail. could not resolve address";
+				$fail = TRUE;
+			}
+			$count++;
 		}
+		
+		/* calculate center-position of the map */ 
+		/* bestimme konvexe Hülle bei vielen Punkten -> Mittelpunkt
+		   Durchschnitt berechnet nur bei wenigen Pkt. Mitte korrekt */
+		$latMean = round(array_sum($lat)/$count,5);
+		$lngMean = round(array_sum($lng)/$count,5);
+		$latlngCenter = $latMean.",".$lngMean;
+		$debug .= $latlngCenter;
 
 #$this->dprint($conf["ff"]);
 
@@ -130,10 +146,20 @@ if ($conf["ff"]["mapcenterbutton"] == "true")
 	}
 	";
 }
-$js .= "
-	function initialize() {
-		var latlng = new google.maps.LatLng(".$conf["ff"]["latlon"].");
-		var mapDiv = document.getElementById('map_canvas');
+$js .= "function initialize() {
+			var latlng = new google.maps.LatLng(".$latlngCenter.");";
+			
+for($i=0; $i<$count; $i++)	{
+	$js .= "var latlng".$i." = new google.maps.LatLng(".$conf[$i]["latlng"].");";
+	$jsAppend .= "
+			var marker".$i." = new google.maps.Marker({
+				position: latlng".$i.", 
+				map: map, 
+				title:'".$conf[$i]["popupcontent"]." - ".$conf[$i]["address"]."'
+			});";
+}
+
+$js .= "var mapDiv = document.getElementById('map_canvas');
 		var myOptions = {
 			zoom: ".$conf["ff"]["zoom"].",
 			center: latlng,
@@ -144,13 +170,9 @@ $js .= "
 			navigationControlOptions: {style: google.maps.NavigationControlStyle.".$conf["ff"]["navicontrol"]."},
 			mapTypeId: google.maps.MapTypeId.".$conf["ff"]["maptypeid"]."
 		};
-		var map = new google.maps.Map(mapDiv, myOptions);
-		var marker = new google.maps.Marker({
-			position: latlng, 
-			map: map, 
-			title:'".$conf["ff"]["popupcontent"]." - ".$conf["ff"]["address"]."'
-		});
-";
+		var map = new google.maps.Map(mapDiv, myOptions);";
+$js .= $jsAppend;
+
 if ($conf["ff"]["mapcenterbutton"] == "true")
 {
 	$js .= "
@@ -168,19 +190,30 @@ if ($conf["ff"]["popupcontent"])
 			content: contentString
 		});
 	";
-	if ($conf["ff"]["popupoptions"] == "instant")
+/*	if ($conf["ff"]["popupoptions"] == "instant")
 		$js .= "infowindow.open(map,marker);";
 	$js .= "
 		google.maps.event.addListener(marker, 'click', function() {
 			infowindow.open(map,marker);
 		});
 	";
-}
+*/
+for($i=0; $i<$count; $i++)	{
+		if ($conf["ff"]["popupoptions"] == "instant")
+			$js .= "infowindow.open(map,marker".$i.");";
+		$js .= "
+			google.maps.event.addListener(marker".$i.", 'click', function() {
+				infowindow.open(map,marker".$i.");
+			});
+		";
+	}
+} 
 $js .= "
 	}
 	initialize();
 </script>
 		";
+
 ##### JS END #####
 		}
 		else $tmp = "<p>".$msg."</p>";
@@ -188,6 +221,7 @@ $js .= "
 		// return stuff
 		$content = $tmp;
 		if (!$fail) $content .= $js; 
+		$content .= $debug;
 	
 		return $this->pi_wrapInBaseClass($content);
 	}
