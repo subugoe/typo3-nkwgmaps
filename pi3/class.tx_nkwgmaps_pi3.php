@@ -31,7 +31,7 @@ require_once(PATH_tslib.'class.tslib_pibase.php');
 
 
 /**
- * Plugin 'Simple Map' for the 'nkwgmaps' extension.
+ * Plugin 'Address Group Map' for the 'nkwgmaps' extension.
  *
  * @author	Nils K. Windisch <windisch@sub.uni-goettingen.de>
  * @package	TYPO3

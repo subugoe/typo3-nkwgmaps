@@ -43,6 +43,76 @@ class tx_nkwgmaps_pi1 extends tx_nkwlib {
 	var $extKey        = 'nkwgmaps';	// The extension key.
 	var $pi_checkCHash = true;
 
+	function gmapsJS($conf)
+	{
+		$js = "<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=".$conf["ff"]["sensor"]."\"></script>";
+		$js .= "<script type=\"text/javascript\">";
+
+			// Home Button Function - don't touch
+			$js .= "function HomeControl(controlDiv, map, latlng) {
+				controlDiv.style.padding = '5px';
+				var controlUI = document.createElement('DIV');
+				controlUI.style.backgroundColor = 'white';
+				controlUI.style.borderStyle = 'solid';
+				controlUI.style.borderWidth = '2px';
+				controlUI.style.cursor = 'pointer';
+				controlUI.style.textAlign = 'center';
+				controlUI.title = 'Click to set the map to Home';
+				controlDiv.appendChild(controlUI);
+				var controlText = document.createElement('DIV');
+				controlText.style.fontFamily = 'Arial,sans-serif';
+				controlText.style.fontSize = '12px';
+				controlText.style.paddingLeft = '4px';
+				controlText.style.paddingRight = '4px';
+				controlText.innerHTML = '<b>Home</b>';
+				controlUI.appendChild(controlText);
+				google.maps.event.addDomListener(controlUI,'click',function(){map.setCenter(latlng);map.setZoom(".$conf["ff"]["zoom"].");});";
+			$js .= "}\n";
+
+			$js .= "function initialize() {\n";
+
+				// make map START //
+				$js .= "var latlng = new google.maps.LatLng(".$conf["ff"]["latlon"].");\n";
+				$js .= "var mapDiv = document.getElementById('".$conf["ff"]["mapName"]."');\n";
+				$js .= "var myOptions = {
+						zoom: ".$conf["ff"]["zoom"].",
+						center: latlng,
+						scaleControl: ".$conf["ff"]["scale"].",
+						mapTypeControl: true,
+						mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.".$conf["ff"]["maptypecontrol"]."},
+						navigationControl: true,
+						navigationControlOptions: {style: google.maps.NavigationControlStyle.".$conf["ff"]["navicontrol"]."},
+						mapTypeId: google.maps.MapTypeId.".$conf["ff"]["maptypeid"]."
+					};\n";
+				$js .= "var map_".$conf["ff"]["mapName"]." = new google.maps.Map(mapDiv, myOptions);\n";
+				// make map END //
+
+				// home button stuff START //
+				$js .= "var homeControlDiv = document.createElement('DIV');\n";
+				$js .= "var homeControl = new HomeControl(homeControlDiv,map_".$conf["ff"]["mapName"].",latlng);\n";
+				$js .= "homeControlDiv.index = 1;\n";
+				$js .= "map_".$conf["ff"]["mapName"].".controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);\n";
+				// home button stuff END //
+
+				// marker and popup START //
+				$js .= "var marker = new google.maps.Marker({position: latlng, map: map_".$conf["ff"]["mapName"].", title:'".$conf["ff"]["address"]."'});\n";
+				if ($conf["ff"]["popupcontent"])
+				{
+					$js .= "var contentString = '".$conf["ff"]["popupcontent"]."';\n";
+					$js .= "var infowindow = new google.maps.InfoWindow({content:contentString});\n";
+					if ($conf["ff"]["popupoptions"] == "instant") $js .= "infowindow.open(map_".$conf["ff"]["mapName"].",marker);\n";
+					$js .= "google.maps.event.addListener(marker,'click',function(){infowindow.open(map_".$conf["ff"]["mapName"].",marker);});\n";
+				}
+				// marker and popup END //
+
+			$js .= "}\n";
+
+			$js .= "initialize();\n"; // go go go
+
+		$js .= "</script>";
+		return $js;
+	}
+
 	/**
 	 * The main method of the PlugIn
 	 *
@@ -57,20 +127,18 @@ class tx_nkwgmaps_pi1 extends tx_nkwlib {
 		$this->pi_initPIflexform();
 		$lang = $this->getLanguage();
 
-		// FLEXFORM VALUES
-		// ui options
-		$conf["ff"]["navicontrol"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'navicontrol', 'uioptions'); // get flexform values
-		$conf["ff"]["maptypeid"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypeid', 'uioptions'); // get flexform values
-		$conf["ff"]["maptypecontrol"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypecontrol', 'uioptions'); // get flexform values
-		$conf["ff"]["sensor"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'sensor', 'uioptions'); // get flexform values
-		$conf["ff"]["mapcenterbutton"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'mapcenterbutton', 'uioptions'); // get flexform values
-		$conf["ff"]["zoom"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'zoom', 'uioptions'); // get flexform values
-		$conf["ff"]["scale"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'scale', 'uioptions'); // get flexform values
-
-		// address data
-		$conf["ff"]["address"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'address', 'addressdata'); // get flexform values
-		$conf["ff"]["popupcontent"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupcontent', 'addressdata'); // get flexform values
-		$conf["ff"]["popupoptions"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupoptions', 'addressdata'); // get flexform values
+		$conf["ff"] = array(
+			"navicontrol" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'navicontrol', 'uioptions'),
+			"maptypeid" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypeid', 'uioptions'),
+			"maptypecontrol" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypecontrol', 'uioptions'),
+			"sensor" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'sensor', 'uioptions'),
+			"zoom" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'zoom', 'uioptions'),
+			"scale" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'scale', 'uioptions'),
+			"address" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'address', 'addressdata'),
+			"popupcontent" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupcontent', 'addressdata'),
+			"popupoptions" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupoptions', 'addressdata')
+		);
+		$conf["ff"]["mapName"] = md5($conf["ff"]["address"]);
 
 		// get latlon
 		$geo = $this->geocodeAddress($conf["ff"]["address"]);
@@ -82,103 +150,14 @@ class tx_nkwgmaps_pi1 extends tx_nkwlib {
 			$fail = TRUE;
 		}
 
-		#$this->dprint($conf["ff"]);
-
 		if (!$fail)
 		{
-
 			// the div in which the map is displayed
-			$tmp = "<div id='map_canvas' style='width:100%; height:500px'></div>";
-
-##### JS START #####
-		// JS to cnstruct the map
-$js = "
-<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=".$conf["ff"]["sensor"]."\"></script>
-<script type=\"text/javascript\">
-";
-if ($conf["ff"]["mapcenterbutton"] == "true")
-{
-	$js .= "
-	function HomeControl(controlDiv, map, latlng) {
-		controlDiv.style.padding = '5px';
-		var controlUI = document.createElement('DIV');
-		controlUI.style.backgroundColor = 'white';
-		controlUI.style.borderStyle = 'solid';
-		controlUI.style.borderWidth = '2px';
-		controlUI.style.cursor = 'pointer';
-		controlUI.style.textAlign = 'center';
-		controlUI.title = 'Click to set the map to Home';
-		controlDiv.appendChild(controlUI);
-		var controlText = document.createElement('DIV');
-		controlText.style.fontFamily = 'Arial,sans-serif';
-		controlText.style.fontSize = '12px';
-		controlText.style.paddingLeft = '4px';
-		controlText.style.paddingRight = '4px';
-		controlText.innerHTML = '<b>Home</b>';
-		controlUI.appendChild(controlText);
-		google.maps.event.addDomListener(controlUI, 'click', function() {
-			map.setCenter(latlng);
-			map.setZoom(".$conf["ff"]["zoom"].");
-		});
-	}
-	";
-}
-$js .= "
-	function initialize() {
-		var latlng = new google.maps.LatLng(".$conf["ff"]["latlon"].");
-		var mapDiv = document.getElementById('map_canvas');
-		var myOptions = {
-			zoom: ".$conf["ff"]["zoom"].",
-			center: latlng,
-			scaleControl: ".$conf["ff"]["scale"].",
-			mapTypeControl: true,
-			mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.".$conf["ff"]["maptypecontrol"]."},
-			navigationControl: true,
-			navigationControlOptions: {style: google.maps.NavigationControlStyle.".$conf["ff"]["navicontrol"]."},
-			mapTypeId: google.maps.MapTypeId.".$conf["ff"]["maptypeid"]."
-		};
-		var map = new google.maps.Map(mapDiv, myOptions);
-		var marker = new google.maps.Marker({
-			position: latlng, 
-			map: map, 
-			title:'".$conf["ff"]["address"]."'
-		});
-";
-if ($conf["ff"]["mapcenterbutton"] == "true")
-{
-	$js .= "
-		var homeControlDiv = document.createElement('DIV');
-		var homeControl = new HomeControl(homeControlDiv, map, latlng);
-		homeControlDiv.index = 1;
-		map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
-	";
-}
-if ($conf["ff"]["popupcontent"])
-{
-	$js .= "
-		var contentString = '".$conf["ff"]["popupcontent"]."';
-		var infowindow = new google.maps.InfoWindow({
-			content: contentString
-		});
-	";
-	if ($conf["ff"]["popupoptions"] == "instant")
-		$js .= "infowindow.open(map,marker);";
-	$js .= "
-		google.maps.event.addListener(marker, 'click', function() {
-			infowindow.open(map,marker);
-		});
-	";
-}
-$js .= "
-	}
-	initialize();
-</script>
-		";
-##### JS END #####
+			$tmp = "<div id='".$conf["ff"]["mapName"]."' style='width:100%; height:500px'></div>";
+			$js = $this->gmapsJS($conf);
 		}
 		else $tmp = "<p>".$msg."</p>";
 
-		// return stuff
 		$content = $tmp;
 		if (!$fail) $content .= $js; 
 	
@@ -188,5 +167,4 @@ $js .= "
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwgmaps/pi1/class.tx_nkwgmaps_pi1.php'])
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwgmaps/pi1/class.tx_nkwgmaps_pi1.php']);
-
 ?>

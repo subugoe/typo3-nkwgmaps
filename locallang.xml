@@ -21,9 +21,6 @@
 			<label index="maptypecontrol.I.0">Default (Horizontal Bar)</label>
 			<label index="maptypecontrol.I.1">Dropdown (smallest possible footprint)</label>
 			<label index="maptypecontrol.I.2">Horizontal Bar (default)</label>
-			<label index="mapcenterbutton">Map Center Button</label>
-			<label index="mapcenterbutton.I.0">Show (default, recommended)</label>
-			<label index="mapcenterbutton.I.1">Hide</label>
 			<label index="sensor">Sensor (used with mobile devices)</label>
 			<label index="sensor.I.0">False</label>
 			<label index="sensor.I.1">True</label>

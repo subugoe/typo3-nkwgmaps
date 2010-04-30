@@ -137,27 +137,6 @@
 						</config>
 						</TCEforms>
 					</maptypecontrol>
-					<mapcenterbutton>
-						<TCEforms>
-						<label>LLL:EXT:nkwgmaps/locallang.xml:mapcenterbutton</label>
-						<config>
-							<type>select</type>
-							<items type="array">
-								<numIndex index="0" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:mapcenterbutton.I.0</numIndex>
-									<numIndex index="1">true</numIndex>
-								</numIndex>
-								<numIndex index="1" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:mapcenterbutton.I.1</numIndex>
-									<numIndex index="1">false</numIndex>
-								</numIndex>
-							</items>
-							<minitems>0</minitems>
-							<maxitems>1</maxitems>
-							<size>1</size>
-						</config>
-						</TCEforms>
-					</mapcenterbutton>
 					<scale>
 						<TCEforms>
 						<label>LLL:EXT:nkwgmaps/locallang.xml:scale</label>
