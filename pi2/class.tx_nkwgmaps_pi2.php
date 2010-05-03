@@ -29,6 +29,7 @@
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
 require_once(t3lib_extMgm::extPath('nkwlib')."class.tx_nkwlib.php");
+require_once(t3lib_extMgm::extPath('nkwgmaps')."pi2/convex_hull.inc.php");
 
 /**
  * Plugin 'Simple Map' for the 'nkwgmaps' extension.
@@ -63,6 +64,7 @@ class tx_nkwgmaps_pi2 extends tx_nkwlib {
 		$conf["ff"]["maptypeid"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypeid', 'uioptions');
 		$conf["ff"]["maptypecontrol"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypecontrol', 'uioptions');
 		$conf["ff"]["sensor"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'sensor', 'uioptions');
+#		$conf["ff"]["mapcenterbutton"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'mapcenterbutton', 'uioptions');
 		$conf["ff"]["zoom"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'zoom', 'uioptions');
 		$conf["ff"]["scale"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'scale', 'uioptions');
 
@@ -70,41 +72,49 @@ class tx_nkwgmaps_pi2 extends tx_nkwlib {
 		$conf["ff"]["popupoptions"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupoptions', 'addressdata');
 
 		// get data from DB
-		$count = 0;
+		$cntMarker = 0;
 		$addressbooksource_uids = explode(",",$conf["ff"]["addressbooksource"]["uid"]);
 		foreach($addressbooksource_uids as $uid)	{
 			$res0 = $GLOBALS['TYPO3_DB']->exec_SELECTquery("*","tt_address","uid = '".$uid."'","","","");
 			while($row0 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res0))
 			{
-				$debug .= $row0["address"];
-				$conf[$count]["address"] = $row0["address"].", ".$row0["zip"]." ".$row0["city"].", ".$row0["country"];
-				$conf[$count]["popupcontent"] = $row0["last_name"];
-				if ($row0["first_name"]) $conf[$count]["popupcontent"] = $row0["first_name"]." ".$row0["last_name"];
+				# $debug .= $row0["address"];
+				$conf[$cntMarker]["address"] = $row0["address"].", ".$row0["zip"]." ".$row0["city"].", ".$row0["country"];
+				$conf[$cntMarker]["popupcontent"] = $row0["last_name"];
+				if ($row0["first_name"]) $conf[$cntMarker]["popupcontent"] = $row0["first_name"]." ".$row0["last_name"];
 			}
 
 			// get latlng
-			$geo = $this->geocodeAddress($conf[$count]["address"]);
+			$geo = $this->geocodeAddress($conf[$cntMarker]["address"]);
 			if ($geo["status"] == "OK")	{
-				$conf[$count]["latlng"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
-				$lat[$count] = $geo["results"][0]["geometry"]["location"]["lat"];
-				$lng[$count] = $geo["results"][0]["geometry"]["location"]["lng"];
+				$conf[$cntMarker]["latlng"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
+				$lat[$cntMarker] = $geo["results"][0]["geometry"]["location"]["lat"];
+				$lng[$cntMarker] = $geo["results"][0]["geometry"]["location"]["lng"];
 			}	else	{
-				
 				$msg = "fail. could not resolve address";
 				$fail = TRUE;
 			}
-			$count++;
+			$cntMarker++;
 		}
 		
 		/* calculate center-position of the map */ 
 		/* bestimme konvexe Hülle bei vielen Punkten -> Mittelpunkt
 		   Durchschnitt berechnet nur bei wenigen Pkt. Mitte korrekt */
-		$latMean = round(array_sum($lat)/$count,5);
-		$lngMean = round(array_sum($lng)/$count,5);
-		$latlngCenter = $latMean.",".$lngMean;
-		$debug .= $latlngCenter;
+		for($i=0; $i<$cntMarker; $i++)
+			$p[$i] = array("x" => $lat[$i], "y" => $lng[$i]);
 
-#$this->dprint($conf["ff"]);
+#		$this->dprint($p);
+#		$c = new GrahamScan();
+#    	$h = $c->computeHull($p);
+#		$this->dprint("h = ".$h.";");
+#		$this->dprint($p);
+
+		$latMean = round(array_sum($lat)/$cntMarker,5);
+		$lngMean = round(array_sum($lng)/$cntMarker,5);
+		$latlngCenter = $latMean.",".$lngMean;
+#		$debug .= $latlngCenter;
+
+#		$this->dprint($conf["ff"]);
 
 		if (!$fail)
 		{
@@ -126,7 +136,8 @@ if ($conf["ff"]["mapcenterbutton"] == "true")
 		var controlUI = document.createElement('DIV');
 		controlUI.style.backgroundColor = 'white';
 		controlUI.style.borderStyle = 'solid';
-		controlUI.style.borderWidth = '2px';
+		controlUI.style.padding = '1px';
+		controlUI.style.borderWidth = '1px';
 		controlUI.style.cursor = 'pointer';
 		controlUI.style.textAlign = 'center';
 		controlUI.title = 'Click to set the map to Home';
@@ -145,10 +156,11 @@ if ($conf["ff"]["mapcenterbutton"] == "true")
 	}
 	";
 }
-$js .= "function initialize() {
+$js .= "
+	function initialize() {
 			var latlng = new google.maps.LatLng(".$latlngCenter.");";
 			
-for($i=0; $i<$count; $i++)	{
+for($i=0; $i<$cntMarker; $i++)	{
 	$js .= "var latlng".$i." = new google.maps.LatLng(".$conf[$i]["latlng"].");";
 	$jsAppend .= "
 			var marker".$i." = new google.maps.Marker({
@@ -181,32 +193,27 @@ if ($conf["ff"]["mapcenterbutton"] == "true")
 		map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
 	";
 }
-if ($conf["ff"]["popupcontent"])
-{
-	$js .= "
-		var contentString = '".$conf["ff"]["popupcontent"]."';
-		var infowindow = new google.maps.InfoWindow({
-			content: contentString
-		});
-	";
-/*	if ($conf["ff"]["popupoptions"] == "instant")
-		$js .= "infowindow.open(map,marker);";
-	$js .= "
-		google.maps.event.addListener(marker, 'click', function() {
-			infowindow.open(map,marker);
-		});
-	";
-*/
-for($i=0; $i<$count; $i++)	{
-		if ($conf["ff"]["popupoptions"] == "instant")
-			$js .= "infowindow.open(map,marker".$i.");";
+
+# set marker
+for($i=0; $i<$cntMarker; $i++)	{
+	if ($conf[$i]["popupcontent"])	{
+		$js .= "
+			var contentString = '".$conf[$i]["popupcontent"]."';
+			var infowindow".$i." = new google.maps.InfoWindow({
+				content: contentString
+			});
+		";
+
+#		if ($conf["ff"]["popupoptions"] == "instant")
+#			$js .= "infowindow".$i.".open(map,marker".$i.");";
 		$js .= "
 			google.maps.event.addListener(marker".$i.", 'click', function() {
-				infowindow.open(map,marker".$i.");
+				infowindow".$i.".open(map,marker".$i.");
 			});
 		";
 	}
 } 
+
 $js .= "
 	}
 	initialize();
