@@ -50,7 +50,7 @@ class tx_nkwgmaps_pi4 extends tx_nkwlib {
 		$this->pi_initPIflexform();
 		$lang = $this->getLanguage();
 
-		$scale = array("3.3" => 12, "6.6" => 13, "13.2" => 14);		
+		$scale = array("3.3" => 13, "6.6" => 14, "13.2" => 15);		
 
 		// FLEXFORM VALUES
 		// ui options
@@ -106,7 +106,7 @@ class tx_nkwgmaps_pi4 extends tx_nkwlib {
 #			$this->dprint($borders['l']." ".$borders['r']."<br />");
 #			$this->dprint($borders['b']." ".$borders['t']."<br />");
 			$dist = (6378.388) * acos(sin(deg2rad($borders['l'])) * sin(deg2rad($borders['r'])) + cos(deg2rad($borders['l'])) * cos(deg2rad($borders['r'])) * cos(deg2rad($borders['b']) - deg2rad($borders['b'])));
-			$this->dprint($dist);
+#			$this->dprint($dist);
 			$latMean = round(($borders['l']+$borders['r'])/2,5);
 			$lngMean = round(($borders['b']+$borders['t'])/2,5);
 		}	else {
@@ -203,6 +203,7 @@ if ($conf["ff"]["mapcenterbutton"] == "true")
 	";
 }
 
+# $js .= "var bounds = new GLatLngBounds;";  // Browserbug: GLatLngBounds is not defined
 # set marker
 for($i=0; $i<$cntMarker; $i++)	{
 	if ($conf[$i]["popupcontent"])	{
@@ -220,9 +221,10 @@ for($i=0; $i<$cntMarker; $i++)	{
 				infowindow".$i.".open(map,marker".$i.");
 			});
 		";
+#	    $js .= "bounds.extend(markers".$i.".point); alert(markers".$i.".point);";
 	}
-} 
-
+}
+# $js .= "map.setZoom(map.getBoundsZoomLevel(bounds));";
 $js .= "
 	}
 	initialize();
