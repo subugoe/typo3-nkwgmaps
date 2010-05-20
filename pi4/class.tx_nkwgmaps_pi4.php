@@ -170,13 +170,13 @@ $js .= "
 			var latlng = new google.maps.LatLng(".$latlngCenter.");";
 			
 for($i=0; $i<$cntMarker; $i++)	{
-	$js .= "var latlng".$i." = new google.maps.LatLng(".$conf[$i]["latlng"].");";
+	$js .= "var latlng".$i." = new google.maps.LatLng(".$conf[$i]["latlng"].");\n";
 	$jsAppend .= "
 			var marker".$i." = new google.maps.Marker({
 				position: latlng".$i.", 
 				map: map, 
 				title:'".$conf[$i]["popupcontent"]." - ".$conf[$i]["address"]."'
-			});";
+			});\n";
 }
 
 $js .= "var mapDiv = document.getElementById('map_canvas');
@@ -203,7 +203,10 @@ if ($conf["ff"]["mapcenterbutton"] == "true")
 	";
 }
 
-# $js .= "var bounds = new GLatLngBounds;";  // Browserbug: GLatLngBounds is not defined
+#$js .= "var bounds = new google.maps.GLatLngBounds;";  // Browserbug: GLatLngBounds is not defined
+$js .= "var bounds = new google.maps.LatLngBounds;
+	";
+
 # set marker
 for($i=0; $i<$cntMarker; $i++)	{
 	if ($conf[$i]["popupcontent"])	{
@@ -221,10 +224,10 @@ for($i=0; $i<$cntMarker; $i++)	{
 				infowindow".$i.".open(map,marker".$i.");
 			});
 		";
-#	    $js .= "bounds.extend(markers".$i.".point); alert(markers".$i.".point);";
+	    $js .= "bounds.extend(marker".$i.".position);";
 	}
 }
-# $js .= "map.setZoom(map.getBoundsZoomLevel(bounds));";
+$js .= "map.setZoom(map.getBoundsZoomLevel(bounds));"; // existiert in V3 so nicht mehr -  map verfügt nicht mehr über diese Funktion
 $js .= "
 	}
 	initialize();
