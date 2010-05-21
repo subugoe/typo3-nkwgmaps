@@ -50,8 +50,6 @@ class tx_nkwgmaps_pi4 extends tx_nkwlib {
 		$this->pi_initPIflexform();
 		$lang = $this->getLanguage();
 
-		$scale = array("3.3" => 13, "6.6" => 14, "13.2" => 15);		
-
 		// FLEXFORM VALUES
 		// ui options
 		$conf["ff"]["navicontrol"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'navicontrol', 'uioptions');
@@ -72,20 +70,17 @@ class tx_nkwgmaps_pi4 extends tx_nkwlib {
 			$res0 = $GLOBALS['TYPO3_DB']->exec_SELECTquery("*","tt_address","uid = '".$uid."'","","","");
 			while($row0 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res0))
 			{
-				# $debug .= $row0["address"];
 				$conf[$cntMarker]["address"] = $row0["address"].", ".$row0["zip"]." ".$row0["city"].", ".$row0["country"];
 				$conf[$cntMarker]["popupcontent"] = $row0["last_name"];
 				if ($row0["first_name"]) $conf[$cntMarker]["popupcontent"] = $row0["first_name"]." ".$row0["last_name"];
 			}
 
 			// get latlng
-#			$this->dprint($conf[$cntMarker]["address"]);
 			$geo = $this->geocodeAddress($conf[$cntMarker]["address"]);
 			if ($geo["status"] == "OK")	{
 				$conf[$cntMarker]["latlng"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
 				$lat[$cntMarker] = $geo["results"][0]["geometry"]["location"]["lat"];
 				$lng[$cntMarker] = $geo["results"][0]["geometry"]["location"]["lng"];
-#				$this->dprint("$i ".$lat[$cntMarker]." ".$lng[$cntMarker]."<br />");
 			}	else	{
 				$msg = "fail. could not resolve address";
 				$fail = TRUE;
@@ -96,17 +91,12 @@ class tx_nkwgmaps_pi4 extends tx_nkwlib {
 		/* calculate center-position of the map */ 
 		$borders = array("l" => 180, "r" => -180, "b" => 90, "t" => -90);
 		for($i=0; $i<$cntMarker; $i++)	{
-#			$this->dprint("$i ".$lat[$i]." ".$lng[$i]."<br />");
 			if($lat[$i] < $borders['l'])	$borders['l'] = $lat[$i];
 			if($lat[$i] > $borders['r'])	$borders['r'] = $lat[$i];
 			if($lng[$i] < $borders['b'])	$borders['b'] = $lng[$i];
 			if($lng[$i] > $borders['t'])	$borders['t'] = $lng[$i];
 		}
 		if($cntMarker > 1)	{
-#			$this->dprint($borders['l']." ".$borders['r']."<br />");
-#			$this->dprint($borders['b']." ".$borders['t']."<br />");
-			$dist = (6378.388) * acos(sin(deg2rad($borders['l'])) * sin(deg2rad($borders['r'])) + cos(deg2rad($borders['l'])) * cos(deg2rad($borders['r'])) * cos(deg2rad($borders['b']) - deg2rad($borders['b'])));
-#			$this->dprint($dist);
 			$latMean = round(($borders['l']+$borders['r'])/2,5);
 			$lngMean = round(($borders['b']+$borders['t'])/2,5);
 		}	else {
@@ -114,20 +104,8 @@ class tx_nkwgmaps_pi4 extends tx_nkwlib {
 			$lngMean = $lng[0];
 		}
 		$latlngCenter = $latMean.",".$lngMean;
-		foreach($scale as $key => $value)	{
-			if($key < $dist)	{
-				$conf["ff"]["zoom"] = $value;
-				break;
-			}
-		}		
 
-#		$this->dprint($latlngCenter);
-
-#		$this->dprint($conf["ff"]);
-
-		if (!$fail)
-		{
-
+		if (!$fail)	{
 			// the div in which the map is displayed
 			$tmp = "<div id='map_canvas' style='width:100%; height:500px'></div>";
 
@@ -136,7 +114,7 @@ class tx_nkwgmaps_pi4 extends tx_nkwlib {
 $js = "
 <script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=".$conf["ff"]["sensor"]."\"></script>
 <script type=\"text/javascript\">
-";
+var bounds;";
 if ($conf["ff"]["mapcenterbutton"] == "true")
 {
 	$js .= "
@@ -159,8 +137,8 @@ if ($conf["ff"]["mapcenterbutton"] == "true")
 		controlText.innerHTML = '<b>Home</b>';
 		controlUI.appendChild(controlText);
 		google.maps.event.addDomListener(controlUI, 'click', function() {
-			map.setCenter(latlng);
-			map.setZoom(".$conf["ff"]["zoom"].");
+			map.setCenter(bounds.getCenter());
+			map.fitBounds(bounds);
 		});
 	}
 	";
@@ -203,9 +181,7 @@ if ($conf["ff"]["mapcenterbutton"] == "true")
 	";
 }
 
-#$js .= "var bounds = new google.maps.GLatLngBounds;";  // Browserbug: GLatLngBounds is not defined
-$js .= "var bounds = new google.maps.LatLngBounds;
-	";
+$js .= "bounds = new google.maps.LatLngBounds;";
 
 # set marker
 for($i=0; $i<$cntMarker; $i++)	{
@@ -217,8 +193,9 @@ for($i=0; $i<$cntMarker; $i++)	{
 			});
 		";
 
-#		if ($conf["ff"]["popupoptions"] == "instant")
-#			$js .= "infowindow".$i.".open(map,marker".$i.");";
+		// Popups (Bubbles) are shown after initialization, if option is set
+		if ($conf["ff"]["popupoptions"] == "instant")
+			$js .= "infowindow".$i.".open(map,marker".$i.");";
 		$js .= "
 			google.maps.event.addListener(marker".$i.", 'click', function() {
 				infowindow".$i.".open(map,marker".$i.");
@@ -227,7 +204,7 @@ for($i=0; $i<$cntMarker; $i++)	{
 	    $js .= "bounds.extend(marker".$i.".position);";
 	}
 }
-$js .= "map.setZoom(map.getBoundsZoomLevel(bounds));"; // existiert in V3 so nicht mehr -  map verfügt nicht mehr über diese Funktion
+$js .= "map.fitBounds(bounds);";
 $js .= "
 	}
 	initialize();
