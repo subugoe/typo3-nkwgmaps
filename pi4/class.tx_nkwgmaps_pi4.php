@@ -117,6 +117,7 @@ $js = "
 var bounds;";
 if ($conf["ff"]["mapcenterbutton"] == "true")
 {
+
 	$js .= "
 	function HomeControl(controlDiv, map, latlng) {
 		controlDiv.style.padding = '5px';
@@ -139,10 +140,12 @@ if ($conf["ff"]["mapcenterbutton"] == "true")
 		google.maps.event.addDomListener(controlUI, 'click', function() {
 			map.setCenter(bounds.getCenter());
 			map.fitBounds(bounds);
+			if(map.getZoom() > ".$conf["ff"]["zoom"].") map.setZoom(".$conf["ff"]["zoom"].");
 		});
 	}
 	";
 }
+
 $js .= "
 	function initialize() {
 			var latlng = new google.maps.LatLng(".$latlngCenter.");";
@@ -205,6 +208,12 @@ for($i=0; $i<$cntMarker; $i++)	{
 	}
 }
 $js .= "map.fitBounds(bounds);";
+$js .= "google.maps.event.addListener(map, 'zoom_changed', function() {
+			if ( map.getZoom() > ".$conf["ff"]["zoom"]." ) {
+				map.setZoom(".$conf["ff"]["zoom"].");
+			}
+		});";
+
 $js .= "
 	}
 	initialize();
