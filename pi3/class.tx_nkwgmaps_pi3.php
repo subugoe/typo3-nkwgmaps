@@ -28,7 +28,7 @@
  */
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
-
+require_once(t3lib_extMgm::extPath('nkwlib')."class.tx_nkwlib.php");
 
 /**
  * Plugin 'Address Group Map' for the 'nkwgmaps' extension.
@@ -37,7 +37,7 @@ require_once(PATH_tslib.'class.tslib_pibase.php');
  * @package	TYPO3
  * @subpackage	tx_nkwgmaps
  */
-class tx_nkwgmaps_pi3 extends tslib_pibase {
+class tx_nkwgmaps_pi3 extends tx_nkwlib {
 	var $prefixId      = 'tx_nkwgmaps_pi3';		// Same as class name
 	var $scriptRelPath = 'pi3/class.tx_nkwgmaps_pi3.php';	// Path to this script relative to the extension dir.
 	var $extKey        = 'nkwgmaps';	// The extension key.
