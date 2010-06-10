@@ -6,7 +6,16 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="uioptions">UI Options</label>
+			<label index="address">Address (required; street,city,country)</label>
+			<label index="addressbookoptions">Address Book Options</label>
+			<label index="addressdata">Address Data</label>
+			<label index="addressgroupoptions">Address Group Options</label>
+			<label index="addressesoptions">Adresses</label>
+			<label index="directionoptions">Directions Options</label>
+			<label index="display.I.0">Single Adress</label>
+			<label index="display.I.1">Directions</label>
+			<label index="fromaddress">from</label>
+			<label index="toaddress">to</label>
 			<label index="navicontrol">Navigation Control</label>
 			<label index="navicontrol.I.0">Default (determined automagically by size of map)</label>
 			<label index="navicontrol.I.1">Small (smallest possible footprint)</label>
@@ -21,31 +30,36 @@
 			<label index="maptypecontrol.I.0">Default (Horizontal Bar)</label>
 			<label index="maptypecontrol.I.1">Dropdown (smallest possible footprint)</label>
 			<label index="maptypecontrol.I.2">Horizontal Bar (default)</label>
+			<label index="popupcontent">Popup Content (optional)</label>
+			<label index="popupoptions">Popup Options (optional)</label>
+			<label index="popupoptions.I.0">Show instantly (recommended)</label>
+			<label index="popupoptions.I.1">Show on click</label>
 			<label index="sensor">Sensor (used with mobile devices)</label>
 			<label index="sensor.I.0">False</label>
 			<label index="sensor.I.1">True</label>
 			<label index="scale">Scale</label>
 			<label index="scale.I.0">Show (default, recommended)</label>
 			<label index="scale.I.1">Hide</label>
-			<label index="addressdata">Address Data</label>
 			<label index="singleaddressoptions">Single Address Options</label>
-			<label index="address">Address (required; street,city,country)</label>
-			<label index="popupcontent">Popup Content (optional)</label>
-			<label index="popupoptions">Popup Options (optional)</label>
-			<label index="popupoptions.I.0">Show instantly (recommended)</label>
-			<label index="popupoptions.I.1">Show on click</label>
-			<label index="directionoptions">Directions Options</label>
-			<label index="fromaddress">from</label>
-			<label index="toaddress">to</label>
+			<label index="singleaddress">singleaddress</label>
+			<label index="singleaddresspopup">singleaddresspopup</label>
+			<label index="singleaddresspopupdisplay">singleaddresspopupdisplay</label>
+			<label index="singleaddresspopupdisplay.I.0">instant</label>
+			<label index="singleaddresspopupdisplay.I.1">on click</label>
+			<label index="uioptions">UI Options</label>
 			<label index="zoom">Zoom</label>
 			<label index="zoom.I.0">2</label>
 			<label index="zoom.I.1">8</label>
 			<label index="zoom.I.2">14 (very good for a single address)</label>
 			<label index="zoom.I.3">19</label>
-			<label index="addressbookoptions">addressbookoptions</label>
 		</languageKey>
 		<languageKey index="de" type="array">
-			<label index="uioptions">UI Options</label>
+			<label index="addressesoptions">Adressen</label>
+			<label index="display.I.0">Single Adress</label>
+			<label index="display.I.1">Directions</label>
+			<label index="directionoptions">Directions Options</label>
+			<label index="fromaddress">from</label>
+			<label index="toaddress">to</label>
 			<label index="navicontrol">Navigation Control</label>
 			<label index="navicontrol.I.0">Default</label>
 			<label index="navicontrol.I.1">Small</label>
@@ -58,18 +72,13 @@
 			<label index="sensor">Sensor</label>
 			<label index="sensor.I.0">False</label>
 			<label index="sensor.I.1">True</label>
-			<label index="addressesoptions">Adressen</label>
-			<label index="display.I.0">Single Adress</label>
-			<label index="display.I.1">Directions</label>
 			<label index="singleaddressoptions">Single Address Options</label>
 			<label index="singleaddress">singleaddress</label>
 			<label index="singleaddresspopup">singleaddresspopup</label>
 			<label index="singleaddresspopupdisplay">singleaddresspopupdisplay</label>
 			<label index="singleaddresspopupdisplay.I.0">instant</label>
 			<label index="singleaddresspopupdisplay.I.1">on click</label>
-			<label index="directionoptions">Directions Options</label>
-			<label index="fromaddress">from</label>
-			<label index="toaddress">to</label>
+			<label index="uioptions">UI Options</label>
 			<label index="zoom">zoom</label>
 		</languageKey>
 	</data>
