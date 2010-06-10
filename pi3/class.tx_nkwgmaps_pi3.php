@@ -131,17 +131,17 @@ class tx_nkwgmaps_pi3 extends tx_nkwlib {
 					$conf["ff"]["addressbooksource"]["search"][] = $row0["address"].", ".$row0["city"].", ".$row0["country"];
 					#$conf["ff"]["singleaddresspopup"] = $row0["name"];
 				}
-				echo "<pre>";
-				print_r($conf["ff"]["addressbooksource"]["search"]);
-				echo "</pre>";
+#				echo "<pre>";
+#				print_r($conf["ff"]["addressbooksource"]["search"]);
+#				echo "</pre>";
 				$size = sizeof($conf["ff"]["addressbooksource"]["search"]);
 				if ($size >= 1)
 				{
 					for($i=0;$i<$size;$i++)
 						$latlon[$i] = $this->geocodeAddress($conf["ff"]["addressbooksource"]["search"][$i]);
-					echo "<pre>";
-					print_r($latlon);
-					echo "</pre>";
+#					echo "<pre>";
+#					print_r($latlon);
+#					echo "</pre>";
 				}
 			}
 			else // fail
@@ -158,9 +158,9 @@ class tx_nkwgmaps_pi3 extends tx_nkwlib {
 
 
 
-		echo "<pre>";
-		print_r($conf["ff"]);
-		echo "</pre>";
+#		echo "<pre>";
+#		print_r($conf["ff"]);
+#		echo "</pre>";
 
 
 
