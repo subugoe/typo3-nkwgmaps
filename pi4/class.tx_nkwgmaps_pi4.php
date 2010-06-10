@@ -52,6 +52,7 @@ class tx_nkwgmaps_pi4 extends tx_nkwlib {
 
 		// FLEXFORM VALUES
 		// ui options
+		$conf['ff']["mapName"] = md5(microtime());
 		$conf["ff"]["navicontrol"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'navicontrol', 'uioptions');
 		$conf["ff"]["maptypeid"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypeid', 'uioptions');
 		$conf["ff"]["maptypecontrol"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypecontrol', 'uioptions');
@@ -73,10 +74,11 @@ class tx_nkwgmaps_pi4 extends tx_nkwlib {
 				$conf[$cntMarker]["address"] = $row0["address"].", ".$row0["zip"]." ".$row0["city"].", ".$row0["country"];
 				$conf[$cntMarker]["popupcontent"] = $row0["last_name"];
 				if ($row0["first_name"]) $conf[$cntMarker]["popupcontent"] = $row0["first_name"]." ".$row0["last_name"];
+				$conf[$cntMarker]["latlng"] = $row0["tx_dsschedgmaps_geocodecache"];
 			}
 
 			// get latlng
-			$geo = $this->geocodeAddress($conf[$cntMarker]["address"]);
+/*			$geo = $this->geocodeAddress($conf[$cntMarker]["address"]);
 			if ($geo["status"] == "OK")	{
 				$conf[$cntMarker]["latlng"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
 				$lat[$cntMarker] = $geo["results"][0]["geometry"]["location"]["lat"];
@@ -85,8 +87,26 @@ class tx_nkwgmaps_pi4 extends tx_nkwlib {
 				$msg = "fail. could not resolve address";
 				$fail = TRUE;
 			}
+*/			
+			if($conf[$cntMarker]["latlng"] != 'undefined')	{
+				$geo = explode(",", $conf[$cntMarker]["latlng"]);
+				$lat[$cntMarker] = $geo[0];
+				$lng[$cntMarker] = $geo[1];
+			}	else	{
+				$geo = $this->geocodeAddress($conf[$cntMarker]["address"]);
+				if ($geo["status"] == "OK")	{
+					$conf[$cntMarker]["latlng"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
+					$lat[$cntMarker] = $geo["results"][0]["geometry"]["location"]["lat"];
+					$lng[$cntMarker] = $geo["results"][0]["geometry"]["location"]["lng"];
+				}	else	{
+					$msg = "fail. could not resolve address";
+					$fail = TRUE;
+				}
+			}
+
 			$cntMarker++;
 		}
+
 		
 		/* calculate center-position of the map */ 
 		$borders = array("l" => 180, "r" => -180, "b" => 90, "t" => -90);
@@ -107,7 +127,7 @@ class tx_nkwgmaps_pi4 extends tx_nkwlib {
 
 		if (!$fail)	{
 			// the div in which the map is displayed
-			$tmp = "<div id='map_canvas' style='width:100%; height:500px'></div>";
+			$tmp = "<div id='map_".$conf['ff']["mapName"]."' style='width:100%; height:500px'></div>";
 
 ##### JS START #####
 		// JS to cnstruct the map
@@ -155,12 +175,12 @@ for($i=0; $i<$cntMarker; $i++)	{
 	$jsAppend .= "
 			var marker".$i." = new google.maps.Marker({
 				position: latlng".$i.", 
-				map: map, 
+				map: map_".$conf["ff"]["mapName"].", 
 				title:'".$conf[$i]["popupcontent"]." - ".$conf[$i]["address"]."'
 			});\n";
 }
 
-$js .= "var mapDiv = document.getElementById('map_canvas');
+$js .= "var mapDiv = document.getElementById('map_".$conf["ff"]["mapName"]."');
 		var myOptions = {
 			zoom: ".$conf["ff"]["zoom"].",
 			center: latlng,
@@ -171,16 +191,16 @@ $js .= "var mapDiv = document.getElementById('map_canvas');
 			navigationControlOptions: {style: google.maps.NavigationControlStyle.".$conf["ff"]["navicontrol"]."},
 			mapTypeId: google.maps.MapTypeId.".$conf["ff"]["maptypeid"]."
 		};
-		var map = new google.maps.Map(mapDiv, myOptions);";
+		var map_".$conf["ff"]["mapName"]." = new google.maps.Map(mapDiv, myOptions);";
 $js .= $jsAppend;
 
 if ($conf["ff"]["mapcenterbutton"] == "true")
 {
 	$js .= "
 		var homeControlDiv = document.createElement('DIV');
-		var homeControl = new HomeControl(homeControlDiv, map, latlng);
+		var homeControl = new HomeControl(homeControlDiv, map_".$conf["ff"]["mapName"].", latlng);
 		homeControlDiv.index = 1;
-		map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
+		map_".$conf["ff"]["mapName"].".controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
 	";
 }
 
@@ -198,19 +218,19 @@ for($i=0; $i<$cntMarker; $i++)	{
 
 		// Popups (Bubbles) are shown after initialization, if option is set
 		if ($conf["ff"]["popupoptions"] == "instant")
-			$js .= "infowindow".$i.".open(map,marker".$i.");";
+			$js .= "infowindow".$i.".open(map_".$conf["ff"]["mapName"].",marker".$i.");";
 		$js .= "
 			google.maps.event.addListener(marker".$i.", 'click', function() {
-				infowindow".$i.".open(map,marker".$i.");
+				infowindow".$i.".open(map_".$conf["ff"]["mapName"].",marker".$i.");
 			});
 		";
 	    $js .= "bounds.extend(marker".$i.".position);";
 	}
 }
-$js .= "map.fitBounds(bounds);";
-$js .= "google.maps.event.addListener(map, 'zoom_changed', function() {
-			if ( map.getZoom() > ".$conf["ff"]["zoom"]." ) {
-				map.setZoom(".$conf["ff"]["zoom"].");
+$js .= "map_".$conf["ff"]["mapName"].".fitBounds(bounds);";
+$js .= "google.maps.event.addListener(map_".$conf["ff"]["mapName"].", 'zoom_changed', function() {
+			if ( map_".$conf["ff"]["mapName"].".getZoom() > ".$conf["ff"]["zoom"]." ) {
+				map_".$conf["ff"]["mapName"].".setZoom(".$conf["ff"]["zoom"].");
 			}
 		});";
 
