@@ -56,46 +56,50 @@ class tx_nkwgmaps_pi2 extends tx_nkwgmaps {
 		$this->pi_initPIflexform();
 		$lang = $this->getLanguage();
 
-		// FLEXFORM VALUES
-		// ui options 
+		// flexform values - ui options 
 		$conf["ff"] = array(
-			"navicontrol" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'navicontrol', 'uioptions'),
+			"mapName" => md5(microtime()),
 			"maptypeid" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypeid', 'uioptions'),
 			"maptypecontrol" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypecontrol', 'uioptions'),
-			"sensor" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'sensor', 'uioptions'),
 			"mapcenterbutton" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'mapcenterbutton', 'uioptions'),
-			"zoom" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'zoom', 'uioptions'),
+			"navicontrol" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'navicontrol', 'uioptions'),
 			"scale" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'scale', 'uioptions'),
-			"addressbooksource" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'source', 'addressdata'),
-			"popupoptions" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupoptions', 'addressdata')
-		);
-		$conf["ff"]["mapName"] = md5($conf["ff"]["address"]);
+			"sensor" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'sensor', 'uioptions'),
+			"zoom" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'zoom', 'uioptions'),
+			"popupoptions" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupoptions', 'addressdata'),
 
+			"addressbooksource" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'source', 'addressdata')
+		);
+		# $conf["ff"]["mapName"] = md5($conf["ff"]["addressbooksource"]); // ggf. microtime() + (srand()) => unique
 
 		// get data from DB
-		$res0 = $GLOBALS['TYPO3_DB']->exec_SELECTquery("*","tt_address","uid = '".$conf["ff"]["addressbooksource"]["uid"]."'","","","");
+		$res0 = $GLOBALS['TYPO3_DB']->exec_SELECTquery("*","tt_address","uid = '".$conf["ff"]["addressbooksource"]."'","","","");
 		while($row0 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res0))
 		{
 			$conf["ff"]["address"] = $row0["address"].", ".$row0["zip"]." ".$row0["city"].", ".$row0["country"];
 			$conf["ff"]["popupcontent"] = $row0["last_name"];
 			if ($row0["first_name"]) $conf["ff"]["popupcontent"] = $row0["first_name"]." ".$row0["last_name"];
+			$conf["ff"]["latlon"] = $row0["tx_dsschedgmaps_geocodecache"];
 		}
 
 		// get latlon
-		$geo = $this->geocodeAddress($conf["ff"]["address"]);
-		if ($geo["status"] == "OK")
-			$conf["ff"]["latlon"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
-		else
-		{
-			$msg = "fail. could not resolve address";
-			$fail = TRUE;
+		if($conf["ff"]["latlon"] != 'undefined' && !empty($conf["ff"]["latlon"]))	{
+			$this->dprint($conf["ff"]["latlon"]);
+		}	else	{
+			$geo = $this->geocodeAddress($conf["ff"]["address"]);
+			if ($geo["status"] == "OK")	{
+				$conf["ff"]["latlon"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
+			}	else	{
+				$msg = "fail. could not resolve address";
+				$fail = TRUE;
+			}
 		}
 
 		if (!$fail)
 		{
 			// the div in which the map is displayed
-			$tmp = "<div id='".$conf["ff"]["mapName"]."' style='width:100%; height:500px'></div>";
-			$js = $this->gmapsJS($conf);
+			$tmp = "<div id='".$conf["ff"]["mapName"]."' style='width:100%; height:500px; border:1px solid #CCC;'></div>";
+			$js = $this->singleGmapsJStest($conf);
 		}
 		else $tmp = "<p>".$msg."</p>";
 

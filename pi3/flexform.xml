@@ -3,120 +3,6 @@
 		<langDisable>1</langDisable>
 	</meta>
 	<sheets>
-		<uioptions>
-			<ROOT>
-				<TCEforms>
-					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:uioptions</sheetTitle>
-				</TCEforms>
-				<type>array</type>
-				<el>
-					<navicontrol>
-						<TCEforms>
-						<label>LLL:EXT:nkwgmaps/locallang.xml:navicontrol</label>
-						<config>
-							<type>select</type>
-							<items type="array">
-								<numIndex index="0" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:navicontrol.I.0</numIndex>
-									<numIndex index="1">DEFAULT</numIndex>
-								</numIndex>
-								<numIndex index="1" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:navicontrol.I.1</numIndex>
-									<numIndex index="1">SMALL</numIndex>
-								</numIndex>
-								<numIndex index="2" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:navicontrol.I.2</numIndex>
-									<numIndex index="1">ZOOM_PAN</numIndex>
-								</numIndex>
-								<numIndex index="3" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:navicontrol.I.3</numIndex>
-									<numIndex index="1">ANDROID</numIndex>
-								</numIndex>
-							</items>
-							<minitems>0</minitems>
-							<maxitems>1</maxitems>
-							<size>1</size>
-						</config>
-						</TCEforms>
-					</navicontrol>
-					<maptypecontrol>
-						<TCEforms>
-						<label>LLL:EXT:nkwgmaps/locallang.xml:maptypecontrol</label>
-						<config>
-							<type>select</type>
-							<items type="array">
-								<numIndex index="0" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:maptypecontrol.I.0</numIndex>
-									<numIndex index="1">DEFAULT</numIndex>
-								</numIndex>
-								<numIndex index="1" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:maptypecontrol.I.1</numIndex>
-									<numIndex index="1">DROPDOWN_MENU</numIndex>
-								</numIndex>
-								<numIndex index="2" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:maptypecontrol.I.2</numIndex>
-									<numIndex index="1">HORIZONTAL_BAR</numIndex>
-								</numIndex>
-							</items>
-							<minitems>0</minitems>
-							<maxitems>1</maxitems>
-							<size>1</size>
-						</config>
-						</TCEforms>
-					</maptypecontrol>
-					<sensor>
-						<TCEforms>
-						<label>LLL:EXT:nkwgmaps/locallang.xml:sensor</label>
-						<config>
-							<type>select</type>
-							<items type="array">
-								<numIndex index="0" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:sensor.I.0</numIndex>
-									<numIndex index="1">false</numIndex>
-								</numIndex>
-								<numIndex index="1" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:sensor.I.1</numIndex>
-									<numIndex index="1">true</numIndex>
-								</numIndex>
-							</items>
-							<minitems>0</minitems>
-							<maxitems>1</maxitems>
-							<size>1</size>
-						</config>
-						</TCEforms>
-					</sensor>
-					<zoom>
-						<TCEforms>
-						<label>LLL:EXT:nkwgmaps/locallang.xml:zoom</label>
-						<config>
-							<type>select</type>
-							<items type="array">
-								<numIndex index="0" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:zoom.I.0</numIndex>
-									<numIndex index="1">2</numIndex>
-								</numIndex>
-								<numIndex index="1" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:zoom.I.1</numIndex>
-									<numIndex index="1">8</numIndex>
-								</numIndex>
-								<numIndex index="2" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:zoom.I.2</numIndex>
-									<numIndex index="1">14</numIndex>
-								</numIndex>
-								<numIndex index="3" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:zoom.I.3</numIndex>
-									<numIndex index="1">20</numIndex>
-								</numIndex>
-							</items>
-							<minitems>0</minitems>
-							<maxitems>1</maxitems>
-							<size>1</size>
-						</config>
-						</TCEforms>
-					</zoom>
-				</el>
-			</ROOT>
-		</uioptions>
 		<addresses>
 			<ROOT>
 				<TCEforms>
@@ -153,6 +39,27 @@
 						</config>
 						</TCEforms>
 					</display>
+					<singleaddresspopupdisplay>
+						<TCEforms>
+							<label>LLL:EXT:nkwgmaps/locallang.xml:popupoptions</label>
+							<config>
+								<type>select</type>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:popupoptions.I.0</numIndex>
+										<numIndex index="1">instant</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:popupoptions.I.1</numIndex>
+										<numIndex index="1">onclick</numIndex>
+									</numIndex>
+								</items>
+								<minitems>0</minitems>
+								<maxitems>1</maxitems>
+								<size>1</size>
+							</config>
+						</TCEforms>
+					</singleaddresspopupdisplay>
 				</el>
 			</ROOT>
 		</addresses>
@@ -176,7 +83,7 @@
 					</singleaddress>
 					<singleaddresspopup>
 						<TCEforms>
-							<label>LLL:EXT:nkwgmaps/locallang.xml:singleaddresspopup</label>
+							<label>LLL:EXT:nkwgmaps/locallang.xml:popupcontent</label>
 							<config>
 								<type>input</type>
 								<size>40</size>
@@ -185,27 +92,6 @@
 							</config>
 						</TCEforms>
 					</singleaddresspopup>
-					<singleaddresspopupdisplay>
-						<TCEforms>
-							<label>LLL:EXT:nkwgmaps/locallang.xml:singleaddresspopupdisplay</label>
-							<config>
-								<type>select</type>
-								<items type="array">
-									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:singleaddresspopupdisplay.I.0</numIndex>
-										<numIndex index="1">instant</numIndex>
-									</numIndex>
-									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:singleaddresspopupdisplay.I.1</numIndex>
-										<numIndex index="1">onclick</numIndex>
-									</numIndex>
-								</items>
-								<minitems>0</minitems>
-								<maxitems>1</maxitems>
-								<size>1</size>
-							</config>
-						</TCEforms>
-					</singleaddresspopupdisplay>
 				</el>
 			</ROOT>
 		</singleaddressoptions>
@@ -287,5 +173,161 @@
 				</el>
 			</ROOT>
 		</addressgroupoptions>
+		<uioptions>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:uioptions</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<navicontrol>
+						<TCEforms>
+						<label>LLL:EXT:nkwgmaps/locallang.xml:navicontrol</label>
+						<config>
+							<type>select</type>
+							<items type="array">
+								<numIndex index="0" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:navicontrol.I.0</numIndex>
+									<numIndex index="1">DEFAULT</numIndex>
+								</numIndex>
+								<numIndex index="1" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:navicontrol.I.1</numIndex>
+									<numIndex index="1">SMALL</numIndex>
+								</numIndex>
+								<numIndex index="2" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:navicontrol.I.2</numIndex>
+									<numIndex index="1">ZOOM_PAN</numIndex>
+								</numIndex>
+								<numIndex index="3" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:navicontrol.I.3</numIndex>
+									<numIndex index="1">ANDROID</numIndex>
+								</numIndex>
+							</items>
+							<minitems>0</minitems>
+							<maxitems>1</maxitems>
+							<size>1</size>
+						</config>
+						</TCEforms>
+					</navicontrol>
+					<maptypecontrol>
+						<TCEforms>
+						<label>LLL:EXT:nkwgmaps/locallang.xml:maptypecontrol</label>
+						<config>
+							<type>select</type>
+							<items type="array">
+								<numIndex index="0" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:maptypecontrol.I.0</numIndex>
+									<numIndex index="1">DEFAULT</numIndex>
+								</numIndex>
+								<numIndex index="1" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:maptypecontrol.I.1</numIndex>
+									<numIndex index="1">DROPDOWN_MENU</numIndex>
+								</numIndex>
+								<numIndex index="2" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:maptypecontrol.I.2</numIndex>
+									<numIndex index="1">HORIZONTAL_BAR</numIndex>
+								</numIndex>
+							</items>
+							<minitems>0</minitems>
+							<maxitems>1</maxitems>
+							<size>1</size>
+						</config>
+						</TCEforms>
+					</maptypecontrol>
+					<scale>
+						<TCEforms>
+						<label>LLL:EXT:nkwgmaps/locallang.xml:scale</label>
+						<config>
+							<type>select</type>
+							<items type="array">
+								<numIndex index="0" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:scale.I.0</numIndex>
+									<numIndex index="1">true</numIndex>
+								</numIndex>
+								<numIndex index="1" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:scale.I.1</numIndex>
+									<numIndex index="1">false</numIndex>
+								</numIndex>
+							</items>
+							<minitems>0</minitems>
+							<maxitems>1</maxitems>
+							<size>1</size>
+						</config>
+						</TCEforms>
+					</scale>
+					<mapcenterbutton>
+						<TCEforms>
+						<label>LLL:EXT:nkwgmaps/locallang.xml:mapcenterbutton</label>
+						<config>
+							<type>select</type>
+							<items type="array">
+								<numIndex index="0" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:mapcenterbutton.I.0</numIndex>
+									<numIndex index="1">true</numIndex>
+								</numIndex>
+								<numIndex index="1" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:mapcenterbutton.I.1</numIndex>
+									<numIndex index="1">false</numIndex>
+								</numIndex>
+							</items>
+							<minitems>0</minitems>
+							<maxitems>1</maxitems>
+							<size>1</size>
+						</config>
+						</TCEforms>
+					</mapcenterbutton>
+					<sensor>
+						<TCEforms>
+						<label>LLL:EXT:nkwgmaps/locallang.xml:sensor</label>
+						<config>
+							<type>select</type>
+							<items type="array">
+								<numIndex index="0" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:sensor.I.0</numIndex>
+									<numIndex index="1">false</numIndex>
+								</numIndex>
+								<numIndex index="1" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:sensor.I.1</numIndex>
+									<numIndex index="1">true</numIndex>
+								</numIndex>
+							</items>
+							<minitems>0</minitems>
+							<maxitems>1</maxitems>
+							<size>1</size>
+						</config>
+						</TCEforms>
+					</sensor>
+					<zoom>
+						<TCEforms>
+						<label>LLL:EXT:nkwgmaps/locallang.xml:zoom</label>
+						<config>
+							<type>select</type>
+							<items type="array">
+								<numIndex index="0" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:zoom.I.0</numIndex>
+									<numIndex index="1">2</numIndex>
+								</numIndex>
+								<numIndex index="1" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:zoom.I.1</numIndex>
+									<numIndex index="1">8</numIndex>
+								</numIndex>
+								<numIndex index="2" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:zoom.I.2</numIndex>
+									<numIndex index="1">14</numIndex>
+								</numIndex>
+								<numIndex index="3" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:zoom.I.3</numIndex>
+									<numIndex index="1">20</numIndex>
+								</numIndex>
+							</items>
+							<minitems>0</minitems>
+							<maxitems>1</maxitems>
+							<size>1</size>
+						</config>
+						</TCEforms>
+					</zoom>
+				</el>
+			</ROOT>
+		</uioptions>
 	</sheets>
 </T3DataStructure>

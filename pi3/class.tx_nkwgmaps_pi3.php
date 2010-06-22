@@ -27,8 +27,9 @@
  * Hint: use extdeveval to insert/update function index above.
  */
 
-require_once(PATH_tslib.'class.tslib_pibase.php');
-require_once(t3lib_extMgm::extPath('nkwlib')."class.tx_nkwlib.php");
+#require_once(PATH_tslib.'class.tslib_pibase.php');
+#require_once(t3lib_extMgm::extPath('nkwlib')."class.tx_nkwlib.php");
+require_once(t3lib_extMgm::extPath('nkwgmaps')."class.tx_nkwgmaps.php");
 
 /**
  * Plugin 'Address Group Map' for the 'nkwgmaps' extension.
@@ -37,7 +38,7 @@ require_once(t3lib_extMgm::extPath('nkwlib')."class.tx_nkwlib.php");
  * @package	TYPO3
  * @subpackage	tx_nkwgmaps
  */
-class tx_nkwgmaps_pi3 extends tx_nkwlib {
+class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 	var $prefixId      = 'tx_nkwgmaps_pi3';		// Same as class name
 	var $scriptRelPath = 'pi3/class.tx_nkwgmaps_pi3.php';	// Path to this script relative to the extension dir.
 	var $extKey        = 'nkwgmaps';	// The extension key.
@@ -70,20 +71,27 @@ class tx_nkwgmaps_pi3 extends tx_nkwlib {
 		$this->pi_initPIflexform();
 		$lang = $this->getLanguage();
 
-		$conf["ff"]["navicontrol"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'navicontrol', 'uioptions'); // get flexform values
-		$conf["ff"]["maptypecontrol"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypecontrol', 'uioptions'); // get flexform values
-		$conf["ff"]["sensor"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'sensor', 'uioptions'); // get flexform values
-		$conf["ff"]["zoom"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'zoom', 'uioptions'); // get flexform values
-		if (!$conf["ff"]["sensor"]) $conf["ff"]["sensor"] = "false";
-		$conf["ff"]["display"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'display', 'addresses'); // get flexform values
-		$conf["ff"]["singleaddress"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singleaddress', 'singleaddressoptions'); // get flexform values
-		$conf["ff"]["singleaddresspopup"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singleaddresspopup', 'singleaddressoptions'); // get flexform values
-		$conf["ff"]["singleaddresspopupdisplay"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singleaddresspopupdisplay', 'singleaddressoptions'); // get flexform values
-		$conf["ff"]["addressbooksource"]["uid"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'source', 'addressbookoptions'); // get flexform values
-		$conf["ff"]["addressgroupsource"]["uid"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'source', 'addressgroupoptions'); // get flexform values
+		// flexform values - ui options 
+		$conf["ff"] = array(
+			"mapName" => md5(microtime()),
+			"maptypeid" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypeid', 'uioptions'),
+			"maptypecontrol" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypecontrol', 'uioptions'),
+			"mapcenterbutton" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'mapcenterbutton', 'uioptions'),
+			"navicontrol" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'navicontrol', 'uioptions'),
+			"scale" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'scale', 'uioptions'),
+			"sensor" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'sensor', 'uioptions'),
+			"zoom" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'zoom', 'uioptions'),
+			"popupoptions" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupoptions', 'addressdata'),
 
-		#-34.397, 150.644
+			"display" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'display', 'addresses'),	// which function
+			"singleaddress" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singleaddress', 'singleaddressoptions'),	// address string
+			"singleaddresspopup" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singleaddresspopup', 'singleaddressoptions'), // address popup content
+			"popupoptions" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singleaddresspopupdisplay', 'singleaddressoptions') 
+		);
+		$conf["ff"]["addressbooksource"]["uid"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'source', 'addressbookoptions');
+		$conf["ff"]["addressgroupsource"]["uid"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'source', 'addressgroupoptions');
 		
+
 		// single
 		if ($conf["ff"]["display"] == "single")
 		{
@@ -92,7 +100,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwlib {
 				$latlon = $this->geocodeAddress($conf["ff"]["singleaddress"]);
 			else // fail
 			{
-				$msg = "no address given";
+				$msg = "No address given!";
 				$fail = TRUE;
 			}
 		}
@@ -105,16 +113,27 @@ class tx_nkwgmaps_pi3 extends tx_nkwlib {
 				$res0 = $GLOBALS['TYPO3_DB']->exec_SELECTquery("*","tt_address","uid = '".$conf["ff"]["addressbooksource"]["uid"]."'","","","");
 				while($row0 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res0))
 				{
-					$conf["ff"]["addressbooksource"]["search"] = $row0["address"].", ".$row0["city"].", ".$row0["country"];
-					$conf["ff"]["singleaddresspopup"] = $row0["name"];
+					$conf["ff"]["address"] = $row0["address"].", ".$row0["zip"]." ".$row0["city"].", ".$row0["country"];
+					$conf["ff"]["popupcontent"] = $row0["last_name"];
+					if($row0["first_name"]) $conf["ff"]["popupcontent"] = $row0["first_name"]." ".$row0["last_name"];
+					$conf["ff"]["latlon"] = $row0["tx_dsschedgmaps_geocodecache"];
 				}
-				// get latlon
-				if ($conf["ff"]["addressbooksource"]["search"])
-					$latlon = $this->geocodeAddress($conf["ff"]["addressbooksource"]["search"]);
-			}
+				
+				if($conf["ff"]["latlon"] != 'undefined' && !empty($conf["ff"]["latlon"]))	{
+					;# $this->dprint($conf["ff"]["latlon"]);
+				}	else	{
+					$geo = $this->geocodeAddress($conf["ff"]["address"]);
+					if ($geo["status"] == "OK")	{
+						$conf["ff"]["latlon"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
+					}	else	{
+						$msg = "Fail. Could not resolve address";
+						$fail = TRUE;
+					}
+				}
+			}	
 			else // fail
 			{
-				$msg = "no address given";
+				$msg = "No address given!";
 				$fail = TRUE;
 			}
 		}
@@ -122,31 +141,61 @@ class tx_nkwgmaps_pi3 extends tx_nkwlib {
 		{
 			if ($conf["ff"]["addressgroupsource"]["uid"])
 			{
+				$cntMarker = 0;
+				
 				// get data from DB
 				$conf["ff"]["addressbooksource"]["search"] = array();
 				$res0 = $GLOBALS['TYPO3_DB']->exec_SELECTquery("*","tt_address","addressgroup = '".$conf["ff"]["addressgroupsource"]["uid"]."'","","","");
-				while($row0 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res0))
-				{
+				while($row0 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res0))	{
+					$conf[$cntMarker]["address"] = $row0["address"].", ".$row0["zip"]." ".$row0["city"].", ".$row0["country"];
+					$conf[$cntMarker]["popupcontent"] = $row0["last_name"];
+					if ($row0["first_name"]) $conf[$cntMarker]["popupcontent"] = $row0["first_name"]." ".$row0["last_name"];
+					$conf[$cntMarker]["latlng"] = $row0["tx_dsschedgmaps_geocodecache"];
 
-					$conf["ff"]["addressbooksource"]["search"][] = $row0["address"].", ".$row0["city"].", ".$row0["country"];
-					#$conf["ff"]["singleaddresspopup"] = $row0["name"];
+					if($conf[$cntMarker]["latlng"] != 'undefined' && !empty($conf[$cntMarker]["latlng"]))	{
+						$geo = explode(",", $conf[$cntMarker]["latlng"]);
+						$lat[$cntMarker] = $geo[0];
+						$lng[$cntMarker] = $geo[1];
+					}	else	{
+						$geo = $this->geocodeAddress($conf[$cntMarker]["address"]);
+						if ($geo["status"] == "OK")	{
+							$conf[$cntMarker]["latlng"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
+							$lat[$cntMarker] = $geo["results"][0]["geometry"]["location"]["lat"];
+							$lng[$cntMarker] = $geo["results"][0]["geometry"]["location"]["lng"];
+						}	else	{
+							$msg = "Fail. Could not resolve address!";
+							$fail = TRUE;
+						}
+					}
+					$cntMarker++;
+
 				}
-#				echo "<pre>";
-#				print_r($conf["ff"]["addressbooksource"]["search"]);
-#				echo "</pre>";
-				$size = sizeof($conf["ff"]["addressbooksource"]["search"]);
-				if ($size >= 1)
-				{
-					for($i=0;$i<$size;$i++)
-						$latlon[$i] = $this->geocodeAddress($conf["ff"]["addressbooksource"]["search"][$i]);
-#					echo "<pre>";
-#					print_r($latlon);
-#					echo "</pre>";
+				$conf["ff"]["cntMarker"] =  $cntMarker;
+				if($cntMarker > 0)	{
+					/* calculate center-position of the map */ 
+					$borders = array("l" => 180, "r" => -180, "b" => 90, "t" => -90);
+					for($i=0; $i<$cntMarker; $i++)	{
+						if($lat[$i] < $borders['l'])	$borders['l'] = $lat[$i];
+						if($lat[$i] > $borders['r'])	$borders['r'] = $lat[$i];
+						if($lng[$i] < $borders['b'])	$borders['b'] = $lng[$i];
+						if($lng[$i] > $borders['t'])	$borders['t'] = $lng[$i];
+					}
+					if($cntMarker > 1)	{
+						$latMean = round(($borders['l']+$borders['r'])/2,5);
+						$lngMean = round(($borders['b']+$borders['t'])/2,5);
+					}	else {
+						$latMean = $lat[0];
+						$lngMean = $lng[0];
+					}
+					$conf["ff"]["latlngCenter"] = $latMean.",".$lngMean;
+				}	else {
+					$msg = "No members in given group!";
+					$fail = TRUE;
 				}
-			}
+			}	
 			else // fail
 			{
-				$msg = "no address group given";
+				$msg = "No address group given!";
 				$fail = TRUE;
 			}
 		}
@@ -156,16 +205,29 @@ class tx_nkwgmaps_pi3 extends tx_nkwlib {
 		
 		}
 
-
+		$this->dprint($conf);
 
 #		echo "<pre>";
 #		print_r($conf["ff"]);
 #		echo "</pre>";
 
 
+		if (!$fail)
+		{
+			// the div in which the map is displayed
+			$tmp = "<div id='".$conf["ff"]["mapName"]."' style='width:100%; height:500px; border:1px solid #CCC;'></div>";
+			if(!isset($cntMarker))	$js = $this->singleGmapsJStest($conf);
+			else					$js = $this->multiGmapsJS($conf);
+		}
+		else $tmp = "<p>".$msg."</p>";
 
+		$content = $tmp;
+		if (!$fail) $content .= $js; 
+	
+		return $this->pi_wrapInBaseClass($content);
+	}
 		// the div in which the map is displayed
-		$tmp = "<div id='map_canvas' style='width:100%; height:500px'></div>";
+/*		$tmp = "<div id='map_canvas' style='width:100%; height:500px'></div>";
 
 ##### JS START #####
 		// JS to cnstruct the map
@@ -214,7 +276,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwlib {
 		";
 		}
 */
-		$js .= "
+/*		$js .= "
 	}
 	initialize();
 </script>
@@ -226,7 +288,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwlib {
 		if ($fail != TRUE) $content .= $js; 
 	
 		return $this->pi_wrapInBaseClass($content);
-	}
+	}*/
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwgmaps/pi3/class.tx_nkwgmaps_pi3.php'])

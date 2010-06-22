@@ -27,7 +27,6 @@
  * Hint: use extdeveval to insert/update function index above.
  */
 
-#require_once(PATH_tslib.'class.tslib_pibase.php');
 require_once(t3lib_extMgm::extPath('nkwgmaps')."class.tx_nkwgmaps.php");
 
 /**
@@ -58,15 +57,18 @@ class tx_nkwgmaps_pi1 extends tx_nkwgmaps {
 		$lang = $this->getLanguage();
 
 		$conf["ff"] = array(
-			"navicontrol" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'navicontrol', 'uioptions'),
+			"mapName" => md5(microtime()),
 			"maptypeid" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypeid', 'uioptions'),
 			"maptypecontrol" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypecontrol', 'uioptions'),
+			"mapcenterbutton" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'mapcenterbutton', 'uioptions'),
+			"navicontrol" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'navicontrol', 'uioptions'),
+			"scale" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'scale', 'uioptions'),
 			"sensor" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'sensor', 'uioptions'),
 			"zoom" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'zoom', 'uioptions'),
-			"scale" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'scale', 'uioptions'),
+			"popupoptions" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupoptions', 'addressdata'),
+
 			"address" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'address', 'addressdata'),
-			"popupcontent" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupcontent', 'addressdata'),
-			"popupoptions" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupoptions', 'addressdata')
+			"popupcontent" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupcontent', 'addressdata')
 		);
 		$conf["ff"]["mapName"] = md5($conf["ff"]["address"]);
 
@@ -83,8 +85,8 @@ class tx_nkwgmaps_pi1 extends tx_nkwgmaps {
 		if (!$fail)
 		{
 			// the div in which the map is displayed
-			$tmp = "<div id='".$conf["ff"]["mapName"]."' style='width:100%; height:500px'></div>";
-			$js = $this->gmapsJS($conf);
+			$tmp = "<div id='".$conf["ff"]["mapName"]."' style='width:100%; height:500px; border:1px solid #CCC;'></div>";
+			$js = $this->singleGmapsJStest($conf);
 		}
 		else $tmp = "<p>".$msg."</p>";
 
