@@ -205,12 +205,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 		
 		}
 
-		$this->dprint($conf);
-
-#		echo "<pre>";
-#		print_r($conf["ff"]);
-#		echo "</pre>";
-
+#		$this->dprint($conf);
 
 		if (!$fail)
 		{
