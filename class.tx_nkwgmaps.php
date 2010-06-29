@@ -111,7 +111,7 @@ class tx_nkwgmaps extends tx_nkwlib {
 
 		$js .= "
 			function initialize() {
-					var latlng = new google.maps.LatLng(".$conf["ff"]["latlngCenter"].");";
+				var latlng = new google.maps.LatLng(".$conf["ff"]["latlngCenter"].");";
 
 		# Set marker for each entry, also if addresses are equal => mulitple markers on one point possible
 /*		for($i=0; $i<$conf["ff"]["cntMarker"]; $i++)	{
@@ -134,19 +134,21 @@ class tx_nkwgmaps extends tx_nkwlib {
 		$j = 0;
 		foreach($geocodes as $key => $value)	{
 			$info = explode(" - ",$value);
-			$js .= "var latlng".$j." = new google.maps.LatLng(".$key.");\n";
+			$js .= "
+				var latlng".$j." = new google.maps.LatLng(".$key.");";
 			$jsAppend .= "
-					var marker".$j." = new google.maps.Marker({
-						position: latlng".$j.", 
-						map: map_".$conf["ff"]["mapName"].", 
-						title:'".$info[1]."'
-					});\n";
+				var marker".$j." = new google.maps.Marker({
+					position: latlng".$j.", 
+					map: map_".$conf["ff"]["mapName"].", 
+					title:'".$info[1]."'
+				});\n";
 			$j++;
 		}
 		$conf["ff"]["cntMarker"] = count($geocodes);
 		################################################################################
 
-		$js .= "var mapDiv = document.getElementById('".$conf["ff"]["mapName"]."');
+		$js .= "
+				var mapDiv = document.getElementById('".$conf["ff"]["mapName"]."');
 				var myOptions = {
 					zoom: ".$conf["ff"]["zoom"].",
 					center: latlng,
@@ -170,7 +172,8 @@ class tx_nkwgmaps extends tx_nkwlib {
 			";
 		}
 
-		$js .= "bounds = new google.maps.LatLngBounds;";
+		$js .= "
+				bounds = new google.maps.LatLngBounds;";
 
 		# Set marker for each entry (look above)
 /*		for($i=0; $i<$conf["ff"]["cntMarker"]; $i++)	{

@@ -205,6 +205,35 @@
 				</TCEforms>
 				<type>array</type>
 				<el>
+					<maptypeid>
+						<TCEforms>
+						<label>LLL:EXT:nkwgmaps/locallang.xml:maptypeid</label>
+						<config>
+							<type>select</type>
+							<items type="array">
+								<numIndex index="0" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:maptypeid.I.0</numIndex>
+									<numIndex index="1">ROADMAP</numIndex>
+								</numIndex>
+								<numIndex index="1" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:maptypeid.I.1</numIndex>
+									<numIndex index="1">HYBRID</numIndex>
+								</numIndex>
+								<numIndex index="2" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:maptypeid.I.2</numIndex>
+									<numIndex index="1">SATELLITE</numIndex>
+								</numIndex>
+								<numIndex index="3" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:maptypeid.I.3</numIndex>
+									<numIndex index="1">TERRAIN</numIndex>
+								</numIndex>
+							</items>
+							<minitems>0</minitems>
+							<maxitems>1</maxitems>
+							<size>1</size>
+						</config>
+						</TCEforms>
+					</maptypeid>
 					<navicontrol>
 						<TCEforms>
 						<label>LLL:EXT:nkwgmaps/locallang.xml:navicontrol</label>
@@ -259,27 +288,6 @@
 						</config>
 						</TCEforms>
 					</maptypecontrol>
-					<scale>
-						<TCEforms>
-						<label>LLL:EXT:nkwgmaps/locallang.xml:scale</label>
-						<config>
-							<type>select</type>
-							<items type="array">
-								<numIndex index="0" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:scale.I.0</numIndex>
-									<numIndex index="1">true</numIndex>
-								</numIndex>
-								<numIndex index="1" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:scale.I.1</numIndex>
-									<numIndex index="1">false</numIndex>
-								</numIndex>
-							</items>
-							<minitems>0</minitems>
-							<maxitems>1</maxitems>
-							<size>1</size>
-						</config>
-						</TCEforms>
-					</scale>
 					<mapcenterbutton>
 						<TCEforms>
 						<label>LLL:EXT:nkwgmaps/locallang.xml:mapcenterbutton</label>
@@ -301,6 +309,27 @@
 						</config>
 						</TCEforms>
 					</mapcenterbutton>
+					<scale>
+						<TCEforms>
+						<label>LLL:EXT:nkwgmaps/locallang.xml:scale</label>
+						<config>
+							<type>select</type>
+							<items type="array">
+								<numIndex index="0" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:scale.I.0</numIndex>
+									<numIndex index="1">true</numIndex>
+								</numIndex>
+								<numIndex index="1" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:scale.I.1</numIndex>
+									<numIndex index="1">false</numIndex>
+								</numIndex>
+							</items>
+							<minitems>0</minitems>
+							<maxitems>1</maxitems>
+							<size>1</size>
+						</config>
+						</TCEforms>
+					</scale>
 					<sensor>
 						<TCEforms>
 						<label>LLL:EXT:nkwgmaps/locallang.xml:sensor</label>
