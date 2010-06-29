@@ -212,7 +212,17 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 		else if ($conf["ff"]["display"] == "directions")
 		{
 			// get latlon
-			if ($conf["ff"]["start"] && $conf["ff"]["end"])
+			if ($conf["ff"]["start"] && $conf["ff"]["end"])	{
+				$geoStart = $this->geocodeAddress($conf["ff"]["start"]);
+				$geoEnd = $this->geocodeAddress($conf["ff"]["end"]);
+				if ($geoStart["status"] == "OK" && $geoEnd["status"] == "OK")	{
+					$latMean = round(($geoStart["results"][0]["geometry"]["location"]["lat"]+$geoEnd["results"][0]["geometry"]["location"]["lat"])/2,5);
+					$lngMean = round(($geoStart["results"][0]["geometry"]["location"]["lng"]+$geoEnd["results"][0]["geometry"]["location"]["lng"])/2,5);
+					$conf["ff"]["latlngCenter"] = $latMean.",".$lngMean;
+				} 	else	
+					$conf["ff"]["latlngCenter"] = "51.53290, 9.93496"; // Gänseliesl
+
+
 /*				$geo = $this->geocodeAddress($conf["ff"]["address"]);
 				if ($geo["status"] == "OK")
 					$conf["ff"]["latlon"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
@@ -220,7 +230,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 					$msg = "fail. could not resolve address";
 					$fail = TRUE;
 				} */;
-			else // fail
+			}	else // fail
 			{
 				$msg = "No address given!";
 				$fail = TRUE;

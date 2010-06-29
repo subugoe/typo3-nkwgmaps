@@ -266,14 +266,19 @@ class tx_nkwgmaps extends tx_nkwlib {
 				controlText.innerHTML = '<b>Home</b>';
 				controlUI.appendChild(controlText);
 				google.maps.event.addDomListener(controlUI,'click',function(){map.setCenter(latlng);map.setZoom(".$conf["ff"]["zoom"].");});
-			}
+/*				google.maps.event.addDomListener(controlUI, 'click', function() {
+					map.setCenter(bounds.getCenter());
+					map.fitBounds(bounds);
+					if(map.getZoom() > ".$conf["ff"]["zoom"].") map.setZoom(".$conf["ff"]["zoom"].");
+				});
+*/			}
 			";
 		}
 		
 		$js .= "
 			function initialize() {
 			  directionsDisplay = new google.maps.DirectionsRenderer();
-			  latlng = new google.maps.LatLng(51.53290, 9.93496);
+			  // latlng = new google.maps.LatLng(".$conf["ff"]["latlngCenter"].");
 			  var myOptions = {
 				center: latlng,
 				scaleControl: ".$conf["ff"]["scale"].",
