@@ -124,6 +124,31 @@
 							</config>
 						</TCEforms>
 					</toaddress>
+					<travelmode>
+						<TCEforms>
+						<label>LLL:EXT:nkwgmaps/locallang.xml:travelmode</label>
+						<config>
+							<type>select</type>
+							<items type="array">
+								<numIndex index="0" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:travelmode.I.0</numIndex>
+									<numIndex index="1">WALKING</numIndex>
+								</numIndex>
+								<numIndex index="1" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:travelmode.I.1</numIndex>
+									<numIndex index="1">DRIVING</numIndex>
+								</numIndex>
+								<numIndex index="2" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:travelmode.I.2</numIndex>
+									<numIndex index="1">BICYLING</numIndex>
+								</numIndex>
+							</items>
+							<minitems>0</minitems>
+							<maxitems>1</maxitems>
+							<size>1</size>
+						</config>
+						</TCEforms>
+					</travelmode>
 				</el>
 			</ROOT>
 		</directionoptions>

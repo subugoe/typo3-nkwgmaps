@@ -52,8 +52,12 @@
 			<label index="singleaddresspopupdisplay">singleaddresspopupdisplay</label>
 			<label index="singleaddresspopupdisplay.I.0">instant</label>
 			<label index="singleaddresspopupdisplay.I.1">on click</label>
+			<label index="travelmode">Travel Mode</label>
+			<label index="travelmode.I.0">Walking (default)</label>
+			<label index="travelmode.I.1">Driving</label>
+			<label index="travelmode.I.2">Bicycling</label>
 			<label index="uioptions">UI Options</label>
-			<label index="zoom">Zoom</label>
+			<label index="zoom">Zoom-Limit</label>
 			<label index="zoom.I.0">2</label>
 			<label index="zoom.I.1">8</label>
 			<label index="zoom.I.2">14 (very good for a single address)</label>

@@ -86,7 +86,10 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 			"display" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'display', 'addresses'),	// which function
 			"singleaddress" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singleaddress', 'singleaddressoptions'),	// address string
 			"singleaddresspopup" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singleaddresspopup', 'singleaddressoptions'), // address popup content
-			"popupoptions" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singleaddresspopupdisplay', 'singleaddressoptions') 
+			"popupoptions" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singleaddresspopupdisplay', 'singleaddressoptions'),
+			"start" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'fromaddress', 'directionoptions'), // directions: start address
+			"end" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'toaddress', 'directionoptions'), // directions: end address
+			"travelmode" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'travelmode', 'directionoptions'), // directions: end address
 		);
 		$conf["ff"]["addressbooksource"]["uid"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'source', 'addressbookoptions');
 		$conf["ff"]["addressgroupsource"]["uid"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'source', 'addressgroupoptions');
@@ -96,9 +99,15 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 		if ($conf["ff"]["display"] == "single")
 		{
 			// get latlon
-			if ($conf["ff"]["singleaddress"])
-				$latlon = $this->geocodeAddress($conf["ff"]["singleaddress"]);
-			else // fail
+			if ($conf["ff"]["singleaddress"])	{
+				$geo = $this->geocodeAddress($conf["ff"]["singleaddress"]);
+				if ($geo["status"] == "OK")
+					$conf["ff"]["latlon"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
+				else	{
+					$msg = "fail. could not resolve address";
+					$fail = TRUE;
+				}
+			}	else // fail
 			{
 				$msg = "No address given!";
 				$fail = TRUE;
@@ -202,7 +211,21 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 		// directions
 		else if ($conf["ff"]["display"] == "directions")
 		{
-		
+			// get latlon
+			if ($conf["ff"]["start"] && $conf["ff"]["end"])
+/*				$geo = $this->geocodeAddress($conf["ff"]["address"]);
+				if ($geo["status"] == "OK")
+					$conf["ff"]["latlon"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
+				else	{
+					$msg = "fail. could not resolve address";
+					$fail = TRUE;
+				} */;
+			else // fail
+			{
+				$msg = "No address given!";
+				$fail = TRUE;
+			}
+
 		}
 
 #		$this->dprint($conf);
@@ -211,8 +234,12 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 		{
 			// the div in which the map is displayed
 			$tmp = "<div id='".$conf["ff"]["mapName"]."' style='width:100%; height:500px; border:1px solid #CCC;'></div>";
-			if(!isset($cntMarker))	$js = $this->singleGmapsJStest($conf);
-			else					$js = $this->multiGmapsJS($conf);
+			switch($conf["ff"]["display"])	{
+				case "single":		;
+				case "addressbook":	 $js = $this->singleGmapsJStest($conf); break;
+				case "addressgroup": $js = $this->multiGmapsJS($conf); break;
+				case "directions":	 $js = $this->directions($conf); break;
+			}
 		}
 		else $tmp = "<p>".$msg."</p>";
 
