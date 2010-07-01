@@ -129,7 +129,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 				}
 				
 				if($conf["ff"]["latlon"] != 'undefined' && !empty($conf["ff"]["latlon"]))	{
-					;# $this->dprint($conf["ff"]["latlon"]);
+					;
 				}	else	{
 					$geo = $this->geocodeAddress($conf["ff"]["address"]);
 					if ($geo["status"] == "OK")	{
@@ -221,15 +221,6 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 					$conf["ff"]["latlngCenter"] = $latMean.",".$lngMean;
 				} 	else	
 					$conf["ff"]["latlngCenter"] = "51.53290, 9.93496"; // Gänseliesl
-
-
-/*				$geo = $this->geocodeAddress($conf["ff"]["address"]);
-				if ($geo["status"] == "OK")
-					$conf["ff"]["latlon"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
-				else	{
-					$msg = "fail. could not resolve address";
-					$fail = TRUE;
-				} */;
 			}	else // fail
 			{
 				$msg = "No address given!";
@@ -244,6 +235,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 		{
 			// the div in which the map is displayed
 			$tmp = "<div id='".$conf["ff"]["mapName"]."' style='width:100%; height:500px; border:1px solid #CCC;'></div>";
+			$tmp .= "<div id='directionsPanel' style='width:100%; height:500px; border:1px solid #CCC; display:none;'></div>";
 			switch($conf["ff"]["display"])	{
 				case "single":		;
 				case "addressbook":	 $js = $this->singleGmapsJStest($conf); break;

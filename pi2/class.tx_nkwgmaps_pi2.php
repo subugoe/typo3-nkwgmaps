@@ -84,7 +84,7 @@ class tx_nkwgmaps_pi2 extends tx_nkwgmaps {
 
 		// get latlon
 		if($conf["ff"]["latlon"] != 'undefined' && !empty($conf["ff"]["latlon"]))	{
-			$this->dprint($conf["ff"]["latlon"]);
+			;
 		}	else	{
 			$geo = $this->geocodeAddress($conf["ff"]["address"]);
 			if ($geo["status"] == "OK")	{
