@@ -39,7 +39,7 @@
 						</config>
 						</TCEforms>
 					</display>
-					<singleaddresspopupdisplay>
+					<popupdisplay>
 						<TCEforms>
 							<label>LLL:EXT:nkwgmaps/locallang.xml:popupoptions</label>
 							<config>
@@ -59,7 +59,7 @@
 								<size>1</size>
 							</config>
 						</TCEforms>
-					</singleaddresspopupdisplay>
+					</popupdisplay>
 				</el>
 			</ROOT>
 		</addresses>

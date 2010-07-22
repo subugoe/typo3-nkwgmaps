@@ -44,19 +44,6 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 	var $extKey        = 'nkwgmaps';	// The extension key.
 	var $pi_checkCHash = true;
 
-	function geocodeAddress($str)
-	{
-		$str = ereg_replace(" ", "+", $str);
-		$getThis = "http://maps.google.com/maps/api/geocode/json?address=".$str."&sensor=false";
-		$json = file_get_contents($getThis);
-		$tmp = json_decode($json, true);
-		if ($tmp["status"] = "OK")
-		{
-			$return = $tmp["results"][0]["geometry"]["location"]["lat"].",".$tmp["results"][0]["geometry"]["location"]["lng"];
-		}
-		return $return;
-	}
-
 	/**
 	 * The main method of the PlugIn
 	 *
@@ -74,6 +61,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 		// flexform values - ui options 
 		$conf["ff"] = array(
 			"mapName" => md5(microtime()),
+			# UI Options
 			"maptypeid" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypeid', 'uioptions'),
 			"maptypecontrol" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypecontrol', 'uioptions'),
 			"mapcenterbutton" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'mapcenterbutton', 'uioptions'),
@@ -81,29 +69,36 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 			"scale" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'scale', 'uioptions'),
 			"sensor" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'sensor', 'uioptions'),
 			"zoom" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'zoom', 'uioptions'),
-			"popupoptions" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupoptions', 'addressdata'),
 
+			# Addresses
 			"display" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'display', 'addresses'),	// which function
+			"popupoptions" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupdisplay', 'addresses'),
+			
+			# Single Address Options
 			"singleaddress" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singleaddress', 'singleaddressoptions'),	// address string
 			"singleaddresspopup" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singleaddresspopup', 'singleaddressoptions'), // address popup content
-			"popupoptions" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singleaddresspopupdisplay', 'singleaddressoptions'),
+			
+			# Directions Options			
 			"start" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'fromaddress', 'directionoptions'), // directions: start address
 			"end" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'toaddress', 'directionoptions'), // directions: end address
-			"travelmode" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'travelmode', 'directionoptions'), // directions: end address
+			"travelmode" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'travelmode', 'directionoptions'), // directions: kind of traveling
+			
 		);
+		# Address Book Options
 		$conf["ff"]["addressbooksource"]["uid"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'source', 'addressbookoptions');
+		# Address Group Options
 		$conf["ff"]["addressgroupsource"]["uid"] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'source', 'addressgroupoptions');
 		
-
 		// single
 		if ($conf["ff"]["display"] == "single")
 		{
 			// get latlon
 			if ($conf["ff"]["singleaddress"])	{
 				$geo = $this->geocodeAddress($conf["ff"]["singleaddress"]);
-				if ($geo["status"] == "OK")
+				if ($geo["status"] == "OK")	{
+					$conf["ff"]["popupcontent"] = $conf["ff"]["singleaddresspopup"];
 					$conf["ff"]["latlon"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
-				else	{
+				}	else	{
 					$msg = "fail. could not resolve address";
 					$fail = TRUE;
 				}
@@ -240,7 +235,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 				case "single":		;
 				case "addressbook":	 $js = $this->singleGmapsJStest($conf); break;
 				case "addressgroup": $js = $this->multiGmapsJS($conf); break;
-				case "directions":	 $js = $this->directions($conf); break;
+				case "directions":	 $js = $this->directionsWithSteps($conf); break;
 			}
 		}
 		else $tmp = "<p>".$msg."</p>";
@@ -250,69 +245,6 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 	
 		return $this->pi_wrapInBaseClass($content);
 	}
-		// the div in which the map is displayed
-/*		$tmp = "<div id='map_canvas' style='width:100%; height:500px'></div>";
-
-##### JS START #####
-		// JS to cnstruct the map
-		$js = "
-<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=".$conf["ff"]["sensor"]."\"></script>
-<script type=\"text/javascript\">
-	function initialize() {
-		var latlng = new google.maps.LatLng(".$latlon.");
-		var myOptions = {
-			zoom: ".$conf["ff"]["zoom"].",
-			center: latlng,
-			scaleControl: true,
-			mapTypeControl: true,
-			mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.".$conf["ff"]["maptypecontrol"]."},
-			navigationControl: true,
-			navigationControlOptions: {style: google.maps.NavigationControlStyle.".$conf["ff"]["navicontrol"]."},
-			mapTypeId: google.maps.MapTypeId.ROADMAP
-		};
-		var map = new google.maps.Map(document.getElementById(\"map_canvas\"), myOptions);
-		var myLatLng = new google.maps.LatLng(".$latlon.");
-		var marker = new google.maps.Marker({
-			position: myLatLng, 
-			map: map, 
-			title:'Hello World!'
-		});
-		";
-/*
-		if ($conf["ff"]["singleaddresspopup"])
-		{
-			$js .= "
-		var contentString = '".$conf["ff"]["singleaddresspopup"]."';
-		var infowindow = new google.maps.InfoWindow({
-			content: contentString
-		});
-		";
-		if ($conf["ff"]["singleaddresspopupdisplay"] == "instant")
-		{
-		$js .= "
-		infowindow.open(map,marker);
-		";
-		}
-		$js .= "
-		google.maps.event.addListener(marker, 'click', function() {
-			infowindow.open(map,marker);
-		});
-		";
-		}
-*/
-/*		$js .= "
-	}
-	initialize();
-</script>
-		";
-##### JS END #####
-
-		// return stuff
-		$content = $tmp;
-		if ($fail != TRUE) $content .= $js; 
-	
-		return $this->pi_wrapInBaseClass($content);
-	}*/
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwgmaps/pi3/class.tx_nkwgmaps_pi3.php'])

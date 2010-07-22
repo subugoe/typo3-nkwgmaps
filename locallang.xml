@@ -13,7 +13,7 @@
 			<label index="addressesoptions">Adresses</label>
 			<label index="directionoptions">Directions Options</label>
 			<label index="display">Select function:</label>
-			<label index="display.I.0">Single Adress</label>
+			<label index="display.I.0">Single Address</label>
 			<label index="display.I.1">Directions</label>
 			<label index="display.I.2">Address Book</label>
 			<label index="display.I.3">Address Group</label>

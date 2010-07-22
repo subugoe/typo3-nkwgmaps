@@ -3,8 +3,10 @@ require_once(t3lib_extMgm::extPath('nkwlib')."class.tx_nkwlib.php");
 
 class tx_nkwgmaps extends tx_nkwlib {
 
+	# load Gmaps-Library only once
 	function loadGmapsLib($conf)	{
 		# $this->dprint($conf);
+		# $this->dprint($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_nkwgmaps.']['loadedLib']);
 		if($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_nkwgmaps.']['loadedLib'] != 1)	{
 			$js = "<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=".$conf["ff"]["sensor"]."\"></script>";	
 			$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_nkwgmaps.']['loadedLib'] = 1;
@@ -85,8 +87,8 @@ class tx_nkwgmaps extends tx_nkwlib {
 
 	function multiGmapsJS($conf)
 	{
-		$js = loadGmapsLib($conf);
-		$js = "
+		$js = $this->loadGmapsLib($conf);
+		$js .= "
 			<script type=\"text/javascript\">
 			   var bounds;";
 
@@ -135,7 +137,7 @@ class tx_nkwgmaps extends tx_nkwlib {
 		}
 */		
 
-		# improved routine: summarize all entries, which have the address in one marker
+		# improved routine: summarize all entries, which have the same address, in one marker
 		for($i=0; $i<$conf["ff"]["cntMarker"]; $i++)	{
 			if(!$geocodes[$conf[$i]["latlng"]]) $geocodes[$conf[$i]["latlng"]] = $conf[$i]["popupcontent"]." - ".$conf[$i]["address"];
 			else	$geocodes[$conf[$i]["latlng"]] = $conf[$i]["popupcontent"].", ".$geocodes[$conf[$i]["latlng"]];
@@ -247,7 +249,7 @@ class tx_nkwgmaps extends tx_nkwlib {
 	}
 	
 	function directions($conf)	{
-		$js = loadGmapsLib($conf);
+		$js = $this->loadGmapsLib($conf);
 		$js .= "
 			<script type=\"text/javascript\">
 			var directionDisplay;
@@ -337,7 +339,7 @@ class tx_nkwgmaps extends tx_nkwlib {
 	
 	# Directions-Funktion mit einzelnen Wegpunkten
 	function directionsWithSteps($conf)	{
-		$js = loadGmapsLib($conf);
+		$js = $this->loadGmapsLib($conf);
 		$js .= "
 			<script type=\"text/javascript\">
 			var directionDisplay;
