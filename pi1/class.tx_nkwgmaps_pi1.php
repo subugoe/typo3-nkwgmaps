@@ -21,14 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- * Hint: use extdeveval to insert/update function index above.
- */
-
-require_once(t3lib_extMgm::extPath('nkwgmaps')."class.tx_nkwgmaps.php");
-
+require_once(t3lib_extMgm::extPath('nkwgmaps') . 'lib/class.tx_nkwgmaps.php');
 /**
  * Plugin 'Simple Map' for the 'nkwgmaps' extension.
  *
@@ -37,11 +30,10 @@ require_once(t3lib_extMgm::extPath('nkwgmaps')."class.tx_nkwgmaps.php");
  * @subpackage	tx_nkwgmaps
  */
 class tx_nkwgmaps_pi1 extends tx_nkwgmaps {
-	var $prefixId      = 'tx_nkwgmaps_pi1';		// Same as class name
-	var $scriptRelPath = 'pi1/class.tx_nkwgmaps_pi1.php';	// Path to this script relative to the extension dir.
-	var $extKey        = 'nkwgmaps';	// The extension key.
+	var $prefixId      = 'tx_nkwgmaps_pi1';
+	var $scriptRelPath = 'pi1/class.tx_nkwgmaps_pi1.php';
+	var $extKey        = 'nkwgmaps';
 	var $pi_checkCHash = true;
-
 	/**
 	 * The main method of the PlugIn
 	 *
@@ -55,48 +47,45 @@ class tx_nkwgmaps_pi1 extends tx_nkwgmaps {
 		$this->pi_loadLL();
 		$this->pi_initPIflexform();
 		$lang = $this->getLanguage();
-
-		$conf["ff"] = array(
-			"mapName" => md5(microtime()),
-			"maptypeid" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypeid', 'uioptions'),
-			"maptypecontrol" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypecontrol', 'uioptions'),
-			"mapcenterbutton" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'mapcenterbutton', 'uioptions'),
-			"navicontrol" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'navicontrol', 'uioptions'),
-			"scale" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'scale', 'uioptions'),
-			"sensor" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'sensor', 'uioptions'),
-			"zoom" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'zoom', 'uioptions'),
-			"popupoptions" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupoptions', 'addressdata'),
-
-			"address" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'address', 'addressdata'),
-			"popupcontent" => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupcontent', 'addressdata')
+		$conf['ff'] = array(
+			'mapName' => md5(microtime()),
+			'maptypeid' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypeid', 'uioptions'),
+			'maptypecontrol' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypecontrol', 'uioptions'),
+			'mapcenterbutton' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'mapcenterbutton', 'uioptions'),
+			'navicontrol' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'navicontrol', 'uioptions'),
+			'scale' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'scale', 'uioptions'),
+			'sensor' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'sensor', 'uioptions'),
+			'zoom' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'zoom', 'uioptions'),
+			'popupoptions' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupoptions', 'addressdata'),
+			'address' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'address', 'addressdata'),
+			'popupcontent' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupcontent', 'addressdata')
 		);
-		$conf["ff"]["mapName"] = md5($conf["ff"]["address"]);
-
+		$conf['ff']['mapName'] = md5($conf['ff']['address']);
 		// get latlon
-		$geo = $this->geocodeAddress($conf["ff"]["address"]);
-		if ($geo["status"] == "OK")
-			$conf["ff"]["latlon"] = $geo["results"][0]["geometry"]["location"]["lat"].",".$geo["results"][0]["geometry"]["location"]["lng"];
-		else
-		{
-			$msg = "fail. could not resolve address";
+		$geo = $this->geocodeAddress($conf['ff']['address']);
+		if ($geo['status'] == 'OK') {
+			$conf['ff']['latlon'] = $geo['results'][0]['geometry']['location']['lat'] . ',' 
+				. $geo['results'][0]['geometry']['location']['lng'];
+		} else {
+			$msg = 'fail. could not resolve address';
 			$fail = TRUE;
 		}
-
-		if (!$fail)
-		{
+		if (!$fail) {
 			// the div in which the map is displayed
-			$tmp = "<div id='".$conf["ff"]["mapName"]."' style='width:100%; height:500px; border:1px solid #CCC;'></div>";
+			$tmp = '<div id="' . $conf['ff']['mapName'] 
+				. '" style="width:100%; height:500px; border:1px solid #CCC;"></div>';
 			$js = $this->singleGmapsJStest($conf);
+		} else {
+			$tmp = '<p>' . $msg . '</p>';
 		}
-		else $tmp = "<p>".$msg."</p>";
-
 		$content = $tmp;
-		if (!$fail) $content .= $js; 
-	
+		if (!$fail) {
+			$content .= $js;
+		}
 		return $this->pi_wrapInBaseClass($content);
 	}
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwgmaps/pi1/class.tx_nkwgmaps_pi1.php'])
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwgmaps/pi1/class.tx_nkwgmaps_pi1.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/nkwgmaps/pi1/class.tx_nkwgmaps_pi1.php']);
+}
 ?>
