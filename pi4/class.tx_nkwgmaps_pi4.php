@@ -62,7 +62,7 @@ class tx_nkwgmaps_pi4 extends tx_nkwgmaps {
 			$res0 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*', 
 				'tt_address', 
-				'uid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($uid), 
+				'uid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, 'tt_address'), 
 				'', 
 				'', 
 				'');

@@ -101,7 +101,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 				$res0 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'*', 
 					'tt_address', 
-					'uid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($conf['ff']['addressbooksource']['uid']), 
+					'uid = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($conf['ff']['addressbooksource']['uid'], 'tt_address'), 
 					'', 
 					'', 
 					'');
@@ -138,7 +138,8 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 				$res0 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'*', 
 					'tt_address', 
-					'addressgroup = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($conf['ff']['addressgroupsource']['uid']), 
+					'addressgroup = ' 
+						. $GLOBALS['TYPO3_DB']->fullQuoteStr($conf['ff']['addressgroupsource']['uid'], 'tt_address'), 
 					'', 
 					'', 
 					'');
