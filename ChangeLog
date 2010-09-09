@@ -1,0 +1,3 @@
+2010-09-09 - 0.0.7 - Nils K. Windisch <windisch@sub.uni-goettingen.de>
+	* bug fix in ext_emconf.php
+	* added file ChangeLog
