@@ -70,6 +70,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 			'start' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'fromaddress', 'directionoptions'), // directions: start address
 			'end' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'toaddress', 'directionoptions'), // directions: end address
 			'travelmode' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'travelmode', 'directionoptions'), // directions: kind of traveling
+			'directions' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'directions', 'directionoptions'), // directions: show / hide
 		);
 		# Address Book Options
 		$conf['ff']['addressbooksource']['uid'] = $this->pi_getFFvalue(
@@ -216,23 +217,28 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 						+ $geoEnd['results'][0]['geometry']['location']['lng']) / 2,5);
 					$conf['ff']['latlngCenter'] = $latMean . ',' . $lngMean;
 				} else {
-					$conf['ff']['latlngCenter'] = "51.53290, 9.93496"; // Gänseliesl
+					$conf['ff']['latlngCenter'] = "51.53290, 9.93496"; // Gï¿½nseliesl
 				} 
 			} else {
 				$msg = 'No address given!';
 				$fail = TRUE;
 			}
 		}
-#		$this->dprint($conf);
-		if (!$fail) {
+
+                if (!$fail) {
 			// the div in which the map is displayed
-			$tmp = '<div id="' . $conf['ff']['mapName'] . '" style="width:100%; height:500px; border:1px solid #CCC;"></div>';
-			$tmp .= '<div id="directionsPanel" style="width:100%; height:500px; border:1px solid #CCC; display:none;"></div>';
+			$tmp = '<div id="' . $conf['ff']['mapName'] . '" style="width:100%; height:500px; border:1px solid #999;"></div>';
 			switch($conf['ff']['display']) {
 				case 'single':		;
 				case 'addressbook':	 $js = $this->singleGmapsJStest($conf); break;
-				case 'addressgroup': $js = $this->multiGmapsJS($conf); break;
-				case 'directions':	 $js = $this->directionsWithSteps($conf); break;
+				case 'addressgroup':     $js = $this->multiGmapsJS($conf); break;
+				case 'directions':
+                                    if($conf['ff']['directions'] == "true") {
+                                        $js = $this->directionsWithSteps($conf);
+                                        $tmp .= '<div id="directionsPanel" style="width:100%; height:500px; border:1px solid #999; border-top: 0px; display:none; overflow:auto;"></div>';
+                                    }  else
+                                        $js = $this->directions($conf);
+                                    break;
 			}
 		} else {
 			$tmp = '<p>' . $msg . '</p>';

@@ -28,11 +28,13 @@ class tx_nkwgmaps extends tx_nkwlib {
 		# $this->dprint($conf);
 		# $this->dprint($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_nkwgmaps.']['loadedLib']);
 		if($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_nkwgmaps.']['loadedLib'] != 1)	{
-			$js = "<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=" . $conf['ff']['sensor'] . "\"></script>";	
+			$js = "<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=" . $conf['ff']['sensor'] . "&language=de\"></script>";
+                        # $js .= "<script type=\"text/javascript\" src=\"http://maps.gstatic.com/intl/de_ALL/mapfiles/api-3/3/0/main.js\"></script>";
 			$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_nkwgmaps.']['loadedLib'] = 1;
 		}
 		return $js;
 	}
+
 	function singleGmapsJS($conf) {
 		$js = $this->loadGmapsLib($conf);
 		$js .= "<script type=\"text/javascript\">";
@@ -57,7 +59,8 @@ class tx_nkwgmaps extends tx_nkwlib {
 				controlUI.appendChild(controlText);
 				google.maps.event.addDomListener(controlUI,'click',function(){map.setCenter(latlng);map.setZoom(" . $conf['ff']['zoom'] . ");});";
 			$js .= "}\n";
-			$js .= "function initialize() {\n";
+
+                        $js .= "function initialize() {\n";
 				// make map START //
 				$js .= "var latlng = new google.maps.LatLng(" . $conf['ff']['latlon'] . ");\n";
 				$js .= "var mapDiv = document.getElementById('" . $conf['ff']['mapName'] . "');\n";
@@ -73,12 +76,14 @@ class tx_nkwgmaps extends tx_nkwlib {
 					};\n";
 				$js .= "var map_" . $conf['ff']['mapName'] . " = new google.maps.Map(mapDiv, myOptions);\n";
 				// make map END //
+
 				// home button stuff START //
 				$js .= "var homeControlDiv = document.createElement('DIV');\n";
 				$js .= "var homeControl = new HomeControl(homeControlDiv,map_" . $conf['ff']['mapName'] . ",latlng);\n";
 				$js .= "homeControlDiv.index = 1;\n";
 				$js .= "map_" . $conf['ff']['mapName'] . ".controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);\n";
 				// home button stuff END //
+
 				// marker and popup START //
 				$js .= "var marker = new google.maps.Marker({position: latlng, map: map_" . $conf['ff']['mapName'] . ", title:'" . $conf['ff']['address'] . "'});\n";
 				if ($conf['ff']['popupcontent']) {
@@ -95,6 +100,7 @@ class tx_nkwgmaps extends tx_nkwlib {
 		$js .= "</script>";
 		return $js;
 	}
+
 	function multiGmapsJS($conf) {
 		$js = $this->loadGmapsLib($conf);
 		$js .= "
@@ -247,6 +253,7 @@ class tx_nkwgmaps extends tx_nkwlib {
 		</script>";
 		return $js;
 	}
+
 	function directions($conf) {
 		$js = $this->loadGmapsLib($conf);
 		$js .= "
@@ -331,6 +338,7 @@ class tx_nkwgmaps extends tx_nkwlib {
 			</script>";
 		return $js;
 	}
+
 	# Directions-Funktion mit einzelnen Wegpunkten
 	function directionsWithSteps($conf) {
 		$js = $this->loadGmapsLib($conf);
@@ -414,7 +422,9 @@ class tx_nkwgmaps extends tx_nkwlib {
 			  var request = {
 				origin:start, 
 				destination:end,
-				travelMode: google.maps.DirectionsTravelMode." . $conf['ff']['travelmode'] . " 
+				travelMode: google.maps.DirectionsTravelMode." . $conf['ff']['travelmode'] . ",
+                                unitSystem: google.maps.DirectionsUnitSystem.METRIC,
+                                provideRouteAlternatives: true
 			  };
 			  directionsService.route(request, function(response, status) {
 				if (status == google.maps.DirectionsStatus.OK) {
@@ -459,6 +469,7 @@ class tx_nkwgmaps extends tx_nkwlib {
 			</script>";
 		return $js;
 	}
+        
 	# test routine to fix missing controls problem, with multiple maps on one page 
 	# tried to extend variable-names -> fails
 	# not fixed yet (24.06.2010)
@@ -487,6 +498,7 @@ class tx_nkwgmaps extends tx_nkwlib {
 				controlUI.appendChild(controlText);
 				google.maps.event.addDomListener(controlUI,'click',function(){map.setCenter(latlng);map.setZoom(" . $conf['ff']['zoom'] . ");});";
 			$js .= "}\n";
+
 			$js .= "function initialize() {\n";
 				// make map START //
 				$js .= "var latlng$ext = new google.maps.LatLng(" . $conf['ff']['latlon'] . ");\n";
@@ -527,3 +539,4 @@ class tx_nkwgmaps extends tx_nkwlib {
 	}
 }
 ?>
+

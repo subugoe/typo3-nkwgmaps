@@ -74,7 +74,7 @@ class tx_nkwgmaps_pi1 extends tx_nkwgmaps {
 			// the div in which the map is displayed
 			$tmp = '<div id="' . $conf['ff']['mapName'] 
 				. '" style="width:100%; height:500px; border:1px solid #CCC;"></div>';
-			$js = $this->singleGmapsJStest($conf);
+			$js = $this->singleGmapsJS($conf);
 		} else {
 			$tmp = '<p>' . $msg . '</p>';
 		}
