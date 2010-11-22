@@ -25,10 +25,9 @@ require_once(t3lib_extMgm::extPath('nkwlib') . 'class.tx_nkwlib.php');
 class tx_nkwgmaps extends tx_nkwlib {
 	# load Gmaps-Library only once
 	function loadGmapsLib($conf) {
-		# $this->dprint($conf);
-		# $this->dprint($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_nkwgmaps.']['loadedLib']);
 		if($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_nkwgmaps.']['loadedLib'] != 1)	{
-			$js = "<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=" . $conf['ff']['sensor'] . "&language=de\"></script>";
+			$js = "<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=" . $conf['ff']['sensor'] . "&language=en\"></script>";
+//			$js = "<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=" . $conf['ff']['sensor'] . "&language=de\"></script>";
                         # $js .= "<script type=\"text/javascript\" src=\"http://maps.gstatic.com/intl/de_ALL/mapfiles/api-3/3/0/main.js\"></script>";
 			$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_nkwgmaps.']['loadedLib'] = 1;
 		}
@@ -138,16 +137,16 @@ class tx_nkwgmaps extends tx_nkwlib {
 			function initialize() {
 				var latlng = new google.maps.LatLng(" . $conf['ff']['latlngCenter'] . ");";
 		# Set marker for each entry, also if addresses are equal => mulitple markers on one point possible
-/*		for($i=0; $i<$conf['ff']['cntMarker']; $i++)	{
-			$js .= "var latlng".$i." = new google.maps.LatLng(".$conf[$i]['latlng'].");\n";
-			$jsAppend .= "
-					var marker".$i." = new google.maps.Marker({
-						position: latlng".$i.", 
-						map: map_".$conf['ff']['mapName'].", 
-						title:'".$conf[$i]['popupcontent']." - ".$conf[$i]['address']."'
-					});\n";
-		}
-*/		
+//		for($i=0; $i<$conf['ff']['cntMarker']; $i++)	{
+//			$js .= "var latlng".$i." = new google.maps.LatLng(".$conf[$i]['latlng'].");\n";
+//			$jsAppend .= "
+//					var marker".$i." = new google.maps.Marker({
+//						position: latlng".$i.",
+//						map: map_".$conf['ff']['mapName'].",
+//						title:'".$conf[$i]['popupcontent']." - ".$conf[$i]['address']."'
+//					});\n";
+//		}
+		
 		# improved routine: summarize all entries, which have the same address, in one marker
 		for($i=0; $i<$conf['ff']['cntMarker']; $i++) {
 			if(!$geocodes[$conf[$i]['latlng']]) {
@@ -196,26 +195,26 @@ class tx_nkwgmaps extends tx_nkwlib {
 		$js .= "
 				bounds = new google.maps.LatLngBounds;";
 		# Set marker for each entry (look above)
-/*		for($i=0; $i<$conf['ff']['cntMarker']; $i++)	{
-			if ($conf[$i]['popupcontent'])	{
-				$js .= "
-					var contentString = '".$conf[$i]['popupcontent']."';
-					var infowindow".$i." = new google.maps.InfoWindow({
-						content: contentString
-					});
-				";
-				// Popups (Bubbles) are shown after initialization, if option is set
-				if ($conf['ff']['popupoptions'] == "instant")
-					$js .= "infowindow".$i.".open(map_".$conf['ff']['mapName'].",marker".$i.");";
-				$js .= "
-					google.maps.event.addListener(marker".$i.", 'click', function() {
-						infowindow".$i.".open(map_".$conf['ff']['mapName'].",marker".$i.");
-					});
-				";
-				$js .= "bounds.extend(marker".$i.".position);";
-			}
-		}
-*/		
+//		for($i=0; $i<$conf['ff']['cntMarker']; $i++)	{
+//			if ($conf[$i]['popupcontent'])	{
+//				$js .= "
+//					var contentString = '".$conf[$i]['popupcontent']."';
+//					var infowindow".$i." = new google.maps.InfoWindow({
+//						content: contentString
+//					});
+//				";
+//				// Popups (Bubbles) are shown after initialization, if option is set
+//				if ($conf['ff']['popupoptions'] == "instant")
+//					$js .= "infowindow".$i.".open(map_".$conf['ff']['mapName'].",marker".$i.");";
+//				$js .= "
+//					google.maps.event.addListener(marker".$i.", 'click', function() {
+//						infowindow".$i.".open(map_".$conf['ff']['mapName'].",marker".$i.");
+//					});
+//				";
+//				$js .= "bounds.extend(marker".$i.".position);";
+//			}
+//		}
+		
 		# improved routine: summarized markers
 		$j = 0;
 		foreach($geocodes as $key => $value) {
@@ -324,7 +323,8 @@ class tx_nkwgmaps extends tx_nkwlib {
 			  var request = {
 				origin:start, 
 				destination:end,
-				travelMode: google.maps.DirectionsTravelMode." . $conf['ff']['travelmode'] . " 
+				travelMode: google.maps.DirectionsTravelMode." . $conf['ff']['travelmode'] . ",
+                                unitSystem: google.maps.DirectionsUnitSystem.METRIC
 			  };
 			  directionsService.route(request, function(result, status) {
 				if (status == google.maps.DirectionsStatus.OK) {
@@ -339,7 +339,7 @@ class tx_nkwgmaps extends tx_nkwlib {
 		return $js;
 	}
 
-	# Directions-Funktion mit einzelnen Wegpunkten
+	# directions-funktion with location plan
 	function directionsWithSteps($conf) {
 		$js = $this->loadGmapsLib($conf);
 		$js .= "
@@ -470,7 +470,8 @@ class tx_nkwgmaps extends tx_nkwlib {
 		return $js;
 	}
         
-	# test routine to fix missing controls problem, with multiple maps on one page 
+	# Test routine
+        # to fix missing controls problem, with multiple maps on one page
 	# tried to extend variable-names -> fails
 	# not fixed yet (24.06.2010)
 	function singleGmapsJStest($conf) {

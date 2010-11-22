@@ -47,7 +47,8 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 		$this->pi_loadLL();
 		$this->pi_initPIflexform();
 		$lang = $this->getLanguage();
-		// flexform values - ui options 
+
+                // flexform values - ui options
 		$conf['ff'] = array(
 			'mapName' => md5(microtime()),
 			# UI Options
@@ -72,13 +73,17 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 			'travelmode' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'travelmode', 'directionoptions'), // directions: kind of traveling
 			'directions' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'directions', 'directionoptions'), // directions: show / hide
 		);
-		# Address Book Options
+                # Address Book Options
 		$conf['ff']['addressbooksource']['uid'] = $this->pi_getFFvalue(
 			$this->cObj->data['pi_flexform'], 'source', 'addressbookoptions');
+                # Multi Address Options
+		$conf['ff']['addressbooksource']['uid'] = $this->pi_getFFvalue(
+			$this->cObj->data['pi_flexform'], 'source', 'multiaddressbookoptions');
 		# Address Group Options
 		$conf['ff']['addressgroupsource']['uid'] = $this->pi_getFFvalue(
 			$this->cObj->data['pi_flexform'], 'source', 'addressgroupoptions');		
-		// single
+
+                // Single
 		if ($conf['ff']['display'] == 'single') {
 			// get latlon
 			if ($conf['ff']['singleaddress']) {
@@ -95,7 +100,8 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 				$msg = 'No address given!';
 				$fail = TRUE;
 			}
-		// addressbook single
+
+                // Addressbook: Single
 		} else if ($conf['ff']['display'] == 'addressbook') {
 			if ($conf['ff']['addressbooksource']) {
 				// get data from DB
@@ -131,20 +137,32 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 				$msg = 'No address given!';
 				$fail = TRUE;
 			}
-		} else if ($conf['ff']['display'] == 'addressgroup') {
+                      
+                // Addressbook and Addressgroup
+                } else if ($conf['ff']['display'] == 'addressgroup' || $conf['ff']['display'] == 'multiaddressbook') {
 			if ($conf['ff']['addressgroupsource']['uid']) {
 				$cntMarker = 0;
 				// get data from DB
-				$conf['ff']['addressbooksource']['search'] = array();
-				$res0 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'*', 
-					'tt_address', 
-					'addressgroup = ' 
-						. $GLOBALS['TYPO3_DB']->fullQuoteStr($conf['ff']['addressgroupsource']['uid'], 'tt_address'), 
-					'', 
-					'', 
-					'');
+                                $conf['ff']['addressbooksource']['search'] = array();
+				if($conf['ff']['display'] == 'addressgroup')    {
+                                    $res0 = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
+                                            'first_name, last_name, address, zip, city, country, tx_dsschedgmaps_geocodecache',
+                                            'tt_address', 'tt_address_group_mm', 'tt_address_group',
+                                            " AND uid_foreign = " . $conf['ff']['addressgroupsource']['uid'], //
+                                            '', '', ''
+                                            );
+                                }   else    {
+                                    $res0 = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+                                            '*',
+                                            'tt_address',
+                                            ' uid IN (' . $conf['ff']['addressbooksource']['uid'] . ')',
+                                            '',
+                                            '',
+                                            '');
+                                }
+
 				while($row0 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res0)) {
+                                        # t3lib_div::print_array($row0);
 					$conf[$cntMarker]['address'] = $row0['address'] . ', ' . $row0['zip'] . ' ' . $row0['city'] . ', ' 
 						. $row0['country'];
 					$conf[$cntMarker]['popupcontent'] = $row0['last_name'];
@@ -204,7 +222,8 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 				$msg = 'No address group given!';
 				$fail = TRUE;
 			}
-		// directions
+
+                // Directions
 		} else if ($conf['ff']['display'] == 'directions') {
 			// get latlon
 			if ($conf['ff']['start'] && $conf['ff']['end']) {
@@ -217,7 +236,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 						+ $geoEnd['results'][0]['geometry']['location']['lng']) / 2,5);
 					$conf['ff']['latlngCenter'] = $latMean . ',' . $lngMean;
 				} else {
-					$conf['ff']['latlngCenter'] = "51.53290, 9.93496"; // G�nseliesl
+					$conf['ff']['latlngCenter'] = "51.53290, 9.93496"; // Gaenseliesl
 				} 
 			} else {
 				$msg = 'No address given!';
@@ -226,16 +245,17 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 		}
 
                 if (!$fail) {
-			// the div in which the map is displayed
-			$tmp = '<div id="' . $conf['ff']['mapName'] . '" style="width:100%; height:500px; border:1px solid #999;"></div>';
+			// the div-container in which the map is displayed
+			$tmp = '<div id="' . $conf['ff']['mapName'] . '" class="tx-nkwgmaps-border"></div>';
 			switch($conf['ff']['display']) {
 				case 'single':		;
-				case 'addressbook':	 $js = $this->singleGmapsJStest($conf); break;
+				case 'addressbook':	 $js = $this->singleGmapsJS($conf); break;
+				case 'multiaddressbook': $js = $this->multiGmapsJS($conf); break;
 				case 'addressgroup':     $js = $this->multiGmapsJS($conf); break;
 				case 'directions':
                                     if($conf['ff']['directions'] == "true") {
                                         $js = $this->directionsWithSteps($conf);
-                                        $tmp .= '<div id="directionsPanel" style="width:100%; height:500px; border:1px solid #999; border-top: 0px; display:none; overflow:auto;"></div>';
+                                        $tmp .= '<div id="directionsPanel" class="tx-nkwgmaps-border tx-nkwgmaps-directionspanel"></div>';
                                     }  else
                                         $js = $this->directions($conf);
                                     break;
@@ -244,6 +264,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 			$tmp = '<p>' . $msg . '</p>';
 		}
 		$content = $tmp;
+                
 		if (!$fail) {
 			$content .= $js;
 		}

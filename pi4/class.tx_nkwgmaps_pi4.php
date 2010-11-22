@@ -121,17 +121,16 @@ class tx_nkwgmaps_pi4 extends tx_nkwgmaps {
 		$conf['ff']['latlngCenter'] = $latMean . ',' . $lngMean;
 		if (!$fail) {
 			// the div in which the map is displayed
-			$tmp = '<div id="' . $conf['ff']['mapName'] . '" style="width:100%; height:500px; border:1px solid #CCC;"></div>';
+			$tmp = '<div id="' . $conf['ff']['mapName'] . '" class="tx-nkwgmaps-border"></div>';
 			$js = $this->multiGmapsJS($conf);
 		} else {
 			$tmp = '<p>' . $msg . '</p>';
 		}
-		// return stuff
-		$content = $tmp;
+
+                $content = $tmp;
 		if (!$fail) {
 			$content .= $js;
 		}
-		$content .= $debug;
 		return $this->pi_wrapInBaseClass($content);
 	}
 }

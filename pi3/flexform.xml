@@ -20,17 +20,21 @@
 									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:display.I.0</numIndex>
 									<numIndex index="1">single</numIndex>
 								</numIndex>
-								<numIndex index="1" type="array">
+<!--								<numIndex index="1" type="array">
 									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:display.I.1</numIndex>
-									<numIndex index="1">directions</numIndex>
-								</numIndex>
+									<numIndex index="1">singleaddressbook</numIndex>
+								</numIndex>-->
 								<numIndex index="2" type="array">
 									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:display.I.2</numIndex>
-									<numIndex index="1">addressbook</numIndex>
+									<numIndex index="1">multiaddressbook</numIndex>
 								</numIndex>
 								<numIndex index="3" type="array">
 									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:display.I.3</numIndex>
 									<numIndex index="1">addressgroup</numIndex>
+								</numIndex>
+								<numIndex index="4" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:display.I.4</numIndex>
+									<numIndex index="1">directions</numIndex>
 								</numIndex>
 							</items>
 							<minitems>0</minitems>
@@ -72,7 +76,7 @@
 				<el>
 					<singleaddress>
 						<TCEforms>
-							<label>LLL:EXT:nkwgmaps/locallang.xml:singleaddress</label>
+							<label>LLL:EXT:nkwgmaps/locallang.xml:address</label>
 							<config>
 								<type>input</type>
 								<size>40</size>
@@ -95,6 +99,96 @@
 				</el>
 			</ROOT>
 		</singleaddressoptions>
+<!--		<addressbookoptions>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:addressbookoptions</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<source>
+						<TCEforms>
+							<label>LLL:EXT:nkwgmaps/locallang.xml:addressbookoptionsperson</label>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+								<allowed>tt_address</allowed>
+								<size>1</size>
+								<maxitems>1</maxitems>
+								<minitems>0</minitems>
+							</config>
+						</TCEforms>
+					</source>
+				</el>
+			</ROOT>
+		</addressbookoptions> -->
+		<multiaddressbookoptions>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:multiaddressbookoptions</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<source>
+						<TCEforms>
+                                                    <label>LLL:EXT:nkwlib/locallang.xml:multiaddressbookoptionspersons</label>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+								<allowed>tt_address</allowed>
+								<size>3</size>
+								<maxitems>10</maxitems>
+								<minitems>1</minitems>
+							</config>
+						</TCEforms>
+					</source>
+					<popupoptions>
+						<TCEforms>
+							<label>LLL:EXT:nkwgmaps/locallang.xml:popupoptions</label>
+							<config>
+								<type>select</type>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:popupoptions.I.0</numIndex>
+										<numIndex index="1">instant</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:popupoptions.I.1</numIndex>
+										<numIndex index="1">onclick</numIndex>
+									</numIndex>
+								</items>
+								<minitems>0</minitems>
+								<maxitems>1</maxitems>
+								<size>1</size>
+							</config>
+						</TCEforms>
+					</popupoptions>
+				</el>
+			</ROOT>
+		</multiaddressbookoptions>
+		<addressgroupoptions>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:addressgroupoptions</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<source>
+						<TCEforms>
+							<label>LLL:EXT:nkwgmaps/locallang.xml:addressgroupoptionsgroup</label>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+								<allowed>tt_address_group</allowed>
+								<size>1</size>
+								<maxitems>1</maxitems>
+								<minitems>0</minitems>
+							</config>
+						</TCEforms>
+					</source>
+				</el>
+			</ROOT>
+		</addressgroupoptions>
 		<directionoptions>
 			<ROOT>
 				<TCEforms>
@@ -151,17 +245,17 @@
 					</travelmode>
 					<directions>
 						<TCEforms>
-						<label>LLL:EXT:nkwgmaps/locallang.xml:directions</label>
+						<label>LLL:EXT:nkwgmaps/locallang.xml:directionsvisibility</label>
 						<config>
 							<type>select</type>
 							<items type="array">
-								<numIndex index="0" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:directions.I.0</numIndex>
-									<numIndex index="1">false</numIndex>
-								</numIndex>
 								<numIndex index="1" type="array">
-									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:directions.I.1</numIndex>
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:directionsvisibility.I.1</numIndex>
 									<numIndex index="1">true</numIndex>
+								</numIndex>
+								<numIndex index="0" type="array">
+									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:directionsvisibility.I.0</numIndex>
+									<numIndex index="1">false</numIndex>
 								</numIndex>
 							</items>
 							<minitems>0</minitems>
@@ -173,52 +267,6 @@
 				</el>
 			</ROOT>
 		</directionoptions>
-		<addressbookoptions>
-			<ROOT>
-				<TCEforms>
-					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:addressbookoptions</sheetTitle>
-				</TCEforms>
-				<type>array</type>
-				<el>
-					<source>
-						<TCEforms>
-							<label>LLL:EXT:nkwlib/locallang_db.xml:flexform.source</label>
-							<config>
-								<type>group</type>
-								<internal_type>db</internal_type>
-								<allowed>tt_address</allowed>
-								<size>1</size>
-								<maxitems>1</maxitems>
-								<minitems>0</minitems>
-							</config>
-						</TCEforms>
-					</source>
-				</el>
-			</ROOT>
-		</addressbookoptions>
-		<addressgroupoptions>
-			<ROOT>
-				<TCEforms>
-					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:addressgroupoptions</sheetTitle>
-				</TCEforms>
-				<type>array</type>
-				<el>
-					<source>
-						<TCEforms>
-							<label>LLL:EXT:nkwlib/locallang_db.xml:flexform.source</label>
-							<config>
-								<type>group</type>
-								<internal_type>db</internal_type>
-								<allowed>tt_address_group</allowed>
-								<size>1</size>
-								<maxitems>1</maxitems>
-								<minitems>0</minitems>
-							</config>
-						</TCEforms>
-					</source>
-				</el>
-			</ROOT>
-		</addressgroupoptions>
 		<uioptions>
 			<ROOT>
 				<TCEforms>
@@ -374,7 +422,7 @@
 					</sensor>
 					<zoom>
 						<TCEforms>
-						<label>LLL:EXT:nkwgmaps/locallang.xml:zoom</label>
+						<label>LLL:EXT:nkwgmaps/locallang.xml:zoomlimit</label>
 						<config>
 							<type>select</type>
 							<items type="array">

@@ -94,11 +94,12 @@ class tx_nkwgmaps_pi2 extends tx_nkwgmaps {
 		if (!$fail) {
 			// the div in which the map is displayed
 			$tmp = '<div id="' . $conf['ff']['mapName'] 
-				. '" style="width:100%; height:500px; border:1px solid #CCC;"></div>';
-			$js = $this->singleGmapsJStest($conf);
+				. '" class="tx-nkwgmaps-border"></div>';
+			$js = $this->singleGmapsJS($conf);
 		} else {
 			$tmp = '<p>' . $msg . '</p>';
 		}
+                
 		$content = $tmp;
 		if (!$fail) {
 			$content .= $js;
