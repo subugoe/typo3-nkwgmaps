@@ -47,7 +47,9 @@ class tx_nkwgmaps_pi1 extends tx_nkwgmaps {
 		$this->pi_loadLL();
 		$this->pi_initPIflexform();
 		$lang = $this->getLanguage();
-		$conf['ff'] = array(
+       		$this->pi_USER_INT_obj = 0;
+
+                $conf['ff'] = array(
 			'mapName' => md5(microtime()),
 			'maptypeid' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypeid', 'uioptions'),
 			'maptypecontrol' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypecontrol', 'uioptions'),

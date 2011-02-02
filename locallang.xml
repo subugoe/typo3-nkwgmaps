@@ -5,7 +5,7 @@
 		<description>Language labels for database tables/fields belonging to extension 'nkwgmaps'</description>
 	</meta>
 	<data type="array">
-		<languageKey index="de" type="array">
+		<languageKey index="default" type="array">
 			<label index="address">Address (required: street, ZIP, city)</label>
 			<label index="addressbookoptions">Address Book: Single Person</label>
 			<label index="addressbookoptionsperson">Person</label>
@@ -72,7 +72,7 @@
 			<label index="zoom.I.2">14 (very good for a single address)</label>
 			<label index="zoom.I.3">19</label>
 		</languageKey>
-		<languageKey index="default" type="array">
+		<languageKey index="de" type="array">
 			<label index="address">Adresse (benötigt: Straße, PLZ, Stadt)</label>
 			<label index="addressbookoptions">Adressbuch: Einzelperson</label>
 			<label index="addressbookoptionsperson">Person</label>

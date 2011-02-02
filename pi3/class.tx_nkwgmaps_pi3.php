@@ -47,6 +47,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 		$this->pi_loadLL();
 		$this->pi_initPIflexform();
 		$lang = $this->getLanguage();
+		$this->pi_USER_INT_obj = 0;
 
                 // flexform values - ui options
 		$conf['ff'] = array(
@@ -73,6 +74,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 			'travelmode' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'travelmode', 'directionoptions'), // directions: kind of traveling
 			'directions' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'directions', 'directionoptions'), // directions: show / hide
 		);
+
                 # Address Book Options
 		$conf['ff']['addressbooksource']['uid'] = $this->pi_getFFvalue(
 			$this->cObj->data['pi_flexform'], 'source', 'addressbookoptions');

@@ -25,11 +25,15 @@ require_once(t3lib_extMgm::extPath('nkwlib') . 'class.tx_nkwlib.php');
 class tx_nkwgmaps extends tx_nkwlib {
 	# load Gmaps-Library only once
 	function loadGmapsLib($conf) {
-		if($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_nkwgmaps.']['loadedLib'] != 1)	{
+		$this->pi_USER_INT_obj = 0;
+                if($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_nkwgmaps.']['loadedLib'] != 1)	{
+                    if($GLOBALS['TSFE']->sys_language_uid == 1)
 			$js = "<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=" . $conf['ff']['sensor'] . "&language=en\"></script>";
-//			$js = "<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=" . $conf['ff']['sensor'] . "&language=de\"></script>";
-                        # $js .= "<script type=\"text/javascript\" src=\"http://maps.gstatic.com/intl/de_ALL/mapfiles/api-3/3/0/main.js\"></script>";
-			$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_nkwgmaps.']['loadedLib'] = 1;
+                    else
+			$js = "<script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=" . $conf['ff']['sensor'] . "&language=de\"></script>";
+#                       $js = "<script type=\"text/javascript\" src=\"http://maps.gstatic.com/intl/de_ALL/mapfiles/api-3/3/0/main.js\"></script>";
+
+                    $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_nkwgmaps.']['loadedLib'] = 1;
 		}
 		return $js;
 	}
