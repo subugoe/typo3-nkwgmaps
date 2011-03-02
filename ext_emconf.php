@@ -31,7 +31,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => 'Goettingen State and University Library, Germany http://www.sub.uni-goettingen.de',
 	'version' => '0.0.7',
 	'constraints' => array(
-		'depends' => array(
+		'depends' => array('standorte'
 		),
 		'conflicts' => array(
 		),

@@ -38,6 +38,76 @@ class tx_nkwgmaps extends tx_nkwlib {
 		return $js;
 	}
 
+	function showGMap($conf) {
+		$js = $this->loadGmapsLib($conf);
+		$js .= "<script type=\"text/javascript\">";
+			// Home Button Function - don't touch
+			$js .= "function HomeControl(controlDiv, map, latlng) {
+				controlDiv.style.padding = '5px';
+				var controlUI = document.createElement('DIV');
+                                controlUI.setAttribute('style', '-moz-border-radius:2px 2px 2px 2px; -moz-box-shadow:2px 2px 3px rgba(0, 0, 0, 0.35); border-top-left-radius: 2px 2px; border-top-right-radius: 2px 2px; border-bottom-right-radius: 2px 2px; border-bottom-left-radius: 2px 2px; -webkit-box-shadow: rgba(0, 0, 0, 0.347656) 2px 2px 3px;', false);
+                                controlUI.style.border = '1px solid rgb(169, 187, 223)';
+                                controlUI.style.background = '-moz-linear-gradient(center top , rgb(254, 254, 254), rgb(243, 243, 243)) repeat scroll 0% 0% transparent';
+                                // controlUI.style.background = '-webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(254, 254, 254)), to(rgb(243, 243, 243)))';
+				controlUI.style.backgroundColor = 'rgb(243, 243, 243)';
+				controlUI.style.padding = '1px';
+				controlUI.style.borderWidth = '1px';
+				controlUI.style.cursor = 'pointer';
+				controlUI.style.textAlign = 'center';
+				controlUI.title = 'Click to set the map to Home';
+				controlDiv.appendChild(controlUI);
+				var controlText = document.createElement('DIV');
+				controlText.style.fontFamily = 'Arial,sans-serif';
+				controlText.style.fontSize = '12px';
+				controlText.style.paddingLeft = '4px';
+				controlText.style.paddingRight = '4px';
+				controlText.innerHTML = '<b>Home</b>';
+				controlUI.appendChild(controlText);
+				google.maps.event.addDomListener(controlUI,'click',function(){map.setCenter(latlng);map.setZoom(" . $conf['ff']['zoom'] . ");});";
+			$js .= "}\n";
+
+                        $js .= "function initialize() {\n";
+				// make map START //
+				$js .= "var latlng = new google.maps.LatLng(" . $conf['ff']['latlon'] . ");\n";
+				$js .= "var mapDiv = document.getElementById('" . $conf['ff']['mapName'] . "');\n";
+				$js .= "var myOptions = {
+						zoom: " . $conf['ff']['zoom'] . ",
+						center: latlng,
+						scaleControl: " . $conf['ff']['scale'] . ",
+						mapTypeControl: true,
+						mapTypeControlOptions: {style: google.maps.MapTypeControlStyle." . $conf['ff']['maptypecontrol'] . "},
+						navigationControl: true,
+						navigationControlOptions: {style: google.maps.NavigationControlStyle." . $conf['ff']['navicontrol'] . "},
+						mapTypeId: google.maps.MapTypeId." . $conf['ff']['maptypeid'] . "
+					};\n";
+				$js .= "var map_" . $conf['ff']['mapName'] . " = new google.maps.Map(mapDiv, myOptions);\n";
+				// make map END //
+
+				// home button stuff START //
+				$js .= "var homeControlDiv = document.createElement('DIV');\n";
+				$js .= "var homeControl = new HomeControl(homeControlDiv,map_" . $conf['ff']['mapName'] . ",latlng);\n";
+				$js .= "homeControlDiv.index = 1;\n";
+				$js .= "map_" . $conf['ff']['mapName'] . ".controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);\n";
+				// home button stuff END //
+
+				// marker and popup START //
+				/* $js .= "var marker = new google.maps.Marker({position: latlng, map: map_" . $conf['ff']['mapName'] . ", title:'" . $conf['ff']['address'] . "'});\n";
+				if ($conf['ff']['popupcontent']) {
+					$js .= "var contentString = '" . $conf['ff']['popupcontent'] . "';\n";
+					$js .= "var infowindow = new google.maps.InfoWindow({content:contentString});\n";
+					if ($conf['ff']['popupoptions'] == "instant") {
+						$js .= "infowindow.open(map_" . $conf['ff']['mapName'] . ",marker);\n";
+					}
+					$js .= "google.maps.event.addListener(marker,'click',function(){infowindow.open(map_" . $conf['ff']['mapName'] . ",marker);});\n";
+				} */
+				// marker and popup END //
+			$js .= "}\n";
+			$js .= "initialize();\n"; // go go go
+		$js .= "</script>";
+		return $js;
+	}
+
+
 	function singleGmapsJS($conf) {
 		$js = $this->loadGmapsLib($conf);
 		$js .= "<script type=\"text/javascript\">";
@@ -45,8 +115,11 @@ class tx_nkwgmaps extends tx_nkwlib {
 			$js .= "function HomeControl(controlDiv, map, latlng) {
 				controlDiv.style.padding = '5px';
 				var controlUI = document.createElement('DIV');
-				controlUI.style.backgroundColor = 'white';
-				controlUI.style.borderStyle = 'solid';
+                                controlUI.setAttribute('style', '-moz-border-radius:2px 2px 2px 2px; -moz-box-shadow:2px 2px 3px rgba(0, 0, 0, 0.35); border-top-left-radius: 2px 2px; border-top-right-radius: 2px 2px; border-bottom-right-radius: 2px 2px; border-bottom-left-radius: 2px 2px; -webkit-box-shadow: rgba(0, 0, 0, 0.347656) 2px 2px 3px;', false);
+                                controlUI.style.border = '1px solid rgb(169, 187, 223)';
+                                controlUI.style.background = '-moz-linear-gradient(center top , rgb(254, 254, 254), rgb(243, 243, 243)) repeat scroll 0% 0% transparent';
+                                // controlUI.style.background = '-webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(254, 254, 254)), to(rgb(243, 243, 243)))';
+				controlUI.style.backgroundColor = 'rgb(243, 243, 243)';
 				controlUI.style.padding = '1px';
 				controlUI.style.borderWidth = '1px';
 				controlUI.style.cursor = 'pointer';
@@ -114,8 +187,11 @@ class tx_nkwgmaps extends tx_nkwlib {
 			function HomeControl(controlDiv, map, latlng) {
 				controlDiv.style.padding = '5px';
 				var controlUI = document.createElement('DIV');
-				controlUI.style.backgroundColor = 'white';
-				controlUI.style.borderStyle = 'solid';
+                                controlUI.setAttribute('style', '-moz-border-radius:2px 2px 2px 2px; -moz-box-shadow:2px 2px 3px rgba(0, 0, 0, 0.35); border-top-left-radius: 2px 2px; border-top-right-radius: 2px 2px; border-bottom-right-radius: 2px 2px; border-bottom-left-radius: 2px 2px; -webkit-box-shadow: rgba(0, 0, 0, 0.347656) 2px 2px 3px;', false);
+                                controlUI.style.border = '1px solid rgb(169, 187, 223)';
+                                controlUI.style.background = '-moz-linear-gradient(center top , rgb(254, 254, 254), rgb(243, 243, 243)) repeat scroll 0% 0% transparent';
+                                // controlUI.style.background = '-webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(254, 254, 254)), to(rgb(243, 243, 243)))';
+				controlUI.style.backgroundColor = 'rgb(243, 243, 243)';
 				controlUI.style.padding = '1px';
 				controlUI.style.borderWidth = '1px';
 				controlUI.style.cursor = 'pointer';
@@ -271,8 +347,11 @@ class tx_nkwgmaps extends tx_nkwlib {
 			function HomeControl(controlDiv, map, latlng) {
 				controlDiv.style.padding = '5px';
 				var controlUI = document.createElement('DIV');
-				controlUI.style.backgroundColor = 'white';
-				controlUI.style.borderStyle = 'solid';
+                                controlUI.setAttribute('style', '-moz-border-radius:2px 2px 2px 2px; -moz-box-shadow:2px 2px 3px rgba(0, 0, 0, 0.35); border-top-left-radius: 2px 2px; border-top-right-radius: 2px 2px; border-bottom-right-radius: 2px 2px; border-bottom-left-radius: 2px 2px; -webkit-box-shadow: rgba(0, 0, 0, 0.347656) 2px 2px 3px;', false);
+                                controlUI.style.border = '1px solid rgb(169, 187, 223)';
+                                controlUI.style.background = '-moz-linear-gradient(center top , rgb(254, 254, 254), rgb(243, 243, 243)) repeat scroll 0% 0% transparent';
+                                // controlUI.style.background = '-webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(254, 254, 254)), to(rgb(243, 243, 243)))';
+				controlUI.style.backgroundColor = 'rgb(243, 243, 243)';
 				controlUI.style.padding = '1px';
 				controlUI.style.borderWidth = '1px';
 				controlUI.style.cursor = 'pointer';
@@ -355,17 +434,21 @@ class tx_nkwgmaps extends tx_nkwlib {
 			var markerArray = [];
 			var stepDisplay;";
 		if ($conf['ff']['mapcenterbutton'] == 'true') {
-			$js .= "
+
+                    $js .= "
 			function HomeControl(controlDiv, map, latlng) {
 				controlDiv.style.padding = '5px';
 				var controlUI = document.createElement('DIV');
-				controlUI.style.backgroundColor = 'white';
-				controlUI.style.borderStyle = 'solid';
+                                controlUI.setAttribute('style', '-moz-border-radius:2px 2px 2px 2px; -moz-box-shadow:2px 2px 3px rgba(0, 0, 0, 0.35); border-top-left-radius: 2px 2px; border-top-right-radius: 2px 2px; border-bottom-right-radius: 2px 2px; border-bottom-left-radius: 2px 2px; -webkit-box-shadow: rgba(0, 0, 0, 0.347656) 2px 2px 3px;', false);
+                                controlUI.style.border = '1px solid rgb(169, 187, 223)';
+                                controlUI.style.background = '-moz-linear-gradient(center top , rgb(254, 254, 254), rgb(243, 243, 243)) repeat scroll 0% 0% transparent';
+                                // controlUI.style.background = '-webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(254, 254, 254)), to(rgb(243, 243, 243)))';
+				controlUI.style.backgroundColor = 'rgb(243, 243, 243)';
 				controlUI.style.padding = '1px';
 				controlUI.style.borderWidth = '1px';
 				controlUI.style.cursor = 'pointer';
 				controlUI.style.textAlign = 'center';
-				controlUI.title = 'Click to set the map to Home';
+                                controlUI.title = 'Click to set the map to Home';
 				controlDiv.appendChild(controlUI);
 				var controlText = document.createElement('DIV');
 				controlText.style.fontFamily = 'Arial,sans-serif';
@@ -386,7 +469,7 @@ class tx_nkwgmaps extends tx_nkwlib {
 		$js .= "
 			function initialize() {
 			  directionsDisplay = new google.maps.DirectionsRenderer();
-			  // latlng = new google.maps.LatLng(" . $conf['ff']['latlngCenter'] . ");
+                          latlng = new google.maps.LatLng(" . $conf['ff']['latlngCenter'] . ");
 			  var myOptions = {
 				center: latlng,
 				scaleControl: " . $conf['ff']['scale'] . ",
@@ -483,7 +566,7 @@ class tx_nkwgmaps extends tx_nkwlib {
 		$js = $this->loadGmapsLib($conf);
 		$js .= "<script type=\"text/javascript\">";
 			// Home Button Function - don't touch
-			$js .= "function HomeControl(controlDiv, map, latlng) {
+                        $js .= "function HomeControl(controlDiv, map, latlng) {
 				controlDiv.style.padding = '5px';
 				var controlUI = document.createElement('DIV');
 				controlUI.style.backgroundColor = 'white';

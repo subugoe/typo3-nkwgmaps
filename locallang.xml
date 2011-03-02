@@ -5,7 +5,7 @@
 		<description>Language labels for database tables/fields belonging to extension 'nkwgmaps'</description>
 	</meta>
 	<data type="array">
-		<languageKey index="default" type="array">
+		<languageKey index="de" type="array">
 			<label index="address">Address (required: street, ZIP, city)</label>
 			<label index="addressbookoptions">Address Book: Single Person</label>
 			<label index="addressbookoptionsperson">Person</label>
@@ -19,14 +19,17 @@
 			<label index="directionsvisibility">Location Plan</label>
 			<label index="directionsvisibility.I.0">Hide</label>
 			<label index="directionsvisibility.I.1">Show (default)</label>
+			<label index="directionformoptions">Directions Formular Options</label>
 			<label index="display">Select function:</label>
 			<label index="display.I.0">Single Address</label>
 			<label index="display.I.1">Address Book: Person</label>
 			<label index="display.I.2">Address Book: Persons</label>
 			<label index="display.I.3">Address Book: Group</label>
 			<label index="display.I.4">Directions</label>
+			<label index="display.I.5">Directions Formular</label>
 			<label index="fromaddress">From Address: Street, ZIP, city</label>
 			<label index="toaddress">To Address: Street, ZIP, city</label>
+			<label index="mapcenteraddress">Map center address: Street, ZIP, city</label>
 			<label index="navicontrol">Navigation Control</label>
 			<label index="navicontrol.I.0">Default (determined automatically by size of map)</label>
 			<label index="navicontrol.I.1">Small (smallest possible footprint)</label>
@@ -72,7 +75,7 @@
 			<label index="zoom.I.2">14 (very good for a single address)</label>
 			<label index="zoom.I.3">19</label>
 		</languageKey>
-		<languageKey index="de" type="array">
+		<languageKey index="default" type="array">
 			<label index="address">Adresse (benötigt: Straße, PLZ, Stadt)</label>
 			<label index="addressbookoptions">Adressbuch: Einzelperson</label>
 			<label index="addressbookoptionsperson">Person</label>
@@ -86,14 +89,17 @@
 			<label index="directionsvisibility">Wegbeschreibung</label>
 			<label index="directionsvisibility.I.0">Verstecken</label>
 			<label index="directionsvisibility.I.1">Anzeigen (Standard)</label>
+			<label index="directionformoptions">Formular: Anfahrtsweg</label>
 			<label index="display">Funktion wählen:</label>
 			<label index="display.I.0">Einzeladresse</label>
 			<label index="display.I.1">Adressbuch: Einzelperson</label>
 			<label index="display.I.2">Adressbuch: Einzelpersonen</label>
 			<label index="display.I.3">Adressbuch: Gruppe</label>
 			<label index="display.I.4">Wegbeschreibung</label>
+			<label index="display.I.5">Formular: Wegbeschreibung</label>
 			<label index="fromaddress">Start-Adresse: Straße, PLZ, Stadt</label>
 			<label index="toaddress">Ziel-Adresse: Straße, PLZ, Stadt</label>
+			<label index="mapcenteraddress">Kartenzentrierpunkt: Straße, PLZ, Stadt</label>
 			<label index="navicontrol">Navigationssteuerung</label>
 			<label index="navicontrol.I.0">Standard (automatisch durch Kartengröße festgelegt)</label>
 			<label index="navicontrol.I.1">Klein (kleinstes Steuerelement)</label>

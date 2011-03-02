@@ -2,15 +2,20 @@
 <T3locallang>
 	<meta type="array">
 		<type>module</type>
-		<description>Language labels for plugin &quot;tx_nkwgmaps_pi2&quot;</description>
+		<description>Language labels for plugin &quot;tx_nkwgmaps_pi3&quot;</description>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="list_mode_1">Mode 1</label>
-			<label index="list_mode_2">Mode 2</label>
-			<label index="list_mode_3">Mode 3</label>
-			<label index="back">Back</label>
-			<label index="submit_button_label">Click here to submit value</label>
+			<label index="directions">Directions:</label>
+			<label index="fromaddress">From Address: Street, ZIP, city</label>
+			<label index="toaddress">To Address: Street, ZIP, city</label>
+			<label index="addressformat">Street, ZIP, city</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="directions">Anfahrtsweg:</label>
+			<label index="fromaddress">Start-Adresse:</label>
+			<label index="toaddress">Ziel-Adresse:</label>
+			<label index="addressformat">Straße, PLZ, Ort</label>
 		</languageKey>
 	</data>
 </T3locallang>

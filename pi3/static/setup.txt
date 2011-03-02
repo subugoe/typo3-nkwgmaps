@@ -1,0 +1,36 @@
+# CSS Styles fuer bestimmte Sachen:
+plugin.tx-nkwgmaps-pi3._CSS_DEFAULT_STYLE (
+
+    .tx-nkwgmaps-pi3 #tx_nkwgmaps_pi3_directions_form {
+            border: 1px solid #CCC;
+            margin-top: 4px;
+            padding: 8px;
+    }
+
+    .tx-nkwgmaps-pi3 #def_list {
+    }
+
+    .tx-nkwgmaps-pi3 dt {
+            float:left;
+            clear:both;
+            padding: 4px;
+            padding-right: 6px;
+            height: 20px;
+            width: 100px;
+    }
+
+    .tx-nkwgmaps-pi3 dd {
+            padding: 4px;
+    }
+
+    .tx-nkwgmaps-pi3 input, select {
+            border: 1px solid #6E7FA0;
+            padding: 2px;
+    }
+
+    #directionsPanel    {
+            margin-top: 4px;
+            padding: 2px;
+    }
+
+)
