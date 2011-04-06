@@ -5,9 +5,19 @@ plugin.tx-nkwgmaps-pi3._CSS_DEFAULT_STYLE (
             border: 1px solid #CCC;
             margin-top: 4px;
             padding: 8px;
+            color: #434343;
     }
 
-    .tx-nkwgmaps-pi3 #def_list {
+    .tx-nkwgmaps-pi3 legend {
+            width: 98%;
+            padding: 4px;
+            background-color: #EEEEEE;
+            border: 1px solid #E1E1E1;
+            margin-bottom: 4px;
+    }
+
+    .tx-nkwgmaps-pi3 dl {
+            border: 1px solid #E1E1E1;
     }
 
     .tx-nkwgmaps-pi3 dt {

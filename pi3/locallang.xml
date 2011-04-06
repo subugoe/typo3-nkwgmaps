@@ -7,15 +7,17 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="directions">Directions:</label>
-			<label index="fromaddress">From Address: Street, ZIP, city</label>
-			<label index="toaddress">To Address: Street, ZIP, city</label>
+			<label index="fromaddress">From Address:</label>
+			<label index="toaddress">To Address:</label>
 			<label index="addressformat">Street, ZIP, city</label>
+			<label index="send">Submit</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="directions">Anfahrtsweg:</label>
 			<label index="fromaddress">Start-Adresse:</label>
 			<label index="toaddress">Ziel-Adresse:</label>
 			<label index="addressformat">Straße, PLZ, Ort</label>
+			<label index="send">Senden</label>
 		</languageKey>
 	</data>
 </T3locallang>

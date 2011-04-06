@@ -321,7 +321,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
                                     <dt>' . $this->pi_getLL("toaddress") . '</dt><dd><select name="endpoint">
                                         ' . $select . '
                                     </select></dd>
-                                    <dt></<dt><dd><input type="submit" value="Senden"></dd>
+                                    <dt></<dt><dd><input type="submit" value="' . $this->pi_getLL("send") . '"></dd>
                                 </dl>
                                 </fieldset>
                                 </form>
