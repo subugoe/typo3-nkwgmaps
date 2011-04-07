@@ -146,7 +146,7 @@
 							</config>
 						</TCEforms>
 					</source>
-					<popupoptions>
+<!--					<popupoptions>
 						<TCEforms>
 							<label>LLL:EXT:nkwgmaps/locallang.xml:popupoptions</label>
 							<config>
@@ -167,7 +167,7 @@
 							</config>
 						</TCEforms>
 					</popupoptions>
-				</el>
+-->				</el>
 			</ROOT>
 		</multiaddressbookoptions>
 		<addressgroupoptions>
@@ -236,11 +236,11 @@
 									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:travelmode.I.1</numIndex>
 									<numIndex index="1">DRIVING</numIndex>
 								</numIndex>
-								<numIndex index="2" type="array">
+<!--								<numIndex index="2" type="array">
 									<numIndex index="0">LLL:EXT:nkwgmaps/locallang.xml:travelmode.I.2</numIndex>
 									<numIndex index="1">BICYLING</numIndex>
 								</numIndex>
-							</items>
+-->							</items>
 							<minitems>0</minitems>
 							<maxitems>1</maxitems>
 							<size>1</size>
@@ -280,7 +280,7 @@
 				<el>
 					<mapcenteraddress>
 						<TCEforms>
-							<label>LLL:EXT:nkwgmaps/locallang.xml:mapcenteraddress</label>
+							<label>LLL:EXT:nkwgmaps/locallang.xml:toaddress</label>
 							<config>
 								<type>input</type>
 								<size>40</size>
@@ -289,7 +289,7 @@
 							</config>
 						</TCEforms>
 					</mapcenteraddress>
-					<travelmode>
+<!--					<travelmode>
 						<TCEforms>
 						<label>LLL:EXT:nkwgmaps/locallang.xml:travelmode</label>
 						<config>
@@ -314,7 +314,7 @@
 						</config>
 						</TCEforms>
 					</travelmode>
-					<directionsformvisibility>
+-->					<directionsformvisibility>
 						<TCEforms>
 						<label>LLL:EXT:nkwgmaps/locallang.xml:directionsvisibility</label>
 						<config>

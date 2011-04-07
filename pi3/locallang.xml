@@ -11,6 +11,11 @@
 			<label index="toaddress">To Address:</label>
 			<label index="addressformat">Street, ZIP, city</label>
 			<label index="send">Submit</label>
+       			<label index="travelmode">Travel Mode:</label>
+                        <label index="travelmode.I.0">Walking (default)</label>
+			<label index="travelmode.I.1">Driving</label>
+			<label index="travelmode.I.2">Bicycling</label>
+
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="directions">Anfahrtsweg:</label>
@@ -18,6 +23,10 @@
 			<label index="toaddress">Ziel-Adresse:</label>
 			<label index="addressformat">Straße, PLZ, Ort</label>
 			<label index="send">Senden</label>
+			<label index="travelmode">Reiseart:</label>
+			<label index="travelmode.I.0">Zu Fuß (Standard)</label>
+			<label index="travelmode.I.1">Mit dem Auto</label>
+			<label index="travelmode.I.2">Mit dem Fahrrad</label>
 		</languageKey>
 	</data>
 </T3locallang>

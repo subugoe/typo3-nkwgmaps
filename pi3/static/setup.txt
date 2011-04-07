@@ -38,6 +38,19 @@ plugin.tx-nkwgmaps-pi3._CSS_DEFAULT_STYLE (
             padding: 2px;
     }
 
+    .tx-nkwgmaps-pi3 #startpoint{
+            color: #999999;
+    }
+
+    .tx-nkwgmaps-pi3 #endpoint{
+            background-color: #E1E1E1 !important;
+            color: #444444;
+    }
+
+    .tx-nkwgmaps-pi3 #submit{
+            color: #000 !important;
+    }
+
     #directionsPanel    {
             margin-top: 4px;
             padding: 2px;

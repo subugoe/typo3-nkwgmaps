@@ -249,27 +249,16 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 
 		} else if ($conf['ff']['display'] == 'directionsform') {
                         // get latlon
-			if ($_REQUEST['startpoint'] && $_REQUEST['endpoint']) {
+			if ($_REQUEST['startpoint'] && $_REQUEST['endpoint'] && $_REQUEST['travelmode']) {
 				$conf['ff']['start'] = $_REQUEST['startpoint'];
+				$conf['ff']['end'] = $_REQUEST['endpoint'];
+                                $conf['ff']['travelmode'] = $_REQUEST['travelmode'];
+                                print_r($conf['ff']['travelmode']);
                                 $geoStart = $this->geocodeAddress($conf['ff']['start']);
-                                $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-                                        'titel, lat, lon, strasse, plz, ort', //WHAT
-                                        'tx_standorte_domain_model_bibliothek', //FROM
-                                        'uid=' . $_REQUEST['endpoint'], //WHERE
-                                        '', //GROUP BY
-                                        'titel ASC', //ORDER BY
-                                        '');    //LIMIT
-                                if($res !== false)  {
-                                    $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-                                    $conf['ff']['end'] = $row['strasse'].",".$row['plz'].",".$row['ort'];
-                                    $geoEnd['results'][0]['geometry']['location']['lat'] = $row['lat'];
-                                    $geoEnd['results'][0]['geometry']['location']['lng'] = $row['lon'];
-                                }   else    {
-                                    $msg = 'No address given!';
-                                    $fail = TRUE;
-                                }
-                                $GLOBALS['TYPO3_DB']->sql_free_result($res);
-				if ($geoStart['status'] == "OK") {
+                                $geoEnd = $this->geocodeAddress($conf['ff']['end']);
+
+
+				if ($geoStart['status'] == "OK"/* && $geoEnd['status'] == "OK" */) {
 					$latMean = round(($geoStart['results'][0]['geometry']['location']['lat']
 						+ $geoEnd['results'][0]['geometry']['location']['lat'])/2, 5);
 					$lngMean = round(($geoStart['results'][0]['geometry']['location']['lng']
@@ -279,25 +268,6 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 					$conf['ff']['latlngCenter'] = "51.53290, 9.93496"; // Gaenseliesl (Stadtmitte)
 				}
 			} else {
-
-                            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-                                    'uid, titel, lat, lon, strasse', //WHAT
-                                    'tx_standorte_domain_model_bibliothek', //FROM
-                                    '', //WHERE
-                                    '', //GROUP BY
-                                    'titel ASC', //ORDER BY
-                                    '');    //LIMIT
-                            if($res !== false)  {
-                                while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))   {
-                                    if(strlen($row['titel']) < 48)  $titel = $row['titel'];
-                                    else                            $titel = substr($row['titel'], 0, 46) . "...";
-                                    $select .=  "<option value='" . $row['uid'] . "' title='" . $row['titel'] . "'>" . $titel . "</option>\n";
-                                }
-                            }   else    {
-                                echo "db connect problem.";
-                            }
-                            $GLOBALS['TYPO3_DB']->sql_free_result($res);
-
                             $geoPos = $this->geocodeAddress($conf['ff']['latlngCenter']);
                             if ($geoPos['status'] == "OK") {
                                 $conf['ff']['latlon'] = $geoPos['results'][0]['geometry']['location']['lat'] . ',' . $geoPos['results'][0]['geometry']['location']['lng'];
@@ -309,7 +279,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
                                 'useCacheHash' => true,
                                 'additionalParams' => ''
                             );
-                            $formURL = $this->pi_linkTP_keepPIvars_url($config, $cache=1, $clearAnyway=1, $altPageId=0);
+                            $formURL = $this->pi_linkTP_keepPIvars_url($config, $cache=0, $clearAnyway=1, $altPageId=0);
 
                             $form = '
                                 <div id="'. $this->prefixId .'_directions_form">
@@ -317,17 +287,104 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
                                 <fieldset>
                                 <legend>' . $this->pi_getLL("directions") . '</legend>
                                 <dl>
-                                    <dt>' . $this->pi_getLL("fromaddress") . '</dt><dd><input name="startpoint" type="text" size="44" value="' . $this->pi_getLL("addressformat") . '"/></dd>
-                                    <dt>' . $this->pi_getLL("toaddress") . '</dt><dd><select name="endpoint">
-                                        ' . $select . '
-                                    </select></dd>
-                                    <dt></<dt><dd><input type="submit" value="' . $this->pi_getLL("send") . '"></dd>
+                                    <dt>' . $this->pi_getLL("fromaddress") . '</dt><dd><input id="startpoint" name="startpoint" type="text" size="44" value="' . $this->pi_getLL("addressformat") . '" onFocus="javascript:this.value=\'\'; this.style.color=\'#000\';" /></dd>
+                                    <dt>' . $this->pi_getLL("toaddress") . '</dt><dd><input id="endpoint" name="endpoint" type="text" size="44" value="' . $conf['ff']['latlngCenter'] . '" readonly="readonly" /></dd>
+                                    <dt>' . $this->pi_getLL("travelmode") .'</dt><dd><select name="travelmode">
+                                        <option value="WALKING">' . $this->pi_getLL("travelmode.I.0") .'</option>
+                                        <option value="DRIVING">' . $this->pi_getLL("travelmode.I.1") .'</option>
+                                        <!--<option value="BICYCLING">' . $this->pi_getLL("travelmode.I.2") .'</option>-->
+                                    </select>
+                                    </dd>
+                                    <dt></dt><dd><input type="submit" name="submit" value="' . $this->pi_getLL("send") . '"></dd>
                                 </dl>
                                 </fieldset>
                                 </form>
                                 </div>';
 			}
                 }
+
+//              Standorte
+//		} else if ($conf['ff']['display'] == 'directionsform') {
+//                        // get latlon
+//			if ($_REQUEST['startpoint'] && $_REQUEST['endpoint']) {
+//				$conf['ff']['start'] = $_REQUEST['startpoint'];
+//                                $geoStart = $this->geocodeAddress($conf['ff']['start']);
+//                                $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+//                                        'titel, lat, lon, strasse, plz, ort', //WHAT
+//                                        'tx_standorte_domain_model_bibliothek', //FROM
+//                                        'uid=' . $_REQUEST['endpoint'], //WHERE
+//                                        '', //GROUP BY
+//                                        'titel ASC', //ORDER BY
+//                                        '');    //LIMIT
+//                                if($res !== false)  {
+//                                    $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+//                                    $conf['ff']['end'] = $row['strasse'].",".$row['plz'].",".$row['ort'];
+//                                    $geoEnd['results'][0]['geometry']['location']['lat'] = $row['lat'];
+//                                    $geoEnd['results'][0]['geometry']['location']['lng'] = $row['lon'];
+//                                }   else    {
+//                                    $msg = 'No address given!';
+//                                    $fail = TRUE;
+//                                }
+//                                $GLOBALS['TYPO3_DB']->sql_free_result($res);
+//				if ($geoStart['status'] == "OK") {
+//					$latMean = round(($geoStart['results'][0]['geometry']['location']['lat']
+//						+ $geoEnd['results'][0]['geometry']['location']['lat'])/2, 5);
+//					$lngMean = round(($geoStart['results'][0]['geometry']['location']['lng']
+//						+ $geoEnd['results'][0]['geometry']['location']['lng'])/2, 5);
+//					$conf['ff']['latlngCenter'] = $latMean . ',' . $lngMean;
+//				} else {
+//					$conf['ff']['latlngCenter'] = "51.53290, 9.93496"; // Gaenseliesl (Stadtmitte)
+//				}
+//			} else {
+//
+//                            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+//                                    'uid, titel, lat, lon, strasse', //WHAT
+//                                    'tx_standorte_domain_model_bibliothek', //FROM
+//                                    '', //WHERE
+//                                    '', //GROUP BY
+//                                    'titel ASC', //ORDER BY
+//                                    '');    //LIMIT
+//                            if($res !== false)  {
+//                                while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))   {
+//                                    if(strlen($row['titel']) < 48)  $titel = $row['titel'];
+//                                    else                            $titel = substr($row['titel'], 0, 46) . "...";
+//                                    $select .=  "<option value='" . $row['uid'] . "' title='" . $row['titel'] . "'>" . $titel . "</option>\n";
+//                                }
+//                            }   else    {
+//                                echo "db connect problem.";
+//                            }
+//                            $GLOBALS['TYPO3_DB']->sql_free_result($res);
+//
+//                            $geoPos = $this->geocodeAddress($conf['ff']['latlngCenter']);
+//                            if ($geoPos['status'] == "OK") {
+//                                $conf['ff']['latlon'] = $geoPos['results'][0]['geometry']['location']['lat'] . ',' . $geoPos['results'][0]['geometry']['location']['lng'];
+//                            }   else    {
+//                                $conf['ff']['latlon'] = "51.53290, 9.93496"; // Gaenseliesl (Stadtmitte)
+//                            }
+//                            $config = array(
+//                                'parameter' => $GLOBALS['TSFE']->id,
+//                                'useCacheHash' => true,
+//                                'additionalParams' => ''
+//                            );
+//                            $formURL = $this->pi_linkTP_keepPIvars_url($config, $cache=1, $clearAnyway=1, $altPageId=0);
+//
+//                            $form = '
+//                                <div id="'. $this->prefixId .'_directions_form">
+//                                <form id="nkwgmaps_directions_form" action="' . $formURL . '" method="POST">
+//                                <fieldset>
+//                                <legend>' . $this->pi_getLL("directions") . '</legend>
+//                                <dl>
+//                                    <dt>' . $this->pi_getLL("fromaddress") . '</dt><dd><input name="startpoint" type="text" size="44" value="' . $this->pi_getLL("addressformat") . '"/></dd>
+//                                    <dt>' . $this->pi_getLL("toaddress") . '</dt><dd><select name="endpoint">
+//                                        ' . $select . '
+//                                    </select></dd>
+//                                    <dt></dt><dd><input type="submit" value="' . $this->pi_getLL("send") . '"></dd>
+//                                </dl>
+//                                </fieldset>
+//                                </form>
+//                                </div>';
+//			}
+//                }
                 if (!$fail) {
 			// the div-container in which the map is displayed
 			$tmp = '<div id="' . $conf['ff']['mapName'] . '" class="tx-nkwgmaps-border"></div>';
