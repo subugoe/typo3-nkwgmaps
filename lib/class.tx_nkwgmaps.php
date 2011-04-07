@@ -92,7 +92,7 @@ class tx_nkwgmaps extends tx_nkwlib {
 				// home button stuff END //
 
 				// marker and popup START //
-				/* $js .= "var marker = new google.maps.Marker({position: latlng, map: map_" . $conf['ff']['mapName'] . ", title:'" . $conf['ff']['address'] . "'});\n";
+				$js .= "var marker = new google.maps.Marker({position: latlng, map: map_" . $conf['ff']['mapName'] . ", title:'" . $conf['ff']['address'] . "'});\n";
 				if ($conf['ff']['popupcontent']) {
 					$js .= "var contentString = '" . $conf['ff']['popupcontent'] . "';\n";
 					$js .= "var infowindow = new google.maps.InfoWindow({content:contentString});\n";
@@ -100,7 +100,7 @@ class tx_nkwgmaps extends tx_nkwlib {
 						$js .= "infowindow.open(map_" . $conf['ff']['mapName'] . ",marker);\n";
 					}
 					$js .= "google.maps.event.addListener(marker,'click',function(){infowindow.open(map_" . $conf['ff']['mapName'] . ",marker);});\n";
-				} */
+				}
 				// marker and popup END //
 			$js .= "}\n";
 			$js .= "initialize();\n"; // go go go

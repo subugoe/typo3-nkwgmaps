@@ -257,7 +257,6 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
                                 $geoStart = $this->geocodeAddress($conf['ff']['start']);
                                 $geoEnd = $this->geocodeAddress($conf['ff']['end']);
 
-
 				if ($geoStart['status'] == "OK"/* && $geoEnd['status'] == "OK" */) {
 					$latMean = round(($geoStart['results'][0]['geometry']['location']['lat']
 						+ $geoEnd['results'][0]['geometry']['location']['lat'])/2, 5);
