@@ -8,6 +8,10 @@ plugin.tx-nkwgmaps-pi3._CSS_DEFAULT_STYLE (
             color: #434343;
     }
 
+    .tx-nkwgmaps-pi3 fieldset {
+            border: 1px solid #FFFFFF;
+    }
+
     .tx-nkwgmaps-pi3 legend {
             width: 98%;
             padding: 4px;

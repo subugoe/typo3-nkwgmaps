@@ -94,7 +94,7 @@
 							<label>LLL:EXT:nkwgmaps/locallang.xml:popupcontent</label>
 							<config>
 								<type>input</type>
-								<size>40</size>
+								<size>80</size>
 								<max>255</max>
 								<eval>trim</eval>
 							</config>
@@ -289,6 +289,17 @@
 							</config>
 						</TCEforms>
 					</mapcenteraddress>
+					<directionformpopup>
+						<TCEforms>
+							<label>LLL:EXT:nkwgmaps/locallang.xml:popupcontent</label>
+							<config>
+								<type>input</type>
+								<size>80</size>
+								<max>255</max>
+								<eval>trim</eval>
+							</config>
+						</TCEforms>
+					</directionformpopup>
 <!--					<travelmode>
 						<TCEforms>
 						<label>LLL:EXT:nkwgmaps/locallang.xml:travelmode</label>

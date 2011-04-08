@@ -71,7 +71,8 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 			# Directions Options
 			'start' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'fromaddress', 'directionoptions'), // directions: start address
 			'end' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'toaddress', 'directionoptions'), // directions: end address
-                        'latlngCenter' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'mapcenteraddress', 'directionformoptions'), // directions form: map center address
+                        'latlngCenter' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'mapcenteraddress', 'directionformoptions'), // directions form: map center and to address
+                        'directionformpopup' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'directionformpopup', 'directionformoptions'), // directions form: popup content to address
                         'travelmode' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'travelmode', 'directionoptions'), // directions: kind of traveling
 			'directionsvisibility' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'directionsvisibility', 'directionoptions'), // directions: show / hide
 			'directionsformvisibility' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'directionsformvisibility', 'directionformoptions'), // directions: show / hide
@@ -253,7 +254,6 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 				$conf['ff']['start'] = $_REQUEST['startpoint'];
 				$conf['ff']['end'] = $_REQUEST['endpoint'];
                                 $conf['ff']['travelmode'] = $_REQUEST['travelmode'];
-                                print_r($conf['ff']['travelmode']);
                                 $geoStart = $this->geocodeAddress($conf['ff']['start']);
                                 $geoEnd = $this->geocodeAddress($conf['ff']['end']);
 
@@ -273,6 +273,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
                             }   else    {
                                 $conf['ff']['latlon'] = "51.53290, 9.93496"; // Gaenseliesl (Stadtmitte)
                             }
+                            $conf['ff']['popupcontent'] = $conf['ff']['directionformpopup'];
                             $config = array(
                                 'parameter' => $GLOBALS['TSFE']->id,
                                 'useCacheHash' => true,
