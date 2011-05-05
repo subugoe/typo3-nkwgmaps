@@ -290,8 +290,8 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
                                     <dt>' . $this->pi_getLL("fromaddress") . '</dt><dd><input id="startpoint" name="startpoint" type="text" size="44" value="' . $this->pi_getLL("addressformat") . '" onFocus="javascript:this.value=\'\'; this.style.color=\'#000\';" /></dd>
                                     <dt>' . $this->pi_getLL("toaddress") . '</dt><dd><input id="endpoint" name="endpoint" type="text" size="44" value="' . $conf['ff']['latlngCenter'] . '" readonly="readonly" /></dd>
                                     <dt>' . $this->pi_getLL("travelmode") .'</dt><dd><select name="travelmode">
-                                        <option value="WALKING">' . $this->pi_getLL("travelmode.I.0") .'</option>
                                         <option value="DRIVING">' . $this->pi_getLL("travelmode.I.1") .'</option>
+                                        <option value="WALKING">' . $this->pi_getLL("travelmode.I.0") .'</option>
                                         <!--<option value="BICYCLING">' . $this->pi_getLL("travelmode.I.2") .'</option>-->
                                     </select>
                                     </dd>

@@ -26,7 +26,7 @@
 			<label index="display.I.2">Address Book: Persons</label>
 			<label index="display.I.3">Address Book: Group</label>
 			<label index="display.I.4">Directions</label>
-			<label index="display.I.5">Directions Formular</label>
+			<label index="display.I.5">Route Planner</label>
 			<label index="fromaddress">From Address: Street, ZIP, city</label>
 			<label index="toaddress">To Address: Street, ZIP, city</label>
 			<label index="mapcenteraddress">Map center address: Street, ZIP, city</label>
@@ -96,7 +96,7 @@
 			<label index="display.I.2">Adressbuch: Einzelpersonen</label>
 			<label index="display.I.3">Adressbuch: Gruppe</label>
 			<label index="display.I.4">Wegbeschreibung</label>
-			<label index="display.I.5">Formular: Wegbeschreibung</label>
+			<label index="display.I.5">Routenplaner</label>
 			<label index="fromaddress">Start-Adresse: Straße, PLZ, Stadt</label>
 			<label index="toaddress">Ziel-Adresse: Straße, PLZ, Stadt</label>
 			<label index="mapcenteraddress">Kartenzentrierpunkt: Straße, PLZ, Stadt</label>
