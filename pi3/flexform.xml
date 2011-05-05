@@ -74,7 +74,7 @@
 		<singleaddressoptions>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:singleaddressoptions</sheetTitle>
+					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:display.I.0</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
@@ -129,7 +129,7 @@
 		<multiaddressbookoptions>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:multiaddressbookoptions</sheetTitle>
+					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:display.I.2</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
@@ -173,7 +173,7 @@
 		<addressgroupoptions>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:addressgroupoptions</sheetTitle>
+					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:display.I.3</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
@@ -196,7 +196,7 @@
 		<directionoptions>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:directionoptions</sheetTitle>
+					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:display.I.4</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
@@ -274,7 +274,7 @@
 		<directionformoptions>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:directionformoptions</sheetTitle>
+					<sheetTitle>LLL:EXT:nkwgmaps/locallang.xml:display.I.5</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
