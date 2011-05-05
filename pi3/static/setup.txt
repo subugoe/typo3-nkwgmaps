@@ -58,6 +58,8 @@ plugin.tx-nkwgmaps-pi3._CSS_DEFAULT_STYLE (
     #directionsPanel    {
             margin-top: 4px;
             padding: 2px;
+/*            height: 400px;
+            overflow-y: scroll; */
     }
 
 )

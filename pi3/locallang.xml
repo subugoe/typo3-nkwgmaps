@@ -13,7 +13,7 @@
 			<label index="send">Submit</label>
        			<label index="travelmode">Travel Mode:</label>
                         <label index="travelmode.I.0">Walking</label>
-			<label index="travelmode.I.1">Driving (default)</label>
+			<label index="travelmode.I.1">Driving</label>
 			<label index="travelmode.I.2">Bicycling</label>
 
 		</languageKey>
@@ -25,7 +25,7 @@
 			<label index="send">Senden</label>
 			<label index="travelmode">Reiseart:</label>
 			<label index="travelmode.I.0">Zu Fuß</label>
-			<label index="travelmode.I.1">Mit dem Auto (Standard)</label>
+			<label index="travelmode.I.1">Mit dem Auto</label>
 			<label index="travelmode.I.2">Mit dem Fahrrad</label>
 		</languageKey>
 	</data>
