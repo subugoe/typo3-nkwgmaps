@@ -21,7 +21,9 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+require_once(t3lib_extMgm::extPath('nkwlib') . 'class.tx_nkwlib.php');
 require_once(t3lib_extMgm::extPath('nkwgmaps') . 'lib/class.tx_nkwgmaps.php');
+
 /**
  * Plugin 'Simple Map' for the 'nkwgmaps' extension.
  *
@@ -30,26 +32,26 @@ require_once(t3lib_extMgm::extPath('nkwgmaps') . 'lib/class.tx_nkwgmaps.php');
  * @subpackage	tx_nkwgmaps
  */
 class tx_nkwgmaps_pi1 extends tx_nkwgmaps {
-	var $prefixId      = 'tx_nkwgmaps_pi1';
-	var $scriptRelPath = 'pi1/class.tx_nkwgmaps_pi1.php';
-	var $extKey        = 'nkwgmaps';
-	var $pi_checkCHash = true;
+	public $prefixId = 'tx_nkwgmaps_pi1';
+	public $scriptRelPath = 'pi1/class.tx_nkwgmaps_pi1.php';
+	public $extKey = 'nkwgmaps';
+	public $pi_checkCHash = TRUE;
 	/**
 	 * The main method of the PlugIn
 	 *
-	 * @param	string		$content: The PlugIn content
-	 * @param	array		$conf: The PlugIn configuration
-	 * @return	The content that is displayed on the website
+	 * @param string $content The PlugIn content
+	 * @param array $conf The PlugIn configuration
+	 * @return The content that is displayed on the website
 	 */
-	function main($content, $conf) {
+	public function main($content, $conf) {
 		$this->conf = $conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
 		$this->pi_initPIflexform();
-		$lang = $this->getLanguage();
-       		$this->pi_USER_INT_obj = 0;
+		$lang = tx_nkwlib::getLanguage();
+		$this->pi_USER_INT_obj = 0;
 
-                $conf['ff'] = array(
+		$conf['ff'] = array(
 			'mapName' => md5(microtime()),
 			'maptypeid' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypeid', 'uioptions'),
 			'maptypecontrol' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maptypecontrol', 'uioptions'),
@@ -63,24 +65,22 @@ class tx_nkwgmaps_pi1 extends tx_nkwgmaps {
 			'popupcontent' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'popupcontent', 'addressdata')
 		);
 		$conf['ff']['mapName'] = md5($conf['ff']['address']);
-		// get latlon
-		$geo = $this->geocodeAddress($conf['ff']['address']);
+			// get latlon
+		$geo = tx_nkwlib::geocodeAddress($conf['ff']['address']);
 		if ($geo['status'] == 'OK') {
-			$conf['ff']['latlon'] = $geo['results'][0]['geometry']['location']['lat'] . ',' 
-				. $geo['results'][0]['geometry']['location']['lng'];
+			$conf['ff']['latlon'] = $geo['results'][0]['geometry']['location']['lat'] . ',' . $geo['results'][0]['geometry']['location']['lng'];
 		} else {
 			$msg = 'fail. could not resolve address';
 			$fail = TRUE;
 		}
 		if (!$fail) {
-			// the div in which the map is displayed
-			$tmp = '<div id="' . $conf['ff']['mapName'] 
-				. '" class="tx-nkwgmaps-border"></div>';
-			$js = $this->singleGmapsJS($conf);
+				// the div in which the map is displayed
+			$tmp = '<div id="' . $conf['ff']['mapName'] . '" class="tx-nkwgmaps-border"></div>';
+			$js = tx_nkwgmaps::singleGmapsJS($conf);
 		} else {
 			$tmp = '<p>' . $msg . '</p>';
 		}
-                
+
 		$content = $tmp;
 		if (!$fail) {
 			$content .= $js;
