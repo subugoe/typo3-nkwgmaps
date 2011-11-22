@@ -1,3 +1,6 @@
+2011-11-22 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
+	* Leerzeichen entfernt vor dem Sensorparameter (WWW-890)
+
 2011-07-06 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
 	* Refactoring pi1, pi2, pi3, pi4 und lib
 	* [Bugfix] Anzeige von Google Maps mit Adressen (WWW-686)

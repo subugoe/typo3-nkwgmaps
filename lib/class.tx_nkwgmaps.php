@@ -41,8 +41,8 @@ class tx_nkwgmaps extends tslib_pibase {
 	public static function loadGmapsLib($conf) {
 
 		if ($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_nkwgmaps.']['loadedLib'] != 1) {
-			if ($GLOBALS['TSFE']->sys_language_uid === 1)
-				$js = '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor= ' . $conf['ff']['sensor'] . '&language=en"></script>';
+			if ($GLOBALS['TSFE']->sys_language_uid == 1)
+				$js = '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=' . $conf['ff']['sensor'] . '&language=en"></script>';
 			else {
 				$js = '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=' . $conf['ff']['sensor'] . '&language=de"></script>';
 			}
