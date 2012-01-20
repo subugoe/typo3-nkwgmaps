@@ -258,6 +258,15 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 		} elseif ($conf['ff']['display'] == 'directionsform') {
 				// get latlon
 			if ($_REQUEST['startpoint'] && $_REQUEST['endpoint'] && $_REQUEST['travelmode']) {
+				$formURL = $this->pi_linkTP_keepPIvars_url($config, $cache=0, $clearAnyway=1, $altPageId=0);
+
+				$form = '
+					<div id="'. $this->prefixId .'_directions_form">
+					<form id="nkwgmaps_directions_form" action="' . $formURL . '" method="POST">
+					<dt></dt><dd id="back"><input type="submit" name="submit" value="' . $this->pi_getLL("back") . '"></dd>
+					</form>
+					</div>';
+
 				$conf['ff']['start'] = $_REQUEST['startpoint'];
 				$conf['ff']['end'] = $_REQUEST['endpoint'];
 				$conf['ff']['travelmode'] = $_REQUEST['travelmode'];
@@ -312,7 +321,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 				}
 
 		if (!$fail) {
-				// the div-container in which the map is displayed
+			// the div-container in which the map is displayed
 			$tmp = '<div id="' . $conf['ff']['mapName'] . '" class="tx-nkwgmaps-border"></div>';
 			switch ($conf['ff']['display']) {
 				case 'singleaddress':;
@@ -330,19 +339,19 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 						$js = tx_nkwgmaps::directions($conf);
 					}
 					break;
-				case 'directionsform':
-					if (!isset($_REQUEST['startpoint']) && !isset($_REQUEST['endpoint'])) {
-						$tmp .= $form;
-						$js = tx_nkwgmaps::showGMap($conf);
-					} else {
-						if ($conf['ff']['directionsformvisibility'] == 'true') {
-							$js = tx_nkwgmaps::directionsWithSteps($conf);
-							$tmp .= '<div id="directionsPanel" class="tx-nkwgmaps-directionspanel"></div>';
-						} else {
-							$js = tx_nkwgmaps::directions($conf);
-						}
-					}
-					break;
+                                case 'directionsform':
+                                        if (!isset($_REQUEST['startpoint']) && !isset($_REQUEST['endpoint'])) {
+                                                $tmp .= $form;
+                                                $js = tx_nkwgmaps::showGMap($conf);
+                                        } else {
+                                                if ($conf['ff']['directionsformvisibility'] == 'true') {
+                                                        $js = tx_nkwgmaps::directionsWithSteps($conf);
+                                                        $tmp .= '<div id="directionsPanel" class="tx-nkwgmaps-directionspanel"></div>';
+                                                } else {
+                                                        $js = tx_nkwgmaps::directions($conf);
+                                                }
+                                        }
+                                        break;
 			}
 		} else {
 			$tmp = '<p>' . $msg . '</p>';
