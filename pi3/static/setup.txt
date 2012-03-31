@@ -48,10 +48,13 @@ plugin.tx-nkwgmaps-pi3._CSS_DEFAULT_STYLE (
     }
 
     .tx-nkwgmaps-pi3 input, select {
-            border: 1px solid #6E7FA0;
-            padding: 2px;
+            margin-left: 0;
+			border: 1px solid #CCC;
+			padding: 3px;
+			width: 300px;
+			color: #434343;
     }
-
+    
     .tx-nkwgmaps-pi3 table {
             padding-bottom: 0px !important;
             width: 100%;
@@ -66,8 +69,28 @@ plugin.tx-nkwgmaps-pi3._CSS_DEFAULT_STYLE (
             color: #444444;
     }
 
-    .tx-nkwgmaps-pi3 #submit {
-            color: #000 !important;
+	.tx-nkwgmaps-pi3 input[type="submit"] {
+			width: auto;
+			border: 1px solid #434343;
+			border-width: 1px;
+			border-color: #D4D4D4 #B4B4B4 #B4B4B4 #D4D4D4;
+			border-radius: 3px 3px 3px 3px;
+			background: url("/typo3conf/ext/tmpl_sub/Resources/Public/Img/button_shade_large.png") repeat-x scroll 0 100% #F3F6FB;
+			border-style: solid;
+			margin-left: 0;
+			text-align: center;
+			text-decoration: none;
+			text-shadow: 0 1px rgba(255, 255, 255, 0.75);
+			text-transform: uppercase;
+			line-height: 100%;
+			padding: 3px 12px!important;
+			float: left;
+			height: 20px;
+			color: #434343;
+	}
+	
+    .tx-nkwgmaps-pi3 .submit {
+            height: 20px;
     }
 
     #directionsPanel    {
