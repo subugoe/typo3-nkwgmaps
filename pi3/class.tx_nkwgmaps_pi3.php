@@ -355,19 +355,19 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 						$js = tx_nkwgmaps::directions($conf);
 					}
 					break;
-                                case 'directionsform':
-                                        if (!isset($_REQUEST['startpoint']) && !isset($_REQUEST['endpoint'])) {
-                                                $tmp .= $form;
-                                                $js = tx_nkwgmaps::showGMap($conf);
-                                        } else {
-                                                if ($conf['ff']['directionsformvisibility'] == 'true') {
-                                                        $js = tx_nkwgmaps::directionsWithSteps($conf);
-                                                        $tmp .= '<div id="directionsPanel" class="tx-nkwgmaps-directionspanel"></div>';
-                                                } else {
-                                                        $js = tx_nkwgmaps::directions($conf);
-                                                }
-                                        }
-                                        break;
+				case 'directionsform':
+					if (!isset($_REQUEST['startpoint']) && !isset($_REQUEST['endpoint'])) {
+						$tmp .= $form;
+						$js = tx_nkwgmaps::showGMap($conf);
+					} else {
+						if ($conf['ff']['directionsformvisibility'] == 'true') {
+							$js = tx_nkwgmaps::directionsWithSteps($conf);
+							$tmp .= '<div id="directionsPanel" class="tx-nkwgmaps-directionspanel"></div>';
+						} else {
+							$js = tx_nkwgmaps::directions($conf);
+						}
+					}
+					break;
 			}
 		} else {
 			$tmp = '<p>' . $msg . '</p>';
