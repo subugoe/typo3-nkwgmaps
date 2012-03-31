@@ -283,6 +283,22 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 				}
 			} else {
 				$geoPos = tx_nkwlib::geocodeAddress($conf['ff']['latlngCenter']);
+					// get db-stored geoPos, if it exists
+				$address = explode(",",$conf['ff']['latlngCenter']);
+				$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'DISTINCT `tx_dsschedgmaps_geocodecache`',
+					'tt_address',
+					'address = ' . "'" . $address[0] . "' AND `tx_dsschedgmaps_geocodecache` != 'undefined'" . $GLOBALS['TSFE']->sys_page->enableFields('tt_address'),
+					'',
+					'',
+					'1');
+				if($GLOBALS['TYPO3_DB']->sql_affected_rows() > 0)	{
+					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
+					$geoCoord = explode(",",$row['tx_dsschedgmaps_geocodecache']);
+					$geoPos['results'][0]['geometry']['location']['lat'] = $geoCoord[0];
+					$geoPos['results'][0]['geometry']['location']['lng'] = $geoCoord[1];
+				}
+				
 				if ($geoPos['status'] == 'OK') {
 					$conf['ff']['latlon'] = $geoPos['results'][0]['geometry']['location']['lat'] . ',' . $geoPos['results'][0]['geometry']['location']['lng'];
 				} else {
