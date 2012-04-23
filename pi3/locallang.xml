@@ -17,7 +17,7 @@
 			<label index="travelmode.I.2">Bicycling</label>
 			<label index="back">Back</label>
                         <label index="caution">Bitte beachten Sie:</label>
-                        <label index="hint">Bei der Routenberechnung kann es zu leichten Ungenauigkeiten mit dem Zieladresse kommen auf die wir keinen Einfluss haben.</label>
+                        <label index="hint">Bei der Routenberechnung kann es zu leichten Ungenauigkeiten mit der Zieladresse kommen auf die wir keinen Einfluss haben.</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="directions">Routenplaner</label>
@@ -31,7 +31,7 @@
 			<label index="travelmode.I.2">Mit dem Fahrrad</label>
 			<label index="back">Zurück</label>
                         <label index="caution">Bitte beachten Sie:</label>
-                        <label index="hint">Bei der Routenberechnung kann es zu leichten Ungenauigkeiten mit dem Zieladresse kommen auf die wir keinen Einfluss haben.</label>
+                        <label index="hint">Bei der Routenberechnung kann es zu leichten Ungenauigkeiten mit der Zieladresse kommen auf die wir keinen Einfluss haben.</label>
 		</languageKey>
 	</data>
 </T3locallang>
