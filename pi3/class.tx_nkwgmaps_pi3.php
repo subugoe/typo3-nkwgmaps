@@ -258,7 +258,7 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 		} elseif ($conf['ff']['display'] == 'directionsform') {
 				// get latlon
 			if ($_REQUEST['startpoint'] && $_REQUEST['endpoint'] && $_REQUEST['travelmode']) {
-				$formURL = $this->pi_linkTP_keepPIvars_url($config, $cache=0, $clearAnyway=1, $altPageId=0);
+				$formURL = $this->pi_linkTP_keepPIvars_url($config, $cache=1, $clearAnyway=1, $altPageId=0);
 
 				$form = '
 					<div id="'. $this->prefixId .'_directions_form_back">
@@ -304,37 +304,38 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 				} else {
 						// Gaenseliesl (Stadtmitte)
 					$conf['ff']['latlon'] = '51.53290, 9.93496';
-					}
+				}
 
-					$conf['ff']['popupcontent'] = $conf['ff']['directionformpopup'];
-					$config = array(
-						'parameter' => $GLOBALS['TSFE']->id,
-						'useCacheHash' => TRUE,
-						'additionalParams' => ''
-					);
-					$formURL = $this->pi_linkTP_keepPIvars_url($config, $cache = 0, $clearAnyway = 1, $altPageId = 0);
+				$conf['ff']['popupcontent'] = $conf['ff']['directionformpopup'];
+				$config = array(
+					'parameter' => $GLOBALS['TSFE']->id,
+					'useCacheHash' => TRUE,
+					'additionalParams' => ''
+				);
+				$formURL = $this->pi_linkTP_keepPIvars_url($config, $cache = 0, $clearAnyway = 1, $altPageId = 0);
 
-					$form = '
-                                            <div id="'. $this->prefixId .'_directions_form">
-                                            <form id="nkwgmaps_directions_form" action="' . $formURL . '" method="POST">
-                                            <fieldset>
-                                            <legend>' . $this->pi_getLL('directions') . '</legend>
-                                            <dl>
-                                                    <dt>' . $this->pi_getLL('fromaddress') . '</dt><dd><input id="startpoint" name="startpoint" type="text" size="44" value="' . $this->pi_getLL('addressformat') . '" onFocus="javascript:this.value=\'\'; this.style.color=\'#000\';" /></dd>
-                                                    <dt>' . $this->pi_getLL('toaddress') . '</dt><dd><input id="endpoint" name="endpoint" type="text" size="44" value="' . $conf['ff']['latlngCenter'] . '" readonly="readonly" /></dd>
-                                                    <dt>' . $this->pi_getLL('travelmode') .'</dt><dd><select name="travelmode">
-                                                            <option value="DRIVING">' . $this->pi_getLL('travelmode.I.1') .'</option>
-                                                            <option value="WALKING">' . $this->pi_getLL('travelmode.I.0') .'</option>
-                                                            <!--<option value="BICYCLING">' . $this->pi_getLL('travelmode.I.2') .'</option>-->
-                                                    </select>
-                                                    </dd>
-                                                    <dt></dt><dd class="submit"><input type="submit" name="submit" value="' . $this->pi_getLL('send') . '"></dd>
-                                            </dl>
-                                            </fieldset>
-                                            </form>
-                                            </div>';
-                                    }
-                            }
+				$form = '
+					<div id="'. $this->prefixId .'_directions_form">
+					<form id="nkwgmaps_directions_form" action="' . $formURL . '" method="POST">
+					<fieldset>
+					<legend>' . $this->pi_getLL('directions') . '</legend>
+					<dl>
+							<dt>' . $this->pi_getLL('fromaddress') . '</dt><dd><input id="startpoint" name="startpoint" type="text" size="44" value="' . $this->pi_getLL('addressformat') . '" onFocus="javascript:this.value=\'\'; this.style.color=\'#000\';" /></dd>
+							<dt>' . $this->pi_getLL('toaddress') . '</dt><dd><input id="endpoint" name="endpoint" type="text" size="44" value="' . $conf['ff']['latlngCenter'] . '" readonly="readonly" /></dd>
+							<dt>' . $this->pi_getLL('travelmode') .'</dt><dd>
+							<select name="travelmode">
+									<option value="DRIVING">' .   $this->pi_getLL('travelmode.I.1') .'</option>
+									<option value="WALKING">' .   $this->pi_getLL('travelmode.I.0') .'</option>
+								<!--<option value="BICYCLING">' . $this->pi_getLL('travelmode.I.2') .'</option>-->
+							</select>
+							</dd>
+							<dt></dt><dd class="submit"><input type="submit" name="submit" value="' . $this->pi_getLL('send') . '"></dd>
+					</dl>
+					</fieldset>
+					</form>
+					</div>';
+			}
+		}
 
 		if (!$fail) {
 			// the div-container in which the map is displayed
@@ -363,8 +364,8 @@ class tx_nkwgmaps_pi3 extends tx_nkwgmaps {
 						if ($conf['ff']['directionsformvisibility'] == 'true') {
 							$js = tx_nkwgmaps::directionsWithSteps($conf);
 							$tmp .= '<div id="directionsHint"><strong>' . $this->pi_getLL('caution') . '</strong> ' . $this->pi_getLL('hint') . '</div>';
-                                                        $tmp .= '<div id="directionsPanel" class="tx-nkwgmaps-directionspanel"></div>';
-                                                        $tmp .= $form;
+							$tmp .= '<div id="directionsPanel" class="tx-nkwgmaps-directionspanel"></div>';
+							$tmp .= $form;
 						} else {
 							$js = tx_nkwgmaps::directions($conf);
 						}
