@@ -5,21 +5,6 @@ plugin.tx-nkwgmaps-pi3._CSS_DEFAULT_STYLE (
             margin-bottom: 16px;
     }
 
-    .tx-nkwgmaps-pi3 #tx_nkwgmaps_pi3_directions_form {
-            border: 1px solid #CCC;
-            margin-top: 4px;
-            padding: 8px;
-            color: #434343;
-    }
-
-    .tx-nkwgmaps-pi3 #tx_nkwgmaps_pi3_directions_form_back {
-          /*  border: 1px solid #CCC; */
-            margin-top: 4px;
-          /*  padding: 8px; */
-            color: #434343;
-    }
-
-
     .tx-nkwgmaps-pi3 fieldset {
             border: 1px solid #FFFFFF;
             padding-bottom: 0px !important;
@@ -50,11 +35,6 @@ plugin.tx-nkwgmaps-pi3._CSS_DEFAULT_STYLE (
             padding: 4px;
     }
 
-    .tx-nkwgmaps-pi3 #back {
-            text-align: right !important;
-            padding: 0px !important;
-    }
-
     .tx-nkwgmaps-pi3 input, select {
             margin-left: 0;
             border: 1px solid #CCC;
@@ -66,6 +46,40 @@ plugin.tx-nkwgmaps-pi3._CSS_DEFAULT_STYLE (
     .tx-nkwgmaps-pi3 table {
             padding-bottom: 0px !important;
             width: 100%;
+    }
+
+    .tx-nkwgmaps-pi3 #directionsPanel    {
+            margin-top: 4px;
+            padding: 2px;
+            overflow-y: scroll; */
+    }
+
+    .tx-nkwgmaps-pi3 #directionsHint {
+            border: 1px solid #999;
+            padding: 8px;
+            margin: 2px;
+            margin-top: 6px;
+            font-size: 12px;
+            color: #333;
+            background-color: #F66;
+    }
+
+    .tx-nkwgmaps-pi3 #tx_nkwgmaps_pi3_directions_form {
+            border: 1px solid #CCC;
+            margin-top: 4px;
+            padding: 8px;
+            color: #434343;
+    }
+
+    .tx-nkwgmaps-pi3 #tx_nkwgmaps_pi3_directions_form_back {
+            margin-top: -20px;
+            color: #434343;
+            float: right;
+    }
+
+    .tx-nkwgmaps-pi3 #back {
+            text-align: right !important;
+            padding: 0px !important;
     }
 
     .tx-nkwgmaps-pi3 #startpoint {
@@ -100,24 +114,5 @@ plugin.tx-nkwgmaps-pi3._CSS_DEFAULT_STYLE (
     .tx-nkwgmaps-pi3 .submit {
             height: 20px;
     }
-
-    #directionsPanel    {
-            margin-top: 4px;
-            padding: 2px;
-/*            height: 400px;
-            overflow-y: scroll; */
-    }
-
-    #directionsHint {
-            border: 1px solid #999;
-            padding: 8px;
-            margin: 2px;
-            margin-top: 6px;
-            font-size: 12px;
-            color: #333;
-            background-color: #F66;
-    }
-
-
 
 )
