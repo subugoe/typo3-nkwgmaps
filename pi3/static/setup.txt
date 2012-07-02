@@ -20,6 +20,7 @@ plugin.tx-nkwgmaps-pi3._CSS_DEFAULT_STYLE (
 
     .tx-nkwgmaps-pi3 dl {
             border: 1px solid #E1E1E1;
+			padding-bottom: 8px;
     }
 
     .tx-nkwgmaps-pi3 dt {
@@ -107,7 +108,7 @@ plugin.tx-nkwgmaps-pi3._CSS_DEFAULT_STYLE (
             line-height: 100%;
             padding: 3px 12px!important;
             float: left;
-            height: 20px;
+            height: 28px;
             color: #434343;
     }
 	
