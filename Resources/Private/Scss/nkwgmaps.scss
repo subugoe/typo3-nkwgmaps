@@ -1,0 +1,83 @@
+$lightgrey: #E1E1E1;
+$darkgrey: #434343;
+
+.tx-nkwgmaps-pi3 {
+	margin-bottom: 16px;
+	#tx_nkwgmaps_pi3_directions_form {
+		border: 1px solid #CCC;
+		margin-top: 4px;
+		padding: 8px;
+		color: $darkgrey;
+	}
+	fieldset {
+		border: 1px solid #FFFFFF;
+		padding-bottom: 0px !important;
+		legend {
+			width: 98%;
+			padding: 4px;
+			background-color: #EEEEEE;
+			border: 1px solid $lightgrey;
+			margin-bottom: 4px;
+		}
+	}
+	dl {
+		border: 1px solid $lightgrey;
+	}
+	dt {
+		float: left;
+		clear: both;
+		padding: 4px;
+		padding-right: 6px;
+		height: 20px;
+		width: 100px;
+	}
+	dd {
+		padding: 4px;
+	}
+	#back {
+		text-align: right !important;
+		padding: 0px !important;
+	}
+	input, select {
+		margin-left: 0;
+		border: 1px solid #CCC;
+		padding: 3px;
+		width: 300px;
+		color: $darkgrey;
+	}
+	table {
+		padding-bottom: 0px !important;
+		width: 100%;
+	}
+	#startpoint {
+		color: #999999;
+	}
+	#endpoint {
+		background-color: $lightgrey !important;
+		color: #444444;
+	}
+	input[type="submit"] {
+		width: auto;
+		border: 1px solid $darkgrey;
+		border-width: 1px;
+		border-color: #D4D4D4 #B4B4B4 #B4B4B4 #D4D4D4;
+		border-radius: 3px 3px 3px 3px;
+		background: url("/typo3conf/ext/tmpl_sub/Resources/Public/Img/button_shade_large.png") repeat-x scroll 0 100% #F3F6FB;
+		border-style: solid;
+		margin-left: 0;
+		text-align: center;
+		text-decoration: none;
+		text-shadow: 0 1px rgba(255, 255, 255, 0.75);
+		text-transform: uppercase;
+		line-height: 100%;
+		padding: 3px 12px !important;
+		float: left;
+		height: 20px;
+		color: $darkgrey;
+	}
+	#directionsPanel {
+		margin-top: 4px;
+		padding: 2px;
+	}
+}
+

@@ -48,6 +48,5 @@ t3lib_extMgm::addPlugin(
 t3lib_extMgm::addPlugin(
 	array('LLL:EXT:nkwgmaps/locallang_db.xml:tt_content.list_type_pi4', $_EXTKEY . '_pi4', t3lib_extMgm::extRelPath($_EXTKEY) . 'ext_icon.gif'), 'list_type');
 
-t3lib_extMgm::addStaticFile($_EXTKEY, 'pi3/static/', 'GMapsPi3');
-
+t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript/', 'Google Maps (nkw)');
 ?>
