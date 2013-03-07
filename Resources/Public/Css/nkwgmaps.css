@@ -1,12 +1,6 @@
 .tx-nkwgmaps-pi3 {
   margin-bottom: 16px;
 }
-.tx-nkwgmaps-pi3 #tx_nkwgmaps_pi3_directions_form {
-  border: 1px solid #CCC;
-  margin-top: 4px;
-  padding: 8px;
-  color: #434343;
-}
 .tx-nkwgmaps-pi3 fieldset {
   border: 1px solid #FFFFFF;
   padding-bottom: 0px !important;
@@ -32,9 +26,9 @@
 .tx-nkwgmaps-pi3 dd {
   padding: 4px;
 }
-.tx-nkwgmaps-pi3 #back {
-  text-align: right !important;
-  padding: 0px !important;
+.tx-nkwgmaps-pi3 table {
+  padding-bottom: 0px !important;
+  width: 100%;
 }
 .tx-nkwgmaps-pi3 input, .tx-nkwgmaps-pi3 select {
   margin-left: 0;
@@ -42,17 +36,6 @@
   padding: 3px;
   width: 300px;
   color: #434343;
-}
-.tx-nkwgmaps-pi3 table {
-  padding-bottom: 0px !important;
-  width: 100%;
-}
-.tx-nkwgmaps-pi3 #startpoint {
-  color: #999999;
-}
-.tx-nkwgmaps-pi3 #endpoint {
-  background-color: #e1e1e1 !important;
-  color: #444444;
 }
 .tx-nkwgmaps-pi3 input[type="submit"] {
   width: auto;
@@ -73,7 +56,24 @@
   height: 20px;
   color: #434343;
 }
+.tx-nkwgmaps-pi3 #back {
+  text-align: right !important;
+  padding: 0px !important;
+}
+.tx-nkwgmaps-pi3 #startpoint {
+  color: #999999;
+}
+.tx-nkwgmaps-pi3 #endpoint {
+  background-color: #e1e1e1 !important;
+  color: #444444;
+}
 .tx-nkwgmaps-pi3 #directionsPanel {
   margin-top: 4px;
   padding: 2px;
+}
+.tx-nkwgmaps-pi3 #tx_nkwgmaps_pi3_directions_form {
+  border: 1px solid #CCC;
+  margin-top: 4px;
+  padding: 8px;
+  color: #434343;
 }

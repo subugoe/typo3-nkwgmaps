@@ -3,12 +3,6 @@ $darkgrey: #434343;
 
 .tx-nkwgmaps-pi3 {
 	margin-bottom: 16px;
-	#tx_nkwgmaps_pi3_directions_form {
-		border: 1px solid #CCC;
-		margin-top: 4px;
-		padding: 8px;
-		color: $darkgrey;
-	}
 	fieldset {
 		border: 1px solid #FFFFFF;
 		padding-bottom: 0px !important;
@@ -34,9 +28,9 @@ $darkgrey: #434343;
 	dd {
 		padding: 4px;
 	}
-	#back {
-		text-align: right !important;
-		padding: 0px !important;
+	table {
+		padding-bottom: 0px !important;
+		width: 100%;
 	}
 	input, select {
 		margin-left: 0;
@@ -44,17 +38,6 @@ $darkgrey: #434343;
 		padding: 3px;
 		width: 300px;
 		color: $darkgrey;
-	}
-	table {
-		padding-bottom: 0px !important;
-		width: 100%;
-	}
-	#startpoint {
-		color: #999999;
-	}
-	#endpoint {
-		background-color: $lightgrey !important;
-		color: #444444;
 	}
 	input[type="submit"] {
 		width: auto;
@@ -75,9 +58,26 @@ $darkgrey: #434343;
 		height: 20px;
 		color: $darkgrey;
 	}
+	#back {
+		text-align: right !important;
+		padding: 0px !important;
+	}
+	#startpoint {
+		color: #999999;
+	}
+	#endpoint {
+		background-color: $lightgrey !important;
+		color: #444444;
+	}
 	#directionsPanel {
 		margin-top: 4px;
 		padding: 2px;
+	}
+	#tx_nkwgmaps_pi3_directions_form {
+		border: 1px solid #CCC;
+		margin-top: 4px;
+		padding: 8px;
+		color: $darkgrey;
 	}
 }
 
