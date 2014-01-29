@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Nkwgmaps" default="build">
 	<target name="build"
-			depends="prepare,lint,parallelTasks,phpcb"/>
+	        depends="prepare,lint,parallelTasks,phpcb"/>
 	<target name="clean" description="Cleanup build artifacts">
 		<delete dir="${basedir}/build/api"/>
 		<delete dir="${basedir}/build/code-browser"/>
@@ -10,7 +10,7 @@
 		<delete dir="${basedir}/build/pdepend"/>
 	</target>
 	<target name="prepare" depends="clean"
-			description="Prepare for build">
+	        description="Prepare for build">
 		<mkdir dir="${basedir}/build/api"/>
 		<mkdir dir="${basedir}/build/code-browser"/>
 		<mkdir dir="${basedir}/build/coverage"/>
@@ -29,7 +29,7 @@
 		<exec executable="phpunit" failonerror="true"/>
 	</target>
 	<target name="parallelTasks"
-			description="Run code analysis tasks in parallel">
+	        description="Run code analysis tasks in parallel">
 		<parallel threadCount="2">
 			<sequential>
 				<antcall target="pdepend"/>
@@ -37,12 +37,12 @@
 			</sequential>
 			<antcall target="phpcpd"/>
 			<antcall target="phpcs"/>
-			<antcall target="phpdoc"/>
+			<antcall target="phpdox"/>
 			<antcall target="phploc"/>
 		</parallel>
 	</target>
 	<target name="pdepend"
-			description="Calculate software metrics using PHP_Depend">
+	        description="Calculate software metrics using PHP_Depend">
 		<exec executable="pdepend">
 			<arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml"/>
 			<arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg"/>
@@ -51,7 +51,7 @@
 		</exec>
 	</target>
 	<target name="phpmd"
-			description="Perform project mess detection using PHPMD">
+	        description="Perform project mess detection using PHPMD">
 		<exec executable="phpmd">
 			<arg path="${basedir}"/>
 			<arg value="xml"/>
@@ -64,7 +64,7 @@
 		<exec executable="phpcpd">
 			<arg value="--log-pmd"/>
 			<arg value="${basedir}/build/logs/pmd-cpd.xml"/>
-			<arg path="${basedir}" />
+			<arg path="${basedir}"/>
 		</exec>
 	</target>
 	<target name="phploc" description="Measure project size using PHPLOC">
@@ -75,7 +75,7 @@
 		</exec>
 	</target>
 	<target name="phpcs"
-			description="Find coding standard violations using PHP_CodeSniffer">
+	        description="Find coding standard violations using PHP_CodeSniffer">
 		<exec executable="phpcs" output="/dev/null">
 			<arg value="--report=checkstyle"/>
 			<arg value="--report-file=${basedir}/build/logs/checkstyle.xml"/>
@@ -83,17 +83,11 @@
 			<arg path="${basedir}/"/>
 		</exec>
 	</target>
-	<target name="phpdoc"
-			description="Generate API documentation using PHPDocumentor">
-		<exec executable="phpdoc">
-			<arg value="--directory"/>
-			<arg path="${basedir}/"/>
-			<arg value="--target"/>
-			<arg path="${basedir}/build/api"/>
-		</exec>
+	<target name="phpdox" description="Generate API documentation using phpDox">
+		<exec executable="phpdox"/>
 	</target>
 	<target name="phpcb"
-			description="Aggregate tool output with PHP_CodeBrowser">
+	        description="Aggregate tool output with PHP_CodeBrowser">
 		<exec executable="phpcb">
 			<arg value="--log"/>
 			<arg path="${basedir}/build/logs"/>
